@@ -1,16 +1,14 @@
 <?php
 
-namespace HansPeterOrding\EspnApiSymfonyBundle\Entity\Entity;
+namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
 class EspnBroadcastMedia
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $shortName = null;
@@ -21,9 +19,15 @@ class EspnBroadcastMedia
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $darkLogo = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(?string $id): EspnBroadcastMedia
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getShortName(): ?string
@@ -31,10 +35,9 @@ class EspnBroadcastMedia
         return $this->shortName;
     }
 
-    public function setShortName(string $shortName): static
+    public function setShortName(?string $shortName): EspnBroadcastMedia
     {
         $this->shortName = $shortName;
-
         return $this;
     }
 
@@ -43,10 +46,9 @@ class EspnBroadcastMedia
         return $this->logo;
     }
 
-    public function setLogo(?string $logo): static
+    public function setLogo(?string $logo): EspnBroadcastMedia
     {
         $this->logo = $logo;
-
         return $this;
     }
 
@@ -55,10 +57,9 @@ class EspnBroadcastMedia
         return $this->darkLogo;
     }
 
-    public function setDarkLogo(?string $darkLogo): static
+    public function setDarkLogo(?string $darkLogo): EspnBroadcastMedia
     {
         $this->darkLogo = $darkLogo;
-
         return $this;
     }
 }

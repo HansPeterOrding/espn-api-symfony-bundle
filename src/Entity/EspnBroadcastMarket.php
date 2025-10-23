@@ -1,28 +1,27 @@
 <?php
 
-namespace HansPeterOrding\EspnApiSymfonyBundle\Entity\Entity;
+namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\Entity\Enum\EspnBroadcastMarketType;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnBroadcastMarketType;
 
 #[ORM\Embeddable]
 class EspnBroadcastMarket
 {
     #[ORM\Column]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(enumType: EspnBroadcastMarketType::class)]
     private ?EspnBroadcastMarketType $type = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setId(string $id): static
+    public function setId(?string $id): EspnBroadcastMarket
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -31,10 +30,9 @@ class EspnBroadcastMarket
         return $this->type;
     }
 
-    public function setType(EspnBroadcastMarketType $type): static
+    public function setType(?EspnBroadcastMarketType $type): EspnBroadcastMarket
     {
         $this->type = $type;
-
         return $this;
     }
 }

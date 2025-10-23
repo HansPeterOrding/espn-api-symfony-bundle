@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HansPeterOrding\EspnApiSymfonyBundle\Entity\Entity\Enum;
+namespace HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum;
 
 enum EspnBroadcastMarketType: string
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace HansPeterOrding\EspnApiSymfonyBundle\Entity\Entity;
+namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,20 +8,19 @@ use Doctrine\ORM\Mapping as ORM;
 class EspnBroadcastType
 {
     #[ORM\Column]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $shortName = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setId(string $id): static
+    public function setId(?string $id): EspnBroadcastType
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -30,10 +29,9 @@ class EspnBroadcastType
         return $this->shortName;
     }
 
-    public function setShortName(string $shortName): static
+    public function setShortName(?string $shortName): EspnBroadcastType
     {
         $this->shortName = $shortName;
-
         return $this;
     }
 }
