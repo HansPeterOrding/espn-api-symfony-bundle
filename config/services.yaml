@@ -1,0 +1,43 @@
+# mapping from bundle name to table prefix
+parameters:
+    table_prefix: easb_
+        
+services:
+    _defaults:
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        autowire: true
+        autoconfigure: true
+        public: true
+        
+    HansPeterOrding\EspnApiSymfonyBundle\DoctrineExtensions\TablePrefixEventListener:
+        arguments:
+            $prefix: '%table_prefix%'
+        tags:
+            - { name: doctrine.event_listener, event: loadClassMetadata, method: loadClassMetadata }
+                
+    # Repositories
+    #HansPeterOrding\SleeperApiSymfonyBundle\Repository\SleeperDraftRepository: ~
+    #hpo_sleeper_api_symfony_bundle.repository.sleeper_draft: '@HansPeterOrding\SleeperApiSymfonyBundle\Repository\SleeperDraftRepository'
+   
+    # Converters    
+    #HansPeterOrding\SleeperApiSymfonyBundle\Converter\SleeperDraftPickMetadataConverter: ~
+    #hpo_sleeper_api_symfony_bundle.converter.sleeper_draft_pick_metadata: '@HansPeterOrding\SleeperApiSymfonyBundle\Converter\SleeperDraftPickMetadataConverter'
+    
+    
+    # Dependent converters
+    #HansPeterOrding\SleeperApiSymfonyBundle\Converter\SleeperDraftConverter:
+    #    arguments:
+    #        $sleeperDraftRepository: '@hpo_sleeper_api_symfony_bundle.repository.sleeper_draft'
+    #        $sleeperDraftSettingsConverter: '@hpo_sleeper_api_symfony_bundle.converter.sleeper_draft_settings'
+    #        $sleeperDraftMetadataConverter: '@hpo_sleeper_api_symfony_bundle.converter.sleeper_draft_metadata'
+    #hpo_sleeper_api_symfony_bundle.converter.sleeper_draft: '@HansPeterOrding\SleeperApiSymfonyBundle\Converter\SleeperDraftConverter'
+        
+    # Importer
+    #HansPeterOrding\SleeperApiSymfonyBundle\Importer\SleeperDraftImporter:
+    #    arguments:
+    #        $converter: '@hpo_sleeper_api_symfony_bundle.converter.sleeper_draft'
+    #hpo_sleeper_api_symfony_bundle.importer.sleeper_draft: '@HansPeterOrding\SleeperApiSymfonyBundle\Importer\SleeperDraftImporter'
+    
+    # Services 
+    #HansPeterOrding\SleeperApiSymfonyBundle\Service\ImportService: ~
