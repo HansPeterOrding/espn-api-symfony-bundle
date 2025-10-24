@@ -31,6 +31,9 @@ class EspnBroadcast
     #[ORM\Column]
     private ?bool $partnered = null;
 
+    #[ORM\ManyToOne(inversedBy: 'broadcasts')]
+    private ?EspnCompetition $competition = null;
+
     public function __construct()
     {
         $this->type = new EspnBroadcastType();
@@ -112,6 +115,18 @@ class EspnBroadcast
     public function setPartnered(?bool $partnered): EspnBroadcast
     {
         $this->partnered = $partnered;
+        return $this;
+    }
+
+    public function getCompetition(): ?EspnCompetition
+    {
+        return $this->competition;
+    }
+
+    public function setCompetition(?EspnCompetition $competition): static
+    {
+        $this->competition = $competition;
+
         return $this;
     }
 }

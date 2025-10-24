@@ -2,13 +2,21 @@
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository;
 
-#[ORM\Embeddable]
+#[ORM\Entity(repositoryClass: EspnVenueRepository::class)]
 class EspnVenue
 {
+    #[ORM\Id()]
+    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?string $id = null;
+    private ?int $id = null;
+
+    #[ORM\Column]
+    private ?string $venueId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $guid = null;
@@ -25,19 +33,40 @@ class EspnVenue
     #[ORM\Column(nullable: true)]
     private ?bool $indoor = null;
 
+    #[ORM\ManyToOne(inversedBy: 'venue')]
+    private ?EspnFranchise $franchise = null;
+
+    /**
+     * @var Collection<int, EspnFranchise>
+     */
+    #[ORM\OneToMany(mappedBy: 'venue', targetEntity: EspnFranchise::class)]
+    private Collection $franchises;
+
     public function __construct()
     {
         $this->address = new EspnVenueAddress();
+        $this->franchises = new ArrayCollection();
     }
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(?string $id): EspnVenue
+    public function setId(?int $id): EspnVenue
     {
         $this->id = $id;
+        return $this;
+    }
+
+    public function getVenueId(): ?string
+    {
+        return $this->venueId;
+    }
+
+    public function setVenueId(?string $venueId): EspnVenue
+    {
+        $this->venueId = $venueId;
         return $this;
     }
 
@@ -93,6 +122,48 @@ class EspnVenue
     public function setIndoor(?bool $indoor): EspnVenue
     {
         $this->indoor = $indoor;
+        return $this;
+    }
+
+    public function getFranchise(): ?EspnFranchise
+    {
+        return $this->franchise;
+    }
+
+    public function setFranchise(?EspnFranchise $franchise): static
+    {
+        $this->franchise = $franchise;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EspnFranchise>
+     */
+    public function getFranchises(): Collection
+    {
+        return $this->franchises;
+    }
+
+    public function addFranchise(EspnFranchise $franchise): static
+    {
+        if (!$this->franchises->contains($franchise)) {
+            $this->franchises->add($franchise);
+            $franchise->setVenue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFranchise(EspnFranchise $franchise): static
+    {
+        if ($this->franchises->removeElement($franchise)) {
+            // set the owning side to null (unless already changed)
+            if ($franchise->getVenue() === $this) {
+                $franchise->setVenue(null);
+            }
+        }
+
         return $this;
     }
 }
