@@ -14,7 +14,7 @@ class EspnTeamRecordItem
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(enumType: EspnTeamRecordItemTypeEnum::class)]
@@ -40,10 +40,9 @@ class EspnTeamRecordItem
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): EspnTeamRecordItem
     {
         $this->description = $description;
-
         return $this;
     }
 

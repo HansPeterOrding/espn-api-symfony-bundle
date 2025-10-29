@@ -26,7 +26,7 @@ class EspnImage
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $alt = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     private array $rel = [];
 
     #[ORM\Column(nullable: true)]

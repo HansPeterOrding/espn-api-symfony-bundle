@@ -2,7 +2,10 @@
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnFranchise as EspnFranchiseDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository;
 
 #[ORM\Entity(repositoryClass: EspnFranchiseRepository::class)]
@@ -46,11 +49,17 @@ class EspnFranchise
     #[ORM\Column(nullable: true)]
     private ?bool $isActive = null;
 
-    #[ORM\ManyToOne(inversedBy: 'franchises')]
-    private ?EspnVenue $venue = null;
-
     #[ORM\OneToOne(mappedBy: 'franchise', cascade: ['persist', 'remove'])]
     private ?EspnTeam $team = null;
+
+    #[ORM\ManyToOne(inversedBy: 'franchises', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?EspnVenue $venue = null;
+
+    public function __construct()
+    {
+
+    }
 
     public function getId(): ?int
     {
@@ -189,18 +198,6 @@ class EspnFranchise
         return $this;
     }
 
-    public function getVenue(): ?EspnVenue
-    {
-        return $this->venue;
-    }
-
-    public function setVenue(?EspnVenue $venue): static
-    {
-        $this->venue = $venue;
-
-        return $this;
-    }
-
     public function getTeam(): ?EspnTeam
     {
         return $this->team;
@@ -221,5 +218,24 @@ class EspnFranchise
         $this->team = $team;
 
         return $this;
+    }
+
+    public function getVenue(): ?EspnVenue
+    {
+        return $this->venue;
+    }
+
+    public function setVenue(?EspnVenue $venue): static
+    {
+        $this->venue = $venue;
+
+        return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnFranchiseDto $espnFranchiseDto): array
+    {
+    return [
+            'franchiseId' => $espnFranchiseDto->getId(),
+        ];
     }
 }

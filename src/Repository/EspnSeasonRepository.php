@@ -4,40 +4,28 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
+use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason as EspnSeasonEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnSeason>
+ * @extends ServiceEntityRepository<EspnSeasonEntity>
  */
 class EspnSeasonRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnSeason::class);
+        parent::__construct($registry, EspnSeasonEntity::class);
     }
 
-    //    /**
-    //     * @return EspnSeason[] Returns an array of EspnSeason objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByDtoOrCreateEntity(EspnSeasonDto $espnSeasonDto): EspnSeasonEntity
+    {
+        $espnSeason = new EspnSeasonEntity();
+        if (null !== ($existingEntity = $this->findOneBy(
+                $espnSeason->buildFindByCriteriaFromDto($espnSeasonDto)
+            ))) {
+            $espnSeason = $existingEntity;
+        }
 
-    //    public function findOneBySomeField($value): ?EspnSeason
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $espnSeason;
+    }
 }

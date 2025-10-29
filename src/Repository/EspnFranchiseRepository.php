@@ -4,40 +4,28 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnFranchise;
+use HansPeterOrding\EspnApiClient\Dto\EspnFranchise as EspnFranchiseDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnFranchise as EspnFranchiseEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnFranchise>
+ * @extends ServiceEntityRepository<EspnFranchiseEntity>
  */
 class EspnFranchiseRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnFranchise::class);
+        parent::__construct($registry, EspnFranchiseEntity::class);
     }
 
-    //    /**
-    //     * @return EspnFranchise[] Returns an array of EspnFranchise objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByDtoOrCreateEntity(EspnFranchiseDto $espnFranchiseDto): EspnFranchiseEntity
+    {
+        $espnFranchise = new EspnFranchiseEntity();
+        if (null !== ($existingEntity = $this->findOneBy(
+                $espnFranchise->buildFindByCriteriaFromDto($espnFranchiseDto)
+            ))) {
+            $espnFranchise = $existingEntity;
+        }
 
-    //    public function findOneBySomeField($value): ?EspnFranchise
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $espnFranchise;
+    }
 }

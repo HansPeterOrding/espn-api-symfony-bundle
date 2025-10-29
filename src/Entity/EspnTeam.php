@@ -5,6 +5,7 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnTeam as EspnTeamDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
 
 #[ORM\Entity(repositoryClass: EspnTeamRepository::class)]
@@ -42,13 +43,13 @@ class EspnTeam
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nickname = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $alternateId = null;
 
     /**
      * @var Collection<int, EspnImage>
      */
-    #[ORM\OneToMany(mappedBy: 'espnTeam', targetEntity: EspnImage::class)]
+    #[ORM\OneToMany(mappedBy: 'espnTeam', targetEntity: EspnImage::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $logos;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -226,6 +227,15 @@ class EspnTeam
         return $this;
     }
 
+    public function removeAllLogos(): static
+    {
+        foreach($this->logos as $logo) {
+            $this->removeLogo($logo);
+        }
+
+        return $this;
+    }
+
     public function getRecord(): ?EspnTeamRecord
     {
         return $this->record;
@@ -290,5 +300,13 @@ class EspnTeam
         }
 
         return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnTeamDto $espnTeamDto): array
+    {
+        /** @todo: implement */
+        return [
+            'teamId' => $espnTeamDto->getId()
+        ];
     }
 }

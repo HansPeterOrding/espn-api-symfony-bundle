@@ -4,40 +4,28 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage;
+use HansPeterOrding\EspnApiClient\Dto\EspnImage as EspnImageDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage as EspnImageEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnImage>
+ * @extends ServiceEntityRepository<EspnImageEntity>
  */
 class EspnImageRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnImage::class);
+        parent::__construct($registry, EspnImageEntity::class);
     }
 
-    //    /**
-    //     * @return EspnImage[] Returns an array of EspnImage objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByDtoOrCreateEntity(EspnImageDto $espnImageDto): EspnImageEntity
+    {
+        $espnImage = new EspnImageEntity();
+        if (null !== ($existingEntity = $this->findOneBy(
+                $espnImage->buildFindByCriteriaFromDto($espnImageDto)
+            ))) {
+            $espnImage = $existingEntity;
+        }
 
-    //    public function findOneBySomeField($value): ?EspnImage
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $espnImage;
+    }
 }

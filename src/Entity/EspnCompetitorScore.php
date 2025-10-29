@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Embeddable]
 class EspnCompetitorScore
 {
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $value = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $displayValue = null;
 
     public function getValue(): ?float

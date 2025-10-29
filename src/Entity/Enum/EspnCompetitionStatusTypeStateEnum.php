@@ -8,4 +8,6 @@ enum EspnCompetitionStatusTypeStateEnum: string
 {
     case PRE = 'pre';
     case POST = 'post';
+
+    case IN = 'in';
 }

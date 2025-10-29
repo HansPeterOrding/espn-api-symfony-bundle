@@ -5,6 +5,7 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnVenue as EspnVenueDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository;
 
 #[ORM\Entity(repositoryClass: EspnVenueRepository::class)]
@@ -25,16 +26,13 @@ class EspnVenue
     private ?string $fullName = null;
 
     #[ORM\Embedded(class: EspnVenueAddress::class, columnPrefix: 'address_')]
-    private ?EspnVenueAddress $address = null;
+    private ?EspnVenueAddress $address;
 
     #[ORM\Column(nullable: true)]
     private ?bool $grass = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $indoor = null;
-
-    #[ORM\ManyToOne(inversedBy: 'venue')]
-    private ?EspnFranchise $franchise = null;
 
     /**
      * @var Collection<int, EspnFranchise>
@@ -125,18 +123,6 @@ class EspnVenue
         return $this;
     }
 
-    public function getFranchise(): ?EspnFranchise
-    {
-        return $this->franchise;
-    }
-
-    public function setFranchise(?EspnFranchise $franchise): static
-    {
-        $this->franchise = $franchise;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, EspnFranchise>
      */
@@ -165,5 +151,12 @@ class EspnVenue
         }
 
         return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnVenueDto $espnVenueDto): array
+    {
+        return [
+            'venueId' => $espnVenueDto->getId(),
+        ];
     }
 }

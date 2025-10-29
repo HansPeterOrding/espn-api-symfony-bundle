@@ -3,25 +3,14 @@
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitionStatusTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitionStatusTypeStateEnum;
 
 #[ORM\Embeddable]
 class EspnCompetitionStatusType
 {
-    #[ORM\Column]
-    private ?string $id = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    #[ORM\Column(enumType: EspnCompetitionStatusTypeStateEnum::class)]
-    private ?EspnCompetitionStatusTypeStateEnum $state = null;
-
-    #[ORM\Column]
-    private ?bool $completed = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    #[ORM\Column(enumType: EspnCompetitionStatusTypeEnum::class)]
+    private ?EspnCompetitionStatusTypeEnum $type = null;
 
     #[ORM\Column(length: 255)]
     private ?string $detail = null;
@@ -29,63 +18,30 @@ class EspnCompetitionStatusType
     #[ORM\Column(length: 255)]
     private ?string $shortDetail = null;
 
-    public function getId(): ?string
+    public function getType(): ?EspnCompetitionStatusTypeEnum
     {
-        return $this->id;
+        return $this->type;
     }
 
-    public function setId(?string $id): EspnCompetitionStatusType
+    public function setType(?EspnCompetitionStatusTypeEnum $type): EspnCompetitionStatusType
     {
-        $this->id = $id;
+        $this->type = $type;
         return $this;
     }
 
-    public function getName(): ?string
+    public function getState(): ?string
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getState(): ?EspnCompetitionStatusTypeStateEnum
-    {
-        return $this->state;
-    }
-
-    public function setState(EspnCompetitionStatusTypeStateEnum $state): static
-    {
-        $this->state = $state;
-
-        return $this;
+        return $this->type?->getState();
     }
 
     public function isCompleted(): ?bool
     {
-        return $this->completed;
-    }
-
-    public function setCompleted(bool $completed): static
-    {
-        $this->completed = $completed;
-
-        return $this;
+        return $this->type?->isCompleted();
     }
 
     public function getDescription(): ?string
     {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
+        return $this->type?->getDescription();
     }
 
     public function getDetail(): ?string

@@ -6,6 +6,8 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnCompetition as EspnCompetitionDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitionTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionRepository;
 
 #[ORM\Entity(repositoryClass: EspnCompetitionRepository::class)]
@@ -25,11 +27,11 @@ class EspnCompetition
     #[ORM\Column]
     private ?int $attendance = null;
 
-    #[ORM\Embedded(class: EspnCompetitionType::class, columnPrefix: 'type_')]
-    private ?EspnCompetitionType $type = null;
+    #[ORM\Column(enumType: EspnCompetitionTypeEnum::class)]
+    private ?EspnCompetitionTypeEnum $type = null;
 
     #[ORM\Column]
-    private ?bool $typeValid = null;
+    private ?bool $timeValid = null;
 
     #[ORM\Column]
     private ?bool $neutralSite = null;
@@ -40,14 +42,14 @@ class EspnCompetition
     #[ORM\Column]
     private ?bool $ticketsAvailable = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?EspnVenue $venue = null;
 
     /**
      * @var Collection<int, EspnCompetitor>
      */
-    #[ORM\OneToMany(targetEntity: EspnCompetitor::class, mappedBy: 'competition')]
+    #[ORM\OneToMany(mappedBy: 'competition', targetEntity: EspnCompetitor::class, cascade: ['persist'])]
     private Collection $competitors;
 
     #[ORM\Column]
@@ -56,7 +58,7 @@ class EspnCompetition
     /**
      * @var Collection<int, EspnBroadcast>
      */
-    #[ORM\OneToMany(targetEntity: EspnBroadcast::class, mappedBy: 'competition')]
+    #[ORM\OneToMany(mappedBy: 'competition', targetEntity: EspnBroadcast::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $broadcasts;
 
     #[ORM\Embedded(class: EspnCompetitionStatus::class, columnPrefix: 'status_')]
@@ -68,7 +70,6 @@ class EspnCompetition
 
     public function __construct()
     {
-        $this->type = new EspnCompetitionType();
         $this->competitors = new ArrayCollection();
         $this->broadcasts = new ArrayCollection();
         $this->status = new EspnCompetitionStatus();
@@ -113,25 +114,25 @@ class EspnCompetition
         return $this;
     }
 
-    public function getType(): ?EspnCompetitionType
+    public function getType(): ?EspnCompetitionTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(?EspnCompetitionType $type): EspnCompetition
+    public function setType(?EspnCompetitionTypeEnum $type): EspnCompetition
     {
         $this->type = $type;
         return $this;
     }
 
-    public function getTypeValid(): ?bool
+    public function getTimeValid(): ?bool
     {
-        return $this->typeValid;
+        return $this->timeValid;
     }
 
-    public function setTypeValid(?bool $typeValid): EspnCompetition
+    public function setTimeValid(?bool $timeValid): EspnCompetition
     {
-        $this->typeValid = $typeValid;
+        $this->timeValid = $timeValid;
         return $this;
     }
 
@@ -198,6 +199,19 @@ class EspnCompetition
         return $this;
     }
 
+    public function addOrReplaceCompetitor(EspnCompetitor $competitor): static
+    {
+        foreach($this->competitors as $existingCompetitor) {
+            if($existingCompetitor->getCompetitorId() === $competitor->getCompetitorId()) {
+                $this->removeCompetitor($existingCompetitor);
+            }
+        }
+
+        $this->addCompetitor($competitor);
+
+        return $this;
+    }
+
     public function removeCompetitor(EspnCompetitor $competitor): static
     {
         if ($this->competitors->removeElement($competitor)) {
@@ -252,15 +266,23 @@ class EspnCompetition
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function removeAllBroadcasts(): static
+    {
+        foreach($this->broadcasts as $broadcast) {
+            $this->removeBroadcast($broadcast);
+        }
+
+        return $this;
+    }
+
+    public function getStatus(): ?EspnCompetitionStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(?EspnCompetitionStatus $status): EspnCompetition
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -274,5 +296,12 @@ class EspnCompetition
         $this->scheduleEvent = $scheduleEvent;
 
         return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnCompetitionDto $espnCompetitionDto): array
+    {
+        return [
+            'competitionId' => $espnCompetitionDto->getId()
+        ];
     }
 }

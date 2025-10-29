@@ -5,6 +5,8 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnScheduleEvent as EspnScheduleEventDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnSeasonTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleEventRepository;
 
 #[ORM\Entity(repositoryClass: EspnScheduleEventRepository::class)]
@@ -31,6 +33,9 @@ class EspnScheduleEvent
     #[ORM\JoinColumn(nullable: false)]
     private ?EspnSeason $season = null;
 
+    #[ORM\Column(enumType: EspnSeasonTypeEnum::class)]
+    private ?EspnSeasonTypeEnum $seasonType = null;
+
     #[ORM\Embedded(class: EspnWeek::class, columnPrefix: 'week_')]
     private ?EspnWeek $week = null;
 
@@ -40,7 +45,7 @@ class EspnScheduleEvent
     /**
      * @var Collection<int, EspnCompetition>
      */
-    #[ORM\OneToMany(mappedBy: 'scheduleEvent', targetEntity: EspnCompetition::class)]
+    #[ORM\OneToMany(mappedBy: 'scheduleEvent', targetEntity: EspnCompetition::class, cascade: ['persist'])]
     private Collection $competitions;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
@@ -118,6 +123,17 @@ class EspnScheduleEvent
         return $this;
     }
 
+    public function getSeasonType(): ?EspnSeasonTypeEnum
+    {
+        return $this->seasonType;
+    }
+
+    public function setSeasonType(?EspnSeasonTypeEnum $seasonType): EspnScheduleEvent
+    {
+        $this->seasonType = $seasonType;
+        return $this;
+    }
+
     public function getWeek(): ?EspnWeek
     {
         return $this->week;
@@ -159,6 +175,19 @@ class EspnScheduleEvent
         return $this;
     }
 
+    public function addOrReplaceCompetition(EspnCompetition $competition): static
+    {
+        foreach($this->competitions as $existingCompetition) {
+            if($existingCompetition->getCompetitionId() === $competition->getCompetitionId()) {
+                $this->removeCompetition($existingCompetition);
+            }
+        }
+
+        $this->addCompetition($competition);
+
+        return $this;
+    }
+
     public function removeCompetition(EspnCompetition $competition): static
     {
         if ($this->competitions->removeElement($competition)) {
@@ -181,5 +210,12 @@ class EspnScheduleEvent
         $this->schedule = $schedule;
 
         return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnScheduleEventDto $espnScheduleEventDto): array
+    {
+        return [
+            'scheduleEventId' => $espnScheduleEventDto->getId()
+        ];
     }
 }

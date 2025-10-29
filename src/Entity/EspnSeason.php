@@ -5,6 +5,7 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnSeasonTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository;
 
@@ -18,9 +19,6 @@ class EspnSeason
 
     #[ORM\Column]
     private ?int $year = null;
-
-    #[ORM\Column(enumType: EspnSeasonTypeEnum::class)]
-    private ?EspnSeasonTypeEnum $type = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -135,5 +133,13 @@ class EspnSeason
         }
 
         return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnSeasonDto $espnSeasonDto): array
+    {
+        /** @todo: implement */
+        return [
+            'year' => $espnSeasonDto->getYear(),
+        ];
     }
 }

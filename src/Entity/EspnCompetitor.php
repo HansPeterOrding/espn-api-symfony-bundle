@@ -3,6 +3,7 @@
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnCompetitor as EspnCompetitorDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitorHomeAwayEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitorTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository;
@@ -27,7 +28,7 @@ class EspnCompetitor
     #[ORM\Column(enumType: EspnCompetitorHomeAwayEnum::class)]
     private ?EspnCompetitorHomeAwayEnum $homeAway = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $winner = null;
 
     #[ORM\ManyToOne]
@@ -103,7 +104,7 @@ class EspnCompetitor
         return $this->winner;
     }
 
-    public function setWinner(bool $winner): static
+    public function setWinner(?bool $winner): static
     {
         $this->winner = $winner;
 
@@ -143,5 +144,13 @@ class EspnCompetitor
         $this->competition = $competition;
 
         return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnCompetition $competition, EspnCompetitorDto $espnCompetitorDto): array
+    {
+        return [
+            'competition' => $competition->getId(),
+            'competitorId' => $espnCompetitorDto->getId(),
+        ];
     }
 }

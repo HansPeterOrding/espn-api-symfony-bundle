@@ -4,40 +4,28 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetition;
+use HansPeterOrding\EspnApiClient\Dto\EspnCompetition as EspnCompetitionDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetition as EspnCompetitionEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnCompetition>
+ * @extends ServiceEntityRepository<EspnCompetitionEntity>
  */
 class EspnCompetitionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnCompetition::class);
+        parent::__construct($registry, EspnCompetitionEntity::class);
     }
 
-    //    /**
-    //     * @return EspnCompetition[] Returns an array of EspnCompetition objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByDtoOrCreateEntity(EspnCompetitionDto $espnCompetitionDto): EspnCompetitionEntity
+    {
+        $espnCompetition = new EspnCompetitionEntity();
+        if (null !== ($existingEntity = $this->findOneBy(
+                $espnCompetition->buildFindByCriteriaFromDto($espnCompetitionDto)
+            ))) {
+            $espnCompetition = $existingEntity;
+        }
 
-    //    public function findOneBySomeField($value): ?EspnCompetition
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $espnCompetition;
+    }
 }

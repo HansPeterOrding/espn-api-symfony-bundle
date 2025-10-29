@@ -22,7 +22,7 @@ class EspnSchedule
     #[ORM\Column(enumType: EspnScheduleStatusEnum::class)]
     private ?EspnScheduleStatusEnum $status = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?EspnSeason $season = null;
 
@@ -33,7 +33,7 @@ class EspnSchedule
     /**
      * @var Collection<int, EspnScheduleEvent>
      */
-    #[ORM\OneToMany(mappedBy: 'schedule', targetEntity: EspnScheduleEvent::class)]
+    #[ORM\OneToMany(mappedBy: 'schedule', targetEntity: EspnScheduleEvent::class, cascade: ['persist'])]
     private Collection $events;
 
     #[ORM\Column]
@@ -115,6 +115,19 @@ class EspnSchedule
         return $this;
     }
 
+    public function addOrReplaceEvent(EspnScheduleEvent $event): static
+    {
+        foreach($this->events as $existingEvent) {
+            if($existingEvent->getScheduleEventId() === $event->getScheduleEventId()) {
+                $this->events->removeElement($existingEvent);
+            }
+        }
+
+        $this->addEvent($event);
+
+        return $this;
+    }
+
     public function removeEvent(EspnScheduleEvent $event): static
     {
         if ($this->events->removeElement($event)) {
@@ -137,5 +150,12 @@ class EspnSchedule
         $this->byeWeek = $byeWeek;
 
         return $this;
+    }
+
+    public function buildFindByCriteriaFromDto(EspnTeam $team): array
+    {
+        return [
+            'team' => $team
+        ];
     }
 }

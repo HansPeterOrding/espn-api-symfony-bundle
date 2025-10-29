@@ -18,7 +18,7 @@ class EspnTeamRecord
     /**
      * @var Collection<int, EspnTeamRecordItem>
      */
-    #[ORM\OneToMany(targetEntity: EspnTeamRecordItem::class, mappedBy: 'espnTeamRecord', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'espnTeamRecord', targetEntity: EspnTeamRecordItem::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $items;
 
     public function __construct()
@@ -56,6 +56,15 @@ class EspnTeamRecord
             if ($item->getEspnTeamRecord() === $this) {
                 $item->setEspnTeamRecord(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function removeAllItems(): static
+    {
+        foreach ($this->items as $item) {
+            $this->removeItem($item);
         }
 
         return $this;

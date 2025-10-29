@@ -4,40 +4,28 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
+use HansPeterOrding\EspnApiClient\Dto\EspnTeam as EspnTeamDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam as EspnTeamEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnTeam>
+ * @extends ServiceEntityRepository<EspnTeamEntity>
  */
 class EspnTeamRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnTeam::class);
+        parent::__construct($registry, EspnTeamEntity::class);
     }
 
-    //    /**
-    //     * @return EspnTeam[] Returns an array of EspnTeam objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByDtoOrCreateEntity(EspnTeamDto $espnTeamDto): EspnTeamEntity
+    {
+        $espnTeam = new EspnTeamEntity();
+        if (null !== ($existingEntity = $this->findOneBy(
+                $espnTeam->buildFindByCriteriaFromDto($espnTeamDto)
+            ))) {
+            $espnTeam = $existingEntity;
+        }
 
-    //    public function findOneBySomeField($value): ?EspnTeam
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $espnTeam;
+    }
 }

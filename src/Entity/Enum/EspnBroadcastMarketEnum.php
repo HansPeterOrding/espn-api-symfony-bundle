@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum;
 
-enum EspnCompetitionTypeTypeEnum: string
+enum EspnBroadcastMarketEnum: string
 {
-    case STANDARD = 'standard';
+    case NATIONAL = 'National';
 }

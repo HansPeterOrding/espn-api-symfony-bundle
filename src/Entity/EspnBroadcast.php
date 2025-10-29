@@ -3,6 +3,10 @@
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiClient\Dto\EspnBroadcast as EspnBroadcastDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnBroadcastMarketEnum;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnBroadcastMediaEnum;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnBroadcastTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnBroadcastRepository;
 
 #[ORM\Entity(repositoryClass: EspnBroadcastRepository::class)]
@@ -13,14 +17,14 @@ class EspnBroadcast
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Embedded(class: EspnBroadcastType::class, columnPrefix: 'type_')]
-    private ?EspnBroadcastType $type = null;
+    #[ORM\Column(enumType: EspnBroadcastTypeEnum::class)]
+    private ?EspnBroadcastTypeEnum $type = null;
 
-    #[ORM\Embedded(class: EspnBroadcastMarket::class, columnPrefix: 'market_')]
-    private ?EspnBroadcastMarket $market = null;
+    #[ORM\Column(enumType: EspnBroadcastMarketEnum::class)]
+    private ?EspnBroadcastMarketEnum $market = null;
 
-    #[ORM\Embedded(class: EspnBroadcastMedia::class, columnPrefix: 'media_')]
-    private ?EspnBroadcastMedia $media = null;
+    #[ORM\Column(enumType: EspnBroadcastMediaEnum::class)]
+    private ?EspnBroadcastMediaEnum $media = null;
 
     #[ORM\Column(length: 255)]
     private ?string $lang = null;
@@ -34,13 +38,6 @@ class EspnBroadcast
     #[ORM\ManyToOne(inversedBy: 'broadcasts')]
     private ?EspnCompetition $competition = null;
 
-    public function __construct()
-    {
-        $this->type = new EspnBroadcastType();
-        $this->market = new EspnBroadcastMarket();
-        $this->media = new EspnBroadcastMedia();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -52,34 +49,34 @@ class EspnBroadcast
         return $this;
     }
 
-    public function getType(): ?EspnBroadcastType
+    public function getType(): ?EspnBroadcastTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(?EspnBroadcastType $type): EspnBroadcast
+    public function setType(?EspnBroadcastTypeEnum $type): EspnBroadcast
     {
         $this->type = $type;
         return $this;
     }
 
-    public function getMarket(): ?EspnBroadcastMarket
+    public function getMarket(): ?EspnBroadcastMarketEnum
     {
         return $this->market;
     }
 
-    public function setMarket(?EspnBroadcastMarket $market): EspnBroadcast
+    public function setMarket(?EspnBroadcastMarketEnum $market): EspnBroadcast
     {
         $this->market = $market;
         return $this;
     }
 
-    public function getMedia(): ?EspnBroadcastMedia
+    public function getMedia(): ?EspnBroadcastMediaEnum
     {
         return $this->media;
     }
 
-    public function setMedia(?EspnBroadcastMedia $media): EspnBroadcast
+    public function setMedia(?EspnBroadcastMediaEnum $media): EspnBroadcast
     {
         $this->media = $media;
         return $this;
