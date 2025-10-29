@@ -165,4 +165,6 @@ services:
     hpo_espn_api_symfony_bundle.importer.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnVenueImporter'
     
     # Services 
-    #HansPeterOrding\SleeperApiSymfonyBundle\Service\ImportService: ~
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnScheduleHandler: ~
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnTeamHandler: ~
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnVenueHandler: ~
