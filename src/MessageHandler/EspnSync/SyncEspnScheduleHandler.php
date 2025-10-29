@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync;
 
 use Doctrine\ORM\EntityManagerInterface;
+use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientFactory;
+use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScheduleConverter;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
 use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\SyncEspnSchedule;
@@ -15,6 +17,8 @@ use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 #[AsMessageHandler]
 class SyncEspnScheduleHandler {
+    private EspnApiClientInterface $espnApiClient;
+
     public function __construct(
         private readonly EspnTeamRepository     $espnTeamRepository,
         private readonly EspnScheduleConverter  $espnScheduleConverter,
@@ -22,32 +26,42 @@ class SyncEspnScheduleHandler {
         private readonly LoggerInterface        $slackDebugLogger
     )
     {
+        $this->espnApiClient = (new EspnApiClientFactory())->getEspnApiClient();
     }
 
     public function __invoke(SyncEspnSchedule $message)
     {
         try {
             $team = $this->espnTeamRepository->findOneBy([
-                'teamId' => $message->espnSchedule->getTeam()->getId()
+                'teamId' => $message->espnTeamId
             ]);
 
             if (!$team) {
                 throw new ImportException(sprintf(
                     'Team %s not found in database. Make sure to import all required teams completely before importing a schedule.',
-                    $message->espnSchedule->getTeam()->getDisplayName()
+                    $message->espnTeamId
                 ));
             }
 
-            $espnTeamEntity = $this->espnScheduleConverter->toEntity($team, $message->espnSchedule);
+            $espnSchedule = $this->espnApiClient->team()->schedule($message->espnTeamId);
 
-            $this->entityManager->persist($espnTeamEntity);
+            if (!$espnSchedule) {
+                throw new ImportException(sprintf(
+                    'Schedule for team %s not found in ESPN API.',
+                    $message->espnTeamId
+                ));
+            }
+
+            $espnScheduleEntity = $this->espnScheduleConverter->toEntity($team, $espnSchedule);
+
+            $this->entityManager->persist($espnScheduleEntity);
             $this->entityManager->flush();
         } catch (\Throwable $e) {
             $this->slackDebugLogger->critical(
                 'SyncEspnScheduleHandler command error!',
                 [
                     'message' => $e->getMessage(),
-                    'scheduleId' => $message->espnSchedule->getId(),
+                    'teamId' => $message->espnTeamId,
                     'previous' => $e->getPrevious()
                 ]
             );
