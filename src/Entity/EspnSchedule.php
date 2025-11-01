@@ -9,6 +9,7 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnScheduleStatusEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleRepository;
 
 #[ORM\Entity(repositoryClass: EspnScheduleRepository::class)]
+#[ORM\Index(columns: ['team_id', 'season_id'])]
 class EspnSchedule
 {
     #[ORM\Id]

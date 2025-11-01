@@ -10,6 +10,7 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnSeasonTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleEventRepository;
 
 #[ORM\Entity(repositoryClass: EspnScheduleEventRepository::class)]
+#[ORM\Index(columns: ['season_id', 'season_type', 'week_number'])]
 class EspnScheduleEvent
 {
     #[ORM\Id]

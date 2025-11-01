@@ -9,6 +9,7 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitorTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository;
 
 #[ORM\Entity(repositoryClass: EspnCompetitorRepository::class)]
+#[ORM\Index(columns: ['team_id', 'competition_id'])]
 class EspnCompetitor
 {
     #[ORM\Id]

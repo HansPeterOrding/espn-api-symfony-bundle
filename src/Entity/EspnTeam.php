@@ -9,6 +9,7 @@ use HansPeterOrding\EspnApiClient\Dto\EspnTeam as EspnTeamDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
 
 #[ORM\Entity(repositoryClass: EspnTeamRepository::class)]
+#[ORM\Index(fields: ['abbreviation'])]
 class EspnTeam
 {
     #[ORM\Id]

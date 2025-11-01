@@ -11,6 +11,7 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitionTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionRepository;
 
 #[ORM\Entity(repositoryClass: EspnCompetitionRepository::class)]
+#[ORM\Index(fields: ['date'])]
 class EspnCompetition
 {
     #[ORM\Id()]
