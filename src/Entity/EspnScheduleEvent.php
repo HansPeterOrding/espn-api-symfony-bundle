@@ -21,7 +21,7 @@ class EspnScheduleEvent
     #[ORM\Column(length: 255)]
     private ?string $scheduleEventId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetimetz')]
     private ?\DateTime $date = null;
 
     #[ORM\Column(length: 255)]

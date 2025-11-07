@@ -17,7 +17,7 @@ class EspnSchedule
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetimetz')]
     private ?\DateTime $timestamp = null;
 
     #[ORM\Column(enumType: EspnScheduleStatusEnum::class)]

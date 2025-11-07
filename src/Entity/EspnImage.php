@@ -29,7 +29,7 @@ class EspnImage
     #[ORM\Column(type: Types::JSON)]
     private array $rel = [];
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'datetimetz', nullable: true)]
     private ?\DateTime $lastUpdated = null;
 
     #[ORM\ManyToOne(inversedBy: 'logos')]
