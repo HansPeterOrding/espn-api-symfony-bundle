@@ -8,6 +8,7 @@ enum EspnCompetitionStatusTypeEnum: string
 {
     case STATUS_SCHEDULED = 'STATUS_SCHEDULED';
     case STATUS_IN_PROGRESS = 'STATUS_IN_PROGRESS';
+    case STATUS_END_PERIOD = 'STATUS_END_PERIOD';
     case STATUS_HALFTIME = 'STATUS_HALFTIME';
     case STATUS_FINAL = 'STATUS_FINAL';
 
@@ -16,6 +17,7 @@ enum EspnCompetitionStatusTypeEnum: string
         return match ($this) {
             self::STATUS_SCHEDULED => 'pre',
             self::STATUS_IN_PROGRESS => 'in',
+            self::STATUS_IN_PROGRESS => 'period',
             self::STATUS_HALFTIME => 'half',
             self::STATUS_FINAL => 'post',
         };
@@ -34,6 +36,7 @@ enum EspnCompetitionStatusTypeEnum: string
         return match ($this) {
             self::STATUS_SCHEDULED => 'Scheduled',
             self::STATUS_IN_PROGRESS => 'In Progress',
+            self::STATUS_IN_PROGRESS => 'End of period',
             self::STATUS_HALFTIME => 'Halftime',
             self::STATUS_FINAL => 'Final',
         };
