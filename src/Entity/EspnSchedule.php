@@ -9,12 +9,13 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnScheduleStatusEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleRepository;
 
 #[ORM\Entity(repositoryClass: EspnScheduleRepository::class)]
-#[ORM\Index(columns: ['team_id', 'season_id'])]
+#[ORM\Table(name: 'easb_espn_schedule')]
+#[ORM\Index(name: 'idx_easb_espn_schedule_team_id_season_id', columns: ['team_id', 'season_id'])]
 class EspnSchedule
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'datetimetz')]

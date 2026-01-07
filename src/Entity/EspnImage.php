@@ -7,11 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository;
 
 #[ORM\Entity(repositoryClass: EspnImageRepository::class)]
+#[ORM\Table(name: 'easb_espn_image')]
 class EspnImage
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

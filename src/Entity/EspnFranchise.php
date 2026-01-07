@@ -9,11 +9,12 @@ use HansPeterOrding\EspnApiClient\Dto\EspnFranchise as EspnFranchiseDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository;
 
 #[ORM\Entity(repositoryClass: EspnFranchiseRepository::class)]
+#[ORM\Table(name: 'easb_espn_franchise')]
 class EspnFranchise
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -10,11 +10,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnBroadcastTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnBroadcastRepository;
 
 #[ORM\Entity(repositoryClass: EspnBroadcastRepository::class)]
+#[ORM\Table(name: 'easb_espn_broadcast')]
 class EspnBroadcast
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column(enumType: EspnBroadcastTypeEnum::class)]

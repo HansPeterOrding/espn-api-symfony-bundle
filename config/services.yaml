@@ -1,7 +1,3 @@
-# mapping from bundle name to table prefix
-parameters:
-    easb_table_prefix: easb_
-
 services:
     _defaults:
         # this means you cannot fetch services directly from the container via $container->get()
@@ -9,12 +5,6 @@ services:
         autowire: true
         autoconfigure: true
         public: true
-    
-    HansPeterOrding\EspnApiSymfonyBundle\DoctrineExtensions\TablePrefixEventListener:
-        arguments:
-            $prefix: '%easb_table_prefix%'
-        tags:
-            - { name: doctrine.event_listener, event: loadClassMetadata, method: loadClassMetadata }
     
     # Repositories
     HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnBroadcastRepository: ~

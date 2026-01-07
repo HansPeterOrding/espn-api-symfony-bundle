@@ -8,11 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRecordRepository;
 
 #[ORM\Entity(repositoryClass: EspnTeamRecordRepository::class)]
+#[ORM\Table(name: 'easb_espn_team_record')]
 class EspnTeamRecord
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     /**

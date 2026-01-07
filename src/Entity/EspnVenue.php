@@ -9,11 +9,12 @@ use HansPeterOrding\EspnApiClient\Dto\EspnVenue as EspnVenueDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository;
 
 #[ORM\Entity(repositoryClass: EspnVenueRepository::class)]
+#[ORM\Table(name: 'easb_espn_venue')]
 class EspnVenue
 {
-    #[ORM\Id()]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column]

@@ -10,11 +10,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnSeasonTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository;
 
 #[ORM\Entity(repositoryClass: EspnSeasonRepository::class)]
+#[ORM\Table(name: 'easb_espn_season')]
 class EspnSeason
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column]

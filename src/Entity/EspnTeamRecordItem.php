@@ -7,11 +7,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnTeamRecordItemTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRecordItemRepository;
 
 #[ORM\Entity(repositoryClass: EspnTeamRecordItemRepository::class)]
+#[ORM\Table(name: 'easb_espn_team_record_item')]
 class EspnTeamRecordItem
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]

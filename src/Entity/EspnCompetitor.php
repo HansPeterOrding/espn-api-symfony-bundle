@@ -9,12 +9,13 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnCompetitorTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository;
 
 #[ORM\Entity(repositoryClass: EspnCompetitorRepository::class)]
-#[ORM\Index(columns: ['team_id', 'competition_id'])]
+#[ORM\Table(name: 'easb_espn_competitor')]
+#[ORM\Index(name: 'idx_easb_espn_competitor_team_id_competition_id', columns: ['team_id', 'competition_id'])]
 class EspnCompetitor
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

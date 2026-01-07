@@ -9,12 +9,13 @@ use HansPeterOrding\EspnApiClient\Dto\EspnTeam as EspnTeamDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
 
 #[ORM\Entity(repositoryClass: EspnTeamRepository::class)]
-#[ORM\Index(fields: ['abbreviation'])]
+#[ORM\Table(name: 'easb_espn_team')]
+#[ORM\Index(name: 'idx_easb_espn_team_abbreviation', columns: ['abbreviation'])]
 class EspnTeam
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
