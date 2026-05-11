@@ -9,7 +9,7 @@ use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScheduleConverter;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSchedule;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
-use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
+use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTeamRepository;
 
 /**
  * @property EspnScheduleConverter $converter
@@ -17,7 +17,7 @@ use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
 class EspnScheduleImporter extends AbstractImporter
 {
     public function __construct(
-        private readonly EspnTeamRepository $teamRepository,
+        private readonly EspnSeasonTeamRepository $teamRepository,
         ConverterInterface $converter,
         EntityManagerInterface $entityManager
     )

@@ -30,7 +30,7 @@ class EspnSchedule
 
     #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?EspnTeam $team = null;
+    private ?EspnSeasonTeam $team = null;
 
     /**
      * @var Collection<int, EspnScheduleEvent>
@@ -87,12 +87,12 @@ class EspnSchedule
         return $this;
     }
 
-    public function getTeam(): ?EspnTeam
+    public function getTeam(): ?EspnSeasonTeam
     {
         return $this->team;
     }
 
-    public function setTeam(?EspnTeam $team): static
+    public function setTeam(?EspnSeasonTeam $team): static
     {
         $this->team = $team;
 
@@ -154,7 +154,7 @@ class EspnSchedule
         return $this;
     }
 
-    public function buildFindByCriteriaFromDto(EspnTeam $team): array
+    public function buildFindByCriteriaFromDto(EspnSeasonTeam $team): array
     {
         return [
             'team' => $team

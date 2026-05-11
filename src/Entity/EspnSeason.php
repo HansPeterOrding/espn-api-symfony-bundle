@@ -21,24 +21,47 @@ class EspnSeason
     #[ORM\Column]
     private ?int $year = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column]
+    private ?\DateTime $startDate = null;
+
+    #[ORM\Column]
+    private ?\DateTime $endDate = null;
 
     #[ORM\Column(length: 255)]
     private ?string $displayName = null;
 
     #[ORM\Column]
-    private ?int $half = null;
+    private ?string $typeReference = null;
+
+    #[ORM\Column]
+    private ?string $typesReference = null;
+
+    #[ORM\Column]
+    private ?string $rankingsReference = null;
+
+    #[ORM\Column]
+    private ?string $futuresReference = null;
+
+    #[ORM\ManyToOne(targetEntity: EspnSeasonType::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "internal_type_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    private ?EspnSeasonType $type = null;
 
     /**
-     * @var Collection<int, EspnScheduleEvent>
+     * @var Collection<int, EspnSeasonType>
      */
-    #[ORM\OneToMany(mappedBy: 'season', targetEntity: EspnScheduleEvent::class)]
-    private Collection $scheduleEvents;
+    #[ORM\OneToMany(mappedBy: 'season', targetEntity: EspnSeasonType::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $types;
 
     public function __construct()
     {
-        $this->scheduleEvents = new ArrayCollection();
+        $this->types = new ArrayCollection();
+    }
+
+    public function buildFindByCriteriaFromDto(EspnSeasonDto $espnSeasonDto): array
+    {
+        return [
+            'year' => $espnSeasonDto->getYear(),
+        ];
     }
 
     public function getId(): ?int
@@ -51,34 +74,31 @@ class EspnSeason
         return $this->year;
     }
 
-    public function setYear(int $year): static
+    public function setYear(?int $year): static
     {
         $this->year = $year;
-
         return $this;
     }
 
-    public function getType(): ?EspnSeasonTypeEnum
+    public function getStartDate(): ?\DateTime
     {
-        return $this->type;
+        return $this->startDate;
     }
 
-    public function setType(EspnSeasonTypeEnum $type): static
+    public function setStartDate(?\DateTime $startDate): static
     {
-        $this->type = $type;
-
+        $this->startDate = $startDate;
         return $this;
     }
 
-    public function getName(): ?string
+    public function getEndDate(): ?\DateTime
     {
-        return $this->name;
+        return $this->endDate;
     }
 
-    public function setName(string $name): static
+    public function setEndDate(?\DateTime $endDate): static
     {
-        $this->name = $name;
-
+        $this->endDate = $endDate;
         return $this;
     }
 
@@ -87,60 +107,109 @@ class EspnSeason
         return $this->displayName;
     }
 
-    public function setDisplayName(string $displayName): static
+    public function setDisplayName(?string $displayName): static
     {
         $this->displayName = $displayName;
-
         return $this;
     }
 
-    public function getHalf(): ?int
+    public function getTypeReference(): ?string
     {
-        return $this->half;
+        return $this->typeReference;
     }
 
-    public function setHalf(int $half): static
+    public function setTypeReference(?string $typeReference): static
     {
-        $this->half = $half;
+        $this->typeReference = $typeReference;
+        return $this;
+    }
 
+    public function getTypesReference(): ?string
+    {
+        return $this->typesReference;
+    }
+
+    public function setTypesReference(?string $typesReference): static
+    {
+        $this->typesReference = $typesReference;
+        return $this;
+    }
+
+    public function getRankingsReference(): ?string
+    {
+        return $this->rankingsReference;
+    }
+
+    public function setRankingsReference(?string $rankingsReference): static
+    {
+        $this->rankingsReference = $rankingsReference;
+        return $this;
+    }
+
+    public function getFuturesReference(): ?string
+    {
+        return $this->futuresReference;
+    }
+
+    public function setFuturesReference(?string $futuresReference): static
+    {
+        $this->futuresReference = $futuresReference;
+        return $this;
+    }
+
+    public function getType(): ?EspnSeasonType
+    {
+        return $this->type;
+    }
+
+    public function setType(?EspnSeasonType $type): EspnSeason
+    {
+        $this->type = $type;
         return $this;
     }
 
     /**
-     * @return Collection<int, EspnScheduleEvent>
+     * @return Collection<int, EspnSeasonType>
      */
-    public function getScheduleEvents(): Collection
+    public function getTypes(): Collection
     {
-        return $this->scheduleEvents;
+        return $this->types;
     }
 
-    public function addScheduleEvent(EspnScheduleEvent $scheduleEvent): static
+    public function addType(EspnSeasonType $type): static
     {
-        if (!$this->scheduleEvents->contains($scheduleEvent)) {
-            $this->scheduleEvents->add($scheduleEvent);
-            $scheduleEvent->setSeason($this);
+        if (!$this->types->contains($type)) {
+            $this->types->add($type);
+            $type->setSeason($this);
         }
 
         return $this;
     }
 
-    public function removeScheduleEvent(EspnScheduleEvent $scheduleEvent): static
+    public function removeType(EspnSeasonType $type): static
     {
-        if ($this->scheduleEvents->removeElement($scheduleEvent)) {
+        if ($this->types->removeElement($type)) {
             // set the owning side to null (unless already changed)
-            if ($scheduleEvent->getSeason() === $this) {
-                $scheduleEvent->setSeason(null);
+            if ($type->getSeason() === $this) {
+                $type->setSeason(null);
             }
         }
 
         return $this;
     }
 
-    public function buildFindByCriteriaFromDto(EspnSeasonDto $espnSeasonDto): array
+    public function addOrReplaceType(EspnSeasonType $newType): static
     {
-        /** @todo: implement */
-        return [
-            'year' => $espnSeasonDto->getYear(),
-        ];
+        foreach ($this->types as $key => $existingType) {
+            if ($existingType->getId() !== null && $existingType->getId() === $newType->getId()) {
+                if ($existingType !== $newType) {
+                    $this->types->set($key, $newType);
+                    $newType->setSeason($this);
+                }
+                return $this;
+            }
+        }
+
+        return $this->addType($newType);
     }
 }

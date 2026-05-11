@@ -7,7 +7,7 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 use HansPeterOrding\EspnApiClient\Dto\EspnSchedule as EspnScheduleDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnScheduleStatusEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSchedule as EspnScheduleEntity;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTeam;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleRepository;
 
 class EspnScheduleConverter implements ConverterInterface
@@ -20,7 +20,7 @@ class EspnScheduleConverter implements ConverterInterface
     {
     }
 
-    public function toEntity(EspnTeam $espnTeam, EspnScheduleDto $espnScheduleDto): EspnScheduleEntity
+    public function toEntity(EspnSeasonTeam $espnTeam, EspnScheduleDto $espnScheduleDto): EspnScheduleEntity
     {
         $espnScheduleEntity = $this->espnScheduleRepository->findByDtoOrCreateEntity($espnTeam, $espnScheduleDto);
 

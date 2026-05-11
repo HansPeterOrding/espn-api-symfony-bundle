@@ -21,9 +21,13 @@ class EspnSeasonConverter implements ConverterInterface
         $espnSeasonEntity = $this->espnSeasonRepository->findByDtoOrCreateEntity($espnSeasonDto);
 
         $espnSeasonEntity->setYear($espnSeasonDto->getYear());
-        $espnSeasonEntity->setName($espnSeasonDto->getName());
+        $espnSeasonEntity->setStartDate($espnSeasonDto->getStartDate());
+        $espnSeasonEntity->setEndDate($espnSeasonDto->getEndDate());
         $espnSeasonEntity->setDisplayName($espnSeasonDto->getDisplayName());
-        $espnSeasonEntity->setHalf($espnSeasonDto->getHalf());
+        $espnSeasonEntity->setTypeReference($espnSeasonDto->getTypeReference());
+        $espnSeasonEntity->setTypesReference($espnSeasonDto->getTypesReference());
+        $espnSeasonEntity->setRankingsReference($espnSeasonDto->getRankingsReference());
+        $espnSeasonEntity->setFuturesReference($espnSeasonDto->getFuturesReference());
 
         return $espnSeasonEntity;
     }

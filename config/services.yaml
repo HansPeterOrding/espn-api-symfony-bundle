@@ -31,14 +31,23 @@ services:
     HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository: ~
     hpo_espn_api_symfony_bundle.repository.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRecordItemRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_team_record_item: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRecordItemRepository'
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTeamRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_team: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTeamRepository'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRecordRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_team_record: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRecordRepository'
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeGroupRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_type_group: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeGroupRepository'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository'
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeTeamRecordRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_type_team_record: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeTeamRecordRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeTeamRecordStatRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_type_team_record_stat: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeTeamRecordStatRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeWeekRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_type_week: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeWeekRepository'
     
     HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository: ~
     hpo_espn_api_symfony_bundle.repository.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository'
@@ -59,11 +68,11 @@ services:
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter: ~
     hpo_espn_api_symfony_bundle.converter.espn_image: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter'
     
+    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnLinkConverter: ~
+    hpo_espn_api_symfony_bundle.converter.espn_link: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnLinkConverter'
+    
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter: ~
     hpo_espn_api_symfony_bundle.converter.espn_note: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamRecordStatConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_team_record_stat: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamRecordStatConverter'
     
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueAddressConverter: ~
     hpo_espn_api_symfony_bundle.converter.espn_venue_address: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueAddressConverter'
@@ -85,7 +94,7 @@ services:
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter:
         arguments:
             $espnCompetitorRepository: '@hpo_espn_api_symfony_bundle.repository.espn_competitor'
-            $espnTeamRepository: '@hpo_espn_api_symfony_bundle.repository.espn_team'
+            $espnTeamRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_team'
             $espnCompetitorScoreConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competitor_score'
     hpo_espn_api_symfony_bundle.converter.espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter'
     
@@ -114,23 +123,38 @@ services:
             $espnSeasonRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season'
     hpo_espn_api_symfony_bundle.converter.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonConverter'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamConverter:
+    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTeamConverter:
         arguments:
-            $espnTeamRepository: '@hpo_espn_api_symfony_bundle.repository.espn_team'
+            $espnSeasonTeamRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_team'
             $imageConverter: '@hpo_espn_api_symfony_bundle.converter.espn_image'
-            $teamRecordConverter: '@hpo_espn_api_symfony_bundle.converter.espn_team_record'
-            $franchiseConverter: '@hpo_espn_api_symfony_bundle.converter.espn_franchise'
-    hpo_espn_api_symfony_bundle.converter.espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamConverter'
+            $linkConverter: '@hpo_espn_api_symfony_bundle.converter.espn_link'
+    hpo_espn_api_symfony_bundle.converter.espn_season_team: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTeamConverter'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamRecordConverter:
+    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeConverter:
         arguments:
-            $teamRecordItemConverter: '@hpo_espn_api_symfony_bundle.converter.espn_team_record_item'
-    hpo_espn_api_symfony_bundle.converter.espn_team_record: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamRecordConverter'
+            $espnSeasonTypeRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_type'
+    hpo_espn_api_symfony_bundle.converter.espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeConverter'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamRecordItemConverter:
+    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeGroupConverter:
         arguments:
-            $teamRecordStatConverter: '@hpo_espn_api_symfony_bundle.converter.espn_team_record_stat'
-    hpo_espn_api_symfony_bundle.converter.espn_team_record_item: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamRecordItemConverter'
+            $espnSeasonTypeGroupRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_type_group'
+    hpo_espn_api_symfony_bundle.converter.espn_season_type_group: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeGroupConverter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeTeamRecordConverter:
+        arguments:
+            $espnSeasonTypeTeamRecordRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_type_team_record'
+            $statConverter: '@hpo_espn_api_symfony_bundle.converter.espn_season_type_team_record_stat'
+    hpo_espn_api_symfony_bundle.converter.espn_season_type_team_record: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeTeamRecordConverter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeTeamRecordStatConverter:
+        arguments:
+            $espnSeasonTypeTeamRecordStatRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_type_team_record_stat'
+    hpo_espn_api_symfony_bundle.converter.espn_season_type_team_record_stat: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeTeamRecordStatConverter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeWeekConverter:
+        arguments:
+            $espnSeasonTypeWeekRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_type_week'
+    hpo_espn_api_symfony_bundle.converter.espn_season_type_week: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeWeekConverter'
     
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter:
         arguments:
@@ -144,10 +168,35 @@ services:
             $converter: '@hpo_espn_api_symfony_bundle.converter.espn_schedule'
     hpo_espn_api_symfony_bundle.importer.espn_schedule: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnScheduleImporter'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnTeamImporter:
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonImporter:
         arguments:
-            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_team'
-    hpo_espn_api_symfony_bundle.importer.espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnTeamImporter'
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season'
+    hpo_espn_api_symfony_bundle.importer.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonImporter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTeamImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season_team'
+    hpo_espn_api_symfony_bundle.importer.espn_season_team: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTeamImporter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeGroupImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season_type_group'
+    hpo_espn_api_symfony_bundle.importer.espn_season_type_group: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeGroupImporter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season_type'
+    hpo_espn_api_symfony_bundle.importer.espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeImporter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeTeamRecordImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season_type_team_record'
+    hpo_espn_api_symfony_bundle.importer.espn_season_type_team_record: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeTeamRecordImporter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeWeekImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season_type_week'
+    hpo_espn_api_symfony_bundle.importer.espn_season_type_week: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeWeekImporter'
     
     HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnVenueImporter:
         arguments:
@@ -155,6 +204,8 @@ services:
     hpo_espn_api_symfony_bundle.importer.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnVenueImporter'
     
     # Services 
+    HansPeterOrding\EspnApiSymfonyBundle\Service\SeasonImportService: ~
+    HansPeterOrding\EspnApiSymfonyBundle\Service\SeasonTeamImportService: ~
     HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnScheduleHandler: ~
     HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnTeamHandler: ~
     HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnVenueHandler: ~

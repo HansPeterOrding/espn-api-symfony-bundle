@@ -51,7 +51,7 @@ class EspnFranchise
     private ?bool $isActive = null;
 
     #[ORM\OneToOne(mappedBy: 'franchise', cascade: ['persist', 'remove'])]
-    private ?EspnTeam $team = null;
+    private ?EspnSeasonTeam $team = null;
 
     #[ORM\ManyToOne(inversedBy: 'franchises', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -199,12 +199,12 @@ class EspnFranchise
         return $this;
     }
 
-    public function getTeam(): ?EspnTeam
+    public function getTeam(): ?EspnSeasonTeam
     {
         return $this->team;
     }
 
-    public function setTeam(?EspnTeam $team): static
+    public function setTeam(?EspnSeasonTeam $team): static
     {
         // unset the owning side of the relation if necessary
         if ($team === null && $this->team !== null) {

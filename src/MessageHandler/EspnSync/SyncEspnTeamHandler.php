@@ -7,7 +7,7 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync;
 use Doctrine\ORM\EntityManagerInterface;
 use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientFactory;
 use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface;
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamConverter;
+use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTeamConverter;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
 use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\SyncEspnTeam;
@@ -21,9 +21,9 @@ class SyncEspnTeamHandler {
     private EspnApiClientInterface $espnApiClient;
 
     public function __construct(
-        private readonly EspnTeamConverter      $espnTeamConverter,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface        $slackDebugLogger
+        private readonly EspnSeasonTeamConverter $espnSeasonTeamConverter,
+        private readonly EntityManagerInterface  $entityManager,
+        private readonly LoggerInterface         $slackDebugLogger
     )
     {
         $this->espnApiClient = (new EspnApiClientFactory())->getEspnApiClient();

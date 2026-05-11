@@ -34,7 +34,7 @@ class EspnImage
     private ?\DateTime $lastUpdated = null;
 
     #[ORM\ManyToOne(inversedBy: 'logos')]
-    private ?EspnTeam $espnTeam = null;
+    private ?EspnSeasonTeam $team = null;
 
     public function getId(): ?int
     {
@@ -113,14 +113,14 @@ class EspnImage
         return $this;
     }
 
-    public function getEspnTeam(): ?EspnTeam
+    public function getTeam(): ?EspnSeasonTeam
     {
-        return $this->espnTeam;
+        return $this->team;
     }
 
-    public function setEspnTeam(?EspnTeam $espnTeam): static
+    public function setTeam(?EspnSeasonTeam $team): static
     {
-        $this->espnTeam = $espnTeam;
+        $this->team = $team;
 
         return $this;
     }

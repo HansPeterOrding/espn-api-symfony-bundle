@@ -10,7 +10,7 @@ use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScheduleConverter;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
 use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\SyncEspnSchedule;
-use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
+use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTeamRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
@@ -20,7 +20,7 @@ class SyncEspnScheduleHandler {
     private EspnApiClientInterface $espnApiClient;
 
     public function __construct(
-        private readonly EspnTeamRepository     $espnTeamRepository,
+        private readonly EspnSeasonTeamRepository     $espnSeasonTeamRepository,
         private readonly EspnScheduleConverter  $espnScheduleConverter,
         private readonly EntityManagerInterface $entityManager,
         private readonly LoggerInterface        $slackDebugLogger
@@ -32,7 +32,7 @@ class SyncEspnScheduleHandler {
     public function __invoke(SyncEspnSchedule $message)
     {
         try {
-            $team = $this->espnTeamRepository->findOneBy([
+            $team = $this->espnSeasonTeamRepository->findOneBy([
                 'teamId' => $message->espnTeamId
             ]);
 

@@ -35,7 +35,7 @@ class EspnCompetitor
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?EspnTeam $team = null;
+    private ?EspnSeasonTeam $team = null;
 
     #[ORM\Embedded(class: EspnCompetitorScore::class, columnPrefix: 'score_')]
     private ?EspnCompetitorScore $score = null;
@@ -113,12 +113,12 @@ class EspnCompetitor
         return $this;
     }
 
-    public function getTeam(): ?EspnTeam
+    public function getTeam(): ?EspnSeasonTeam
     {
         return $this->team;
     }
 
-    public function setTeam(?EspnTeam $team): static
+    public function setTeam(?EspnSeasonTeam $team): static
     {
         $this->team = $team;
 
