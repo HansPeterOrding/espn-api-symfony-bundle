@@ -35,7 +35,7 @@ class EspnSeasonTypeTeamRecordStat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 19, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 25, scale: 20, nullable: true)]
     private ?string $value = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -48,7 +48,7 @@ class EspnSeasonTypeTeamRecordStat
     public function buildFindByCriteriaFromDto(EspnSeasonTypeTeamRecord $espnSeasonTypeTeamRecord, EspnSeasonTypeTeamRecordStatDto $espnSeasonTypeTeamRecordStatDto): array
     {
         return [
-            'recordId' => $espnSeasonTypeTeamRecord->getId(),
+            'record' => $espnSeasonTypeTeamRecord,
             'type' => $espnSeasonTypeTeamRecordStatDto->getType()
         ];
     }

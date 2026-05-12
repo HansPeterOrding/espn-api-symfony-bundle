@@ -2,11 +2,10 @@
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
-use App\Repository\HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenueAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
-class EspnVenueAddress
+class EspnVenueAddressEmbeddable
 {
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
@@ -25,9 +24,10 @@ class EspnVenueAddress
         return $this->city;
     }
 
-    public function setCity(?string $city): EspnVenueAddress
+    public function setCity(?string $city): static
     {
         $this->city = $city;
+
         return $this;
     }
 
@@ -36,9 +36,10 @@ class EspnVenueAddress
         return $this->state;
     }
 
-    public function setState(?string $state): EspnVenueAddress
+    public function setState(?string $state): static
     {
         $this->state = $state;
+
         return $this;
     }
 
@@ -47,9 +48,10 @@ class EspnVenueAddress
         return $this->zipCode;
     }
 
-    public function setZipCode(?string $zipCode): EspnVenueAddress
+    public function setZipCode(?string $zipCode): static
     {
         $this->zipCode = $zipCode;
+
         return $this;
     }
 
@@ -58,9 +60,10 @@ class EspnVenueAddress
         return $this->country;
     }
 
-    public function setCountry(?string $country): EspnVenueAddress
+    public function setCountry(?string $country): static
     {
         $this->country = $country;
+
         return $this;
     }
 }

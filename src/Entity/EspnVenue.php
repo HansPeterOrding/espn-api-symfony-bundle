@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use HansPeterOrding\EspnApiClient\Dto\EspnVenue as EspnVenueDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository;
 
 #[ORM\Entity(repositoryClass: EspnVenueRepository::class)]
@@ -13,27 +14,39 @@ use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository;
 class EspnVenue
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'bigint')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?string $venueId = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $espnId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $guid = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $fullName = null;
 
-    #[ORM\Embedded(class: EspnVenueAddress::class, columnPrefix: 'address_')]
-    private ?EspnVenueAddress $address;
+    #[ORM\Embedded(class: EspnVenueAddressEmbeddable::class, columnPrefix: 'address_')]
+    private ?EspnVenueAddressEmbeddable $address = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $grass = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $indoor = null;
+
+    /**
+     * @var Collection<int, EspnImage>
+     */
+    #[ORM\OneToMany(mappedBy: 'venue', targetEntity: EspnImage::class)]
+    private Collection $images;
+
+    /**
+     * @var Collection<int, EspnSeasonTeam>
+     */
+    #[ORM\OneToMany(mappedBy: 'venue', targetEntity: EspnSeasonTeam::class)]
+    private Collection $teams;
 
     /**
      * @var Collection<int, EspnFranchise>
@@ -43,8 +56,17 @@ class EspnVenue
 
     public function __construct()
     {
-        $this->address = new EspnVenueAddress();
+        $this->address = new EspnVenueAddressEmbeddable();
+        $this->images = new ArrayCollection();
+        $this->teams = new ArrayCollection();
         $this->franchises = new ArrayCollection();
+    }
+
+    public function buildFindByCriteriaFromDto(EspnVenueDto $espnVenueDto): array
+    {
+        return [
+            'espnId' => $espnVenueDto->getId(),
+        ];
     }
 
     public function getId(): ?int
@@ -52,20 +74,15 @@ class EspnVenue
         return $this->id;
     }
 
-    public function setId(?int $id): EspnVenue
+    public function getEspnId(): ?string
     {
-        $this->id = $id;
-        return $this;
+        return $this->espnId;
     }
 
-    public function getVenueId(): ?string
+    public function setEspnId(?string $espnId): static
     {
-        return $this->venueId;
-    }
+        $this->espnId = $espnId;
 
-    public function setVenueId(?string $venueId): EspnVenue
-    {
-        $this->venueId = $venueId;
         return $this;
     }
 
@@ -74,9 +91,10 @@ class EspnVenue
         return $this->guid;
     }
 
-    public function setGuid(?string $guid): EspnVenue
+    public function setGuid(?string $guid): static
     {
         $this->guid = $guid;
+
         return $this;
     }
 
@@ -85,42 +103,105 @@ class EspnVenue
         return $this->fullName;
     }
 
-    public function setFullName(?string $fullName): EspnVenue
+    public function setFullName(?string $fullName): static
     {
         $this->fullName = $fullName;
+
         return $this;
     }
 
-    public function getAddress(): ?EspnVenueAddress
+    public function getAddress(): ?EspnVenueAddressEmbeddable
     {
         return $this->address;
     }
 
-    public function setAddress(?EspnVenueAddress $address): EspnVenue
+    public function setAddress(?EspnVenueAddressEmbeddable $address): static
     {
         $this->address = $address;
         return $this;
     }
 
-    public function getGrass(): ?bool
+    public function isGrass(): ?bool
     {
         return $this->grass;
     }
 
-    public function setGrass(?bool $grass): EspnVenue
+    public function setGrass(?bool $grass): static
     {
         $this->grass = $grass;
+
         return $this;
     }
 
-    public function getIndoor(): ?bool
+    public function isIndoor(): ?bool
     {
         return $this->indoor;
     }
 
-    public function setIndoor(?bool $indoor): EspnVenue
+    public function setIndoor(?bool $indoor): static
     {
         $this->indoor = $indoor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EspnImage>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(EspnImage $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setVenue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(EspnImage $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getVenue() === $this) {
+                $image->setVenue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EspnSeasonTeam>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(EspnSeasonTeam $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+            $team->setVenue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(EspnSeasonTeam $team): static
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getVenue() === $this) {
+                $team->setVenue(null);
+            }
+        }
+
         return $this;
     }
 
@@ -154,10 +235,18 @@ class EspnVenue
         return $this;
     }
 
-    public function buildFindByCriteriaFromDto(EspnVenueDto $espnVenueDto): array
+    public function addOrReplaceFranchise(EspnFranchise $newFranchise): static
     {
-        return [
-            'venueId' => $espnVenueDto->getId(),
-        ];
+        foreach ($this->franchises as $key => $existingFranchise) {
+            if ($existingFranchise->getId() !== null && $existingFranchise->getId() === $newFranchise->getId()) {
+                if ($existingFranchise !== $newFranchise) {
+                    $this->franchises->set($key, $newFranchise);
+                    $newFranchise->setVenue($this);
+                }
+                return $this;
+            }
+        }
+
+        return $this->addFranchise($newFranchise);
     }
 }

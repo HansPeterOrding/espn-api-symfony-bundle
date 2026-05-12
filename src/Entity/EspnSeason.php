@@ -52,9 +52,16 @@ class EspnSeason
     #[ORM\OneToMany(mappedBy: 'season', targetEntity: EspnSeasonType::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $types;
 
+    /**
+     * @var Collection<int, EspnSeasonTeam>
+     */
+    #[ORM\OneToMany(mappedBy: 'season', targetEntity: EspnSeasonTeam::class)]
+    private Collection $teams;
+
     public function __construct()
     {
         $this->types = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     public function buildFindByCriteriaFromDto(EspnSeasonDto $espnSeasonDto): array
@@ -211,5 +218,35 @@ class EspnSeason
         }
 
         return $this->addType($newType);
+    }
+
+    /**
+     * @return Collection<int, EspnSeasonTeam>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(EspnSeasonTeam $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+            $team->setSeason($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(EspnSeasonTeam $team): static
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getSeason() === $this) {
+                $team->setSeason(null);
+            }
+        }
+
+        return $this;
     }
 }

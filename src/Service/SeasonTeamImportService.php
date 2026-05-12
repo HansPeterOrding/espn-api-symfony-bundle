@@ -6,13 +6,19 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnSeasonTypeEnum;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
+use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportConfigurationException;
+use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportNotImplementedException;
+use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnFranchiseImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTeamImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeGroupImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeTeamRecordImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeWeekImporter;
+use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnVenueImporter;
+use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeRepository;
 use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -20,15 +26,16 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class SeasonTeamImportService
 {
     public const IMPORT_ENTITY_RECORDS = 'import_entity_records';
-    public const IMPORT_ENTITY_RECORD_STATS = 'import_entity_record_stats';
     public const IMPORT_ENTITY_FRANCHISE = 'import_entity_franchise';
-    public const IMPORT_ENTITY_FRANCHISE_VENUE = 'import_entity_frnachise_venue';
+    public const IMPORT_ENTITY_VENUE = 'import_entity_venue';
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EspnSeasonTeamImporter       $espnSeasonTeamImporter,
+        private readonly EntityManagerInterface           $entityManager,
+        private readonly EspnSeasonTeamImporter           $espnSeasonTeamImporter,
         private readonly EspnSeasonTypeTeamRecordImporter $espnSeasonTypeTeamRecordImporter,
-        private readonly EspnSeasonTypeRepository $espnSeasonTypeRepository,
+        private readonly EspnFranchiseImporter            $espnFranchiseImporter,
+        private readonly EspnSeasonRepository             $espnSeasonRepository,
+        private readonly EspnSeasonTypeRepository         $espnSeasonTypeRepository, private readonly EspnVenueImporter $espnVenueImporter,
     )
     {
     }
@@ -36,10 +43,9 @@ class SeasonTeamImportService
     public static function getDefaultImportEntities(): array
     {
         return [
-            self::IMPORT_ENTITY_RECORDS => true,
-            self::IMPORT_ENTITY_RECORD_STATS => true,
+//            self::IMPORT_ENTITY_RECORDS => true,
             self::IMPORT_ENTITY_FRANCHISE => true,
-            self::IMPORT_ENTITY_FRANCHISE_VENUE => true,
+            self::IMPORT_ENTITY_VENUE => true,
         ];
     }
 
@@ -47,6 +53,11 @@ class SeasonTeamImportService
     {
         if (!$importEntities) {
             $importEntities = $this->getDefaultImportEntities();
+        }
+
+        $season = $this->espnSeasonRepository->findOneBy(['year' => $year]);
+        if(!$season) {
+            throw new ImportException(sprintf('You have to import EspnSeason %s first.', $year));
         }
 
         $sections = [];
@@ -60,7 +71,7 @@ class SeasonTeamImportService
             );
 
             $sections[$urlParams->teamId] = $this->importEspnSeasonTeam(
-                $year,
+                $season,
                 $urlParams->teamId
             );
         }
@@ -68,11 +79,13 @@ class SeasonTeamImportService
         return $sections;
     }
 
-    public function importEspnSeasonTeam(int $year, int $teamId, ?array $importEntities = null): array
+    public function importEspnSeasonTeam(EspnSeason $espnSeason, int $teamId, ?array $importEntities = null): array
     {
         if (!$importEntities) {
             $importEntities = $this->getDefaultImportEntities();
         }
+
+        $year = $espnSeason->getYear();
 
         $this->entityManager->beginTransaction();
 
@@ -80,7 +93,8 @@ class SeasonTeamImportService
         $stopwatch->start(sprintf('import_espn_team_%s', $teamId));
 
         $stopwatch->openSection();
-        $espnSeasonTeam = $this->espnSeasonTeamImporter->import($year, $teamId);
+        $espnSeasonTeam = $this->espnSeasonTeamImporter->import($espnSeason, $teamId);
+        $espnSeasonTeam->setSeason($espnSeason);
 
         $this->entityManager->persist($espnSeasonTeam);
         $this->entityManager->flush();
@@ -88,51 +102,48 @@ class SeasonTeamImportService
 
         $stopwatch->openSection();
         if (array_key_exists(self::IMPORT_ENTITY_RECORDS, $importEntities)) {
-            foreach(EspnSeasonTypeEnum::cases() as $seasonTypeId) {
+            foreach (EspnSeasonTypeEnum::cases() as $seasonTypeId) {
                 $seasonType = $this->espnSeasonTypeRepository->findOneBy([
                     'year' => $year,
                     'type' => $seasonTypeId
                 ]);
 
-                foreach($this->espnSeasonTypeTeamRecordImporter->importForType($year, $seasonType, $espnSeasonTeam) as $record) {
+                foreach ($this->espnSeasonTypeTeamRecordImporter->importForType($year, $seasonType, $espnSeasonTeam) as $record) {
                     $seasonType->addOrReplaceRecord($record);
                     $espnSeasonTeam->addOrReplaceRecord($record);
-                }
 
-                $this->entityManager->persist($seasonType);
-                $this->entityManager->persist($espnSeasonTeam);
-                $this->entityManager->flush();
+                    $this->entityManager->persist($seasonType);
+                    $this->entityManager->persist($espnSeasonTeam);
+                    $this->entityManager->flush();
+                }
             }
+        }
+        $stopwatch->stopSection('records');
+
+        $stopwatch->openSection();
+        if (array_key_exists(self::IMPORT_ENTITY_FRANCHISE, $importEntities)) {
+            $espnSeasonTeam->setFranchise(
+                $this->espnFranchiseImporter->import($espnSeasonTeam)
+            );
 
             $this->entityManager->persist($espnSeasonTeam);
             $this->entityManager->flush();
         }
-        $stopwatch->stopSection('records');
+        $stopwatch->stopSection('franchise');
 
+        $stopwatch->openSection();
+        if (array_key_exists(self::IMPORT_ENTITY_VENUE, $importEntities)) {
+            $espnVenue = $this->espnVenueImporter->importForTeam($espnSeasonTeam);
+            if ($espnSeasonTeam->getFranchise()) {
+                $espnVenue->addOrReplaceFranchise($espnSeasonTeam->getFranchise());
+            }
 
-//        $stopwatch->openSection();
-//        $espnSeason = $this->espnSeasonImporter->import($year);
-//        $stopwatch->stopSection('season');
-//
+            $espnSeasonTeam->setVenue($espnVenue);
 
-//
-//        $stopwatch->openSection();
-//        if (array_key_exists(self::IMPORT_ENTITY_TYPES, $importEntities)) {
-//            $espnSeason = $this->espnSeasonTypeImporter->importAll($espnSeason);
-//        }
-//        $stopwatch->stopSection('types');
-//
-//        $stopwatch->openSection();
-//        if (array_key_exists(self::IMPORT_ENTITY_TYPE_GROUPS, $importEntities)) {
-//            $espnSeason = $this->espnSeasonTypeGroupImporter->importAll($espnSeason);
-//        }
-//        $stopwatch->stopSection('type_groups');
-//
-//        $stopwatch->openSection();
-//        if (array_key_exists(self::IMPORT_ENTITY_TYPE_WEEKS, $importEntities)) {
-//            $espnSeason = $this->espnSeasonTypeWeekImporter->importAll($espnSeason);
-//        }
-//        $stopwatch->stopSection('type_weeks');
+            $this->entityManager->persist($espnSeasonTeam);
+            $this->entityManager->flush();
+        }
+        $stopwatch->stopSection('venue');
 
         $this->entityManager->flush();
         $this->entityManager->commit();

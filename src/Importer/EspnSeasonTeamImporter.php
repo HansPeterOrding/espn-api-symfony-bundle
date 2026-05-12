@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HansPeterOrding\EspnApiSymfonyBundle\Importer;
 
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTeamConverter;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTeam;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
 
@@ -13,9 +14,9 @@ use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
  */
 class EspnSeasonTeamImporter extends AbstractImporter
 {
-    public function import(int $year, int $teamId): EspnSeasonTeam
+    public function import(EspnSeason $espnSeason, int $teamId): EspnSeasonTeam
     {
-        $espnSeasonTeam = $this->espnApiClient->season()->team()->get($year, $teamId);
+        $espnSeasonTeam = $this->espnApiClient->season()->team()->get($espnSeason->getYear(), $teamId);
 
         if(!$espnSeasonTeam) {
             throw new ImportException(sprintf(
@@ -25,7 +26,7 @@ class EspnSeasonTeamImporter extends AbstractImporter
             ));
         }
 
-        $entity = $this->converter->toEntity($espnSeasonTeam);
+        $entity = $this->converter->toEntity($espnSeason, $espnSeasonTeam);
 
         return $entity;
     }

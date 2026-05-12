@@ -138,6 +138,15 @@ class EspnSeasonTeam
     #[ORM\OneToMany(mappedBy: 'seasonTeam', targetEntity: EspnSeasonTypeTeamRecord::class, orphanRemoval: true)]
     private Collection $records;
 
+    #[ORM\ManyToOne(inversedBy: 'teams', cascade: ['persist'], targetEntity: EspnFranchise::class)]
+    private ?EspnFranchise $franchise = null;
+
+    #[ORM\ManyToOne(inversedBy: 'teams', cascade: ['persist'], targetEntity: EspnVenue::class)]
+    private ?EspnVenue $venue = null;
+
+    #[ORM\ManyToOne(inversedBy: 'teams')]
+    private ?EspnSeason $season = null;
+
     public function __construct()
     {
         $this->logos = new ArrayCollection();
@@ -145,9 +154,10 @@ class EspnSeasonTeam
         $this->records = new ArrayCollection();
     }
 
-    public function buildFindByCriteriaFromDto(EspnSeasonTeamDto $espnSeasonTeamDto): array
+    public function buildFindByCriteriaFromDto(EspnSeason $espnSeason, EspnSeasonTeamDto $espnSeasonTeamDto): array
     {
         return [
+            'season' => $espnSeason,
             'espnId' => $espnSeasonTeamDto->getId()
         ];
     }
@@ -686,5 +696,41 @@ class EspnSeasonTeam
         }
 
         return $this->addRecord($newRecord);
+    }
+
+    public function getFranchise(): ?EspnFranchise
+    {
+        return $this->franchise;
+    }
+
+    public function setFranchise(?EspnFranchise $franchise): static
+    {
+        $this->franchise = $franchise;
+
+        return $this;
+    }
+
+    public function getVenue(): ?EspnVenue
+    {
+        return $this->venue;
+    }
+
+    public function setVenue(?EspnVenue $venue): static
+    {
+        $this->venue = $venue;
+
+        return $this;
+    }
+
+    public function getSeason(): ?EspnSeason
+    {
+        return $this->season;
+    }
+
+    public function setSeason(?EspnSeason $season): static
+    {
+        $this->season = $season;
+
+        return $this;
     }
 }

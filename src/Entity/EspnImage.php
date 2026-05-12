@@ -4,6 +4,7 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenue;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository;
 
 #[ORM\Entity(repositoryClass: EspnImageRepository::class)]
@@ -35,6 +36,9 @@ class EspnImage
 
     #[ORM\ManyToOne(inversedBy: 'logos')]
     private ?EspnSeasonTeam $team = null;
+
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    private ?EspnVenue $venue = null;
 
     public function getId(): ?int
     {
@@ -121,6 +125,18 @@ class EspnImage
     public function setTeam(?EspnSeasonTeam $team): static
     {
         $this->team = $team;
+
+        return $this;
+    }
+
+    public function getVenue(): ?EspnVenue
+    {
+        return $this->venue;
+    }
+
+    public function setVenue(?EspnVenue $venue): static
+    {
+        $this->venue = $venue;
 
         return $this;
     }

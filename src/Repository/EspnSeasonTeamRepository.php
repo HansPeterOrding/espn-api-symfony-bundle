@@ -5,6 +5,7 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use HansPeterOrding\EspnApiClient\Dto\EspnSeasonTeam as EspnSeasonTeamDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTeam as EspnSeasonTeamEntity;
 
 /**
@@ -17,11 +18,11 @@ class EspnSeasonTeamRepository extends ServiceEntityRepository
         parent::__construct($registry, EspnSeasonTeamEntity::class);
     }
 
-    public function findByDtoOrCreateEntity(EspnSeasonTeamDto $espnSeasonTeamDto): EspnSeasonTeamEntity
+    public function findByDtoOrCreateEntity(EspnSeason $espnSeason, EspnSeasonTeamDto $espnSeasonTeamDto): EspnSeasonTeamEntity
     {
         $espnSeasonTeam = new EspnSeasonTeamEntity();
         if (null !== ($existingEntity = $this->findOneBy(
-                $espnSeasonTeam->buildFindByCriteriaFromDto($espnSeasonTeamDto)
+                $espnSeasonTeam->buildFindByCriteriaFromDto($espnSeason, $espnSeasonTeamDto)
             ))) {
             $espnSeasonTeam = $existingEntity;
         }

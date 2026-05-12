@@ -63,6 +63,7 @@ class SeasonImportService
 
         $stopwatch->openSection();
         $espnSeason = $this->espnSeasonImporter->import($year);
+
         $this->entityManager->persist($espnSeason);
         $this->entityManager->flush();
         $stopwatch->stopSection('season');
@@ -72,6 +73,7 @@ class SeasonImportService
             $espnSeason->setType(
                 $this->espnSeasonTypeImporter->import($espnSeason)
             );
+
             $this->entityManager->persist($espnSeason);
             $this->entityManager->flush();
         }
@@ -82,6 +84,7 @@ class SeasonImportService
             foreach ($this->espnSeasonTypeImporter->importAll($espnSeason) as $type) {
                 $espnSeason->addOrReplaceType($type);
             }
+
             $this->entityManager->persist($espnSeason);
             $this->entityManager->flush();
         }
@@ -92,6 +95,7 @@ class SeasonImportService
             foreach ($this->espnSeasonTypeGroupImporter->importForType($year, $espnSeason->getType()) as $group) {
                 $espnSeason->getType()->addOrReplaceGroup($group);
             }
+
             $this->entityManager->persist($espnSeason);
             $this->entityManager->flush();
 
@@ -99,6 +103,7 @@ class SeasonImportService
                 foreach ($this->espnSeasonTypeGroupImporter->importForType($year, $type) as $group) {
                     $type->addOrReplaceGroup($group);
                 }
+
                 $this->entityManager->persist($espnSeason);
                 $this->entityManager->flush();
             }
@@ -110,6 +115,7 @@ class SeasonImportService
             foreach ($this->espnSeasonTypeWeekImporter->importForType($year, $espnSeason->getType()) as $week) {
                 $espnSeason->getType()->addOrReplaceWeek($week);
             }
+
             $this->entityManager->persist($espnSeason);
             $this->entityManager->flush();
 
@@ -117,6 +123,7 @@ class SeasonImportService
                 foreach ($this->espnSeasonTypeWeekImporter->importForType($year, $type) as $week) {
                     $type->addOrReplaceWeek($week);
                 }
+
                 $this->entityManager->persist($espnSeason);
                 $this->entityManager->flush();
             }

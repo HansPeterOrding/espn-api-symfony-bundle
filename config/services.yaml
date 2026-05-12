@@ -7,26 +7,11 @@ services:
         public: true
     
     # Repositories
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnBroadcastRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_broadcast: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnBroadcastRepository'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_competition: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionRepository'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository'
-    
     HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository: ~
     hpo_espn_api_symfony_bundle.repository.espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository'
     
     HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository: ~
     hpo_espn_api_symfony_bundle.repository.espn_image: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleEventRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_schedule_event: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleEventRepository'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleRepository: ~
-    hpo_espn_api_symfony_bundle.repository.espn_schedule: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScheduleRepository'
     
     HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository: ~
     hpo_espn_api_symfony_bundle.repository.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository'
@@ -53,70 +38,20 @@ services:
     hpo_espn_api_symfony_bundle.repository.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository'
     
     # Converters
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnBroadcastConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_broadcast: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnBroadcastConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_competition_status: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusTypeConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_competition_status_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusTypeConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorScoreConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_competitor_score: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorScoreConverter'
-    
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter: ~
     hpo_espn_api_symfony_bundle.converter.espn_image: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter'
     
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnLinkConverter: ~
     hpo_espn_api_symfony_bundle.converter.espn_link: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnLinkConverter'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_note: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter'
-    
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueAddressConverter: ~
     hpo_espn_api_symfony_bundle.converter.espn_venue_address: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueAddressConverter'
     
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnWeekConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_week: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnWeekConverter'
-    
     # Dependent converters
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionConverter:
-        arguments:
-            $espnCompetitionRepository: '@hpo_espn_api_symfony_bundle.repository.espn_competition'
-            $espnVenueRepository: '@hpo_espn_api_symfony_bundle.repository.espn_venue'
-            $espnCompetitorConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competitor'
-            $espnNoteConverter: '@hpo_espn_api_symfony_bundle.converter.espn_note'
-            $espnBroadcastConverter: '@hpo_espn_api_symfony_bundle.converter.espn_broadcast'
-            $espnCompetitionStatusConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_status'
-    hpo_espn_api_symfony_bundle.converter.espn_competition: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter:
-        arguments:
-            $espnCompetitorRepository: '@hpo_espn_api_symfony_bundle.repository.espn_competitor'
-            $espnTeamRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_team'
-            $espnCompetitorScoreConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competitor_score'
-    hpo_espn_api_symfony_bundle.converter.espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter'
-    
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnFranchiseConverter:
         arguments:
             $espnFranchiseRepository: '@hpo_espn_api_symfony_bundle.repository.espn_franchise'
-            $espnVenueConverter: '@hpo_espn_api_symfony_bundle.converter.espn_venue'
     hpo_espn_api_symfony_bundle.converter.espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnFranchiseConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScheduleConverter:
-        arguments:
-            $espnScheduleRepository: '@hpo_espn_api_symfony_bundle.repository.espn_schedule'
-            $espnSeasonConverter: '@hpo_espn_api_symfony_bundle.converter.espn_season'
-            $espnScheduleEventConverter: '@hpo_espn_api_symfony_bundle.converter.espn_schedule_event'
-    hpo_espn_api_symfony_bundle.converter.espn_schedule: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScheduleConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScheduleEventConverter:
-        arguments:
-            $espnScheduleEventRepository: '@hpo_espn_api_symfony_bundle.repository.espn_schedule_event'
-            $espnWeekConverter: '@hpo_espn_api_symfony_bundle.converter.espn_week'
-            $espnCompetitionConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition'
-    hpo_espn_api_symfony_bundle.converter.espn_schedule_event: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScheduleEventConverter'
     
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonConverter:
         arguments:
@@ -159,14 +94,14 @@ services:
     HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter:
         arguments:
             $espnVenueRepository: '@hpo_espn_api_symfony_bundle.repository.espn_venue'
-            $venueAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_venue_address'
+            $espnVenueAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_venue_address'
     hpo_espn_api_symfony_bundle.converter.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter'
     
     # Importer
-    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnScheduleImporter:
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnFranchiseImporter:
         arguments:
-            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_schedule'
-    hpo_espn_api_symfony_bundle.importer.espn_schedule: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnScheduleImporter'
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_franchise'
+    hpo_espn_api_symfony_bundle.importer.espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnFranchiseImporter'
     
     HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonImporter:
         arguments:
@@ -206,6 +141,3 @@ services:
     # Services 
     HansPeterOrding\EspnApiSymfonyBundle\Service\SeasonImportService: ~
     HansPeterOrding\EspnApiSymfonyBundle\Service\SeasonTeamImportService: ~
-    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnScheduleHandler: ~
-    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnTeamHandler: ~
-    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\SyncEspnVenueHandler: ~

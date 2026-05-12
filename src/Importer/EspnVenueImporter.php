@@ -4,47 +4,42 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Importer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenue;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTeam;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
+use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 
 /**
  * @property EspnVenueConverter $converter
  */
 class EspnVenueImporter extends AbstractImporter
 {
-    public function import(string $venueId): EspnVenue
+    public function importForTeam(EspnSeasonTeam $espnSeasonTeam): EspnVenue
     {
-        $espnVenue = $this->espnApiClient->venue()->get($venueId);
-
-        if(!$espnVenue) {
-            throw new ImportException(sprintf('Venue with venueId %s not found', $venueId));
-        }
-
-        $entity = $this->converter->toEntity($espnVenue);
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
-
-        return $entity;
+        return $this->buildEntityFromReference($espnSeasonTeam->getVenueReference());
     }
 
-    /**
-     * @return EspnVenue[]
-     */
-    public function importAll(): array
+    private function buildEntityFromReference(string $venueReference): EspnVenue
     {
-        $venueIds = $this->espnApiClient->venue()->listIds();
+        $urlParams = EspnUrlPatternResolver::resolveAll(
+            $venueReference,
+            EspnUrlPatternResolver::URL_PATTERN_VENUE
+        );
 
-        $venues = [];
-        foreach($venueIds as $venueId) {
-            try {
-                $venues[] = $this->import($venueId);
-            } catch (\Throwable $e) {
-                echo "Fehler bei ID ". $venueId;
-                continue;
-            }
+        $espnVenue = $this->espnApiClient->venue()->get(
+            $urlParams->venueId
+        );
+
+        if (!$espnVenue) {
+            throw new ImportException(sprintf(
+                'Venue %s not found',
+                $urlParams->venueId
+            ));
         }
 
-        return $venues;
+        return $this->converter->toEntity($espnVenue);
     }
 }

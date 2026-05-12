@@ -8,6 +8,10 @@ use HansPeterOrding\EspnApiSymfonyBundle\Exception\EspnUrlPatternResolverMismatc
 
 class EspnUrlPatternResolver
 {
+    const URL_PATTERN_FRANCHISES = '/franchises/';
+    const URL_PATTERN_FRANCHISE = '/franchises\/(?<franchiseId>\d+)/';
+    const URL_PATTERN_VENUES = '/venues/';
+    const URL_PATTERN_VENUE = '/venues\/(?<venueId>\d+)/';
     const URL_PATTERN_SEASONS = '/seasons/';
     const URL_PATTERN_SEASON = '/seasons\/(?<year>\d+)/';
     const URL_PATTERN_SEASON_TEAMS = '/seasons\/(?<year>\d+)\/teams/';
@@ -23,6 +27,8 @@ class EspnUrlPatternResolver
     const URL_PATTERN_SEASON_TYPE_TEAM_RECORDS = '/seasons\/(?<year>\d+)\/types\/(?<typeId>\d+)\/teams\/(?<teamId>\d+)\/record/';
     const URL_PATTERN_SEASON_TYPE_TEAM_RECORD = '/seasons\/(?<year>\d+)\/types\/(?<typeId>\d+)\/teams\/(?<teamId>\d+)\/records\/(?<recordId>\d+)/';
 
+    const URL_ATTRIBUTE_FRANCHISE_ID = 'franchiseId';
+    const URL_ATTRIBUTE_VENUE_ID = 'venueId';
     const URL_ATTRIBUTE_YEAR = 'year';
     const URL_ATTRIBUTE_TYPE_ID = 'typeId';
     const URL_ATTRIBUTE_GROUP_ID = 'groupId';
@@ -31,6 +37,10 @@ class EspnUrlPatternResolver
     const URL_ATTRIBUTE_RECORD_ID = 'recordId';
 
     private static array $allowedPatterns = [
+        self::URL_PATTERN_FRANCHISES,
+        self::URL_PATTERN_FRANCHISE,
+        self::URL_PATTERN_VENUES,
+        self::URL_PATTERN_VENUE,
         self::URL_PATTERN_SEASONS,
         self::URL_PATTERN_SEASON,
         self::URL_PATTERN_SEASON_TEAMS,
@@ -47,6 +57,8 @@ class EspnUrlPatternResolver
         self::URL_PATTERN_SEASON_TYPE_TEAM_RECORD,
     ];
     private static array $allowedAttributes = [
+        self::URL_ATTRIBUTE_FRANCHISE_ID,
+        self::URL_ATTRIBUTE_VENUE_ID,
         self::URL_ATTRIBUTE_YEAR,
         self::URL_ATTRIBUTE_TYPE_ID,
         self::URL_ATTRIBUTE_GROUP_ID,
@@ -87,6 +99,8 @@ class EspnUrlPatternResolver
         $cast = fn($key) => isset($matches[$key]) ? (int)$matches[$key] : null;
 
         return new EspnUrlPatternValues(
+            $cast(self::URL_ATTRIBUTE_FRANCHISE_ID),
+            $cast(self::URL_ATTRIBUTE_VENUE_ID),
             $cast(self::URL_ATTRIBUTE_YEAR),
             $cast(self::URL_ATTRIBUTE_TYPE_ID),
             $cast(self::URL_ATTRIBUTE_GROUP_ID),

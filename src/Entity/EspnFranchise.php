@@ -4,21 +4,21 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use HansPeterOrding\EspnApiClient\Dto\EspnFranchise as EspnFranchiseDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EspnFranchiseRepository::class)]
 #[ORM\Table(name: 'easb_espn_franchise')]
 class EspnFranchise
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'bigint')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $franchiseId = null;
+    private ?string $espnId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $uid = null;
@@ -50,16 +50,31 @@ class EspnFranchise
     #[ORM\Column(nullable: true)]
     private ?bool $isActive = null;
 
-    #[ORM\OneToOne(mappedBy: 'franchise', cascade: ['persist', 'remove'])]
-    private ?EspnSeasonTeam $team = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $venueReference = null;
 
-    #[ORM\ManyToOne(inversedBy: 'franchises', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $teamReference = null;
+
+    /**
+     * @var Collection<int, EspnSeasonTeam>
+     */
+    #[ORM\OneToMany(mappedBy: 'franchise', targetEntity: EspnSeasonTeam::class)]
+    private Collection $teams;
+
+    #[ORM\ManyToOne(inversedBy: 'franchises')]
     private ?EspnVenue $venue = null;
 
     public function __construct()
     {
+        $this->teams = new ArrayCollection();
+    }
 
+    public function buildFindByCriteriaFromDto(EspnFranchiseDto $espnFranchiseDto): array
+    {
+        return [
+            'espnId' => $espnFranchiseDto->getId(),
+        ];
     }
 
     public function getId(): ?int
@@ -67,14 +82,14 @@ class EspnFranchise
         return $this->id;
     }
 
-    public function getFranchiseId(): ?string
+    public function getEspnId(): ?string
     {
-        return $this->franchiseId;
+        return $this->espnId;
     }
 
-    public function setFranchiseId(?string $franchiseId): static
+    public function setEspnId(?string $espnId): static
     {
-        $this->franchiseId = $franchiseId;
+        $this->espnId = $espnId;
 
         return $this;
     }
@@ -199,24 +214,56 @@ class EspnFranchise
         return $this;
     }
 
-    public function getTeam(): ?EspnSeasonTeam
+    public function getVenueReference(): ?string
     {
-        return $this->team;
+        return $this->venueReference;
     }
 
-    public function setTeam(?EspnSeasonTeam $team): static
+    public function setVenueReference(?string $venueReference): static
     {
-        // unset the owning side of the relation if necessary
-        if ($team === null && $this->team !== null) {
-            $this->team->setFranchise(null);
-        }
+        $this->venueReference = $venueReference;
 
-        // set the owning side of the relation if necessary
-        if ($team !== null && $team->getFranchise() !== $this) {
+        return $this;
+    }
+
+    public function getTeamReference(): ?string
+    {
+        return $this->teamReference;
+    }
+
+    public function setTeamReference(?string $teamReference): static
+    {
+        $this->teamReference = $teamReference;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EspnSeasonTeam>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(EspnSeasonTeam $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
             $team->setFranchise($this);
         }
 
-        $this->team = $team;
+        return $this;
+    }
+
+    public function removeTeam(EspnSeasonTeam $team): static
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getFranchise() === $this) {
+                $team->setFranchise(null);
+            }
+        }
 
         return $this;
     }
@@ -231,12 +278,5 @@ class EspnFranchise
         $this->venue = $venue;
 
         return $this;
-    }
-
-    public function buildFindByCriteriaFromDto(EspnFranchiseDto $espnFranchiseDto): array
-    {
-    return [
-            'franchiseId' => $espnFranchiseDto->getId(),
-        ];
     }
 }

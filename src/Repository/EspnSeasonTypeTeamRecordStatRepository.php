@@ -7,16 +7,15 @@ use Doctrine\Persistence\ManagerRegistry;
 use HansPeterOrding\EspnApiClient\Dto\EspnSeasonTypeTeamRecordStat as EspnSeasonTypeTeamRecordStatDto;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTypeTeamRecord;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTypeTeamRecordStat as EspnSeasonTypeTeamRecordStatEntity;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTypeTeamRecordStatStat;
 
 /**
- * @extends ServiceEntityRepository<EspnSeasonTypeTeamRecordStatStat>
+ * @extends ServiceEntityRepository<EspnSeasonTypeTeamRecordStatEntity>
  */
 class EspnSeasonTypeTeamRecordStatRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnSeasonTypeTeamRecordStatStat::class);
+        parent::__construct($registry, EspnSeasonTypeTeamRecordStatEntity::class);
     }
 
     public function findByDtoOrCreateEntity(EspnSeasonTypeTeamRecord $espnSeasonTypeTeamRecord, EspnSeasonTypeTeamRecordStatDto $espnSeasonTypeTeamRecordStatDto): EspnSeasonTypeTeamRecordStatEntity

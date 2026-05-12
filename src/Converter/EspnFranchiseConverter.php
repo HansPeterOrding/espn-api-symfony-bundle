@@ -12,7 +12,6 @@ class EspnFranchiseConverter implements ConverterInterface
 {
     public function __construct(
         private readonly EspnFranchiseRepository $espnFranchiseRepository,
-        private readonly EspnVenueConverter $espnVenueConverter,
     )
     {
     }
@@ -21,7 +20,7 @@ class EspnFranchiseConverter implements ConverterInterface
     {
         $espnFranchiseEntity = $this->espnFranchiseRepository->findByDtoOrCreateEntity($espnFranchiseDto);
 
-        $espnFranchiseEntity->setFranchiseId($espnFranchiseDto->getId());
+        $espnFranchiseEntity->setEspnId($espnFranchiseDto->getId());
         $espnFranchiseEntity->setUid($espnFranchiseDto->getUid());
         $espnFranchiseEntity->setSlug($espnFranchiseDto->getSlug());
         $espnFranchiseEntity->setLocation($espnFranchiseDto->getLocation());
@@ -32,9 +31,8 @@ class EspnFranchiseConverter implements ConverterInterface
         $espnFranchiseEntity->setShortDisplayName($espnFranchiseDto->getShortDisplayName());
         $espnFranchiseEntity->setColor($espnFranchiseDto->getColor());
         $espnFranchiseEntity->setIsActive($espnFranchiseDto->getIsActive());
-
-        $espnVenue = $this->espnVenueConverter->toEntity($espnFranchiseDto->getVenue());
-        $espnFranchiseEntity->setVenue($espnVenue);
+        $espnFranchiseEntity->setVenueReference($espnFranchiseDto->getVenueReference());
+        $espnFranchiseEntity->setTeamReference($espnFranchiseDto->getTeamReference());
 
         return $espnFranchiseEntity;
     }

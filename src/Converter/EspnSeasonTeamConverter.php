@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
 use HansPeterOrding\EspnApiClient\Dto\EspnSeasonTeam as EspnSeasonTeamDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTeam as EspnSeasonTeamEntity;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTeamRepository;
 
@@ -18,9 +19,9 @@ class EspnSeasonTeamConverter implements ConverterInterface
     {
     }
 
-    public function toEntity(EspnSeasonTeamDto $espnSeasonTeamDto): EspnSeasonTeamEntity
+    public function toEntity(EspnSeason $espnSeason, EspnSeasonTeamDto $espnSeasonTeamDto): EspnSeasonTeamEntity
     {
-        $espnSeasonTeamEntity = $this->espnSeasonTeamRepository->findByDtoOrCreateEntity($espnSeasonTeamDto);
+        $espnSeasonTeamEntity = $this->espnSeasonTeamRepository->findByDtoOrCreateEntity($espnSeason, $espnSeasonTeamDto);
 
         $espnSeasonTeamEntity->setEspnId($espnSeasonTeamDto->getId());
         $espnSeasonTeamEntity->setGuid($espnSeasonTeamDto->getGuid());

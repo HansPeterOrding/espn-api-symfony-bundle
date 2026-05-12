@@ -12,7 +12,7 @@ use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
 use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 
 /**
- * @property EspnSeasonTypeGroupConverter $converter
+ * @property EspnSeasonTypeConverter $converter
  */
 class EspnSeasonTypeImporter extends AbstractImporter
 {

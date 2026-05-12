@@ -38,13 +38,13 @@ class EspnSeasonTypeTeamRecord
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $displayValue = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 25, scale: 19, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 25, scale: 20, nullable: true)]
     private ?string $value = null;
 
     /**
      * @var Collection<int, EspnSeasonTypeTeamRecordStat>
      */
-    #[ORM\OneToMany(mappedBy: 'record', targetEntity: EspnSeasonTypeTeamRecordStat::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'record', targetEntity: EspnSeasonTypeTeamRecordStat::class, orphanRemoval: true, cascade: ['remove', 'persist'])]
     private Collection $stats;
 
     #[ORM\ManyToOne(inversedBy: 'records')]

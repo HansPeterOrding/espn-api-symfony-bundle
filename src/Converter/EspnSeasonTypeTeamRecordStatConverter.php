@@ -21,19 +21,14 @@ class EspnSeasonTypeTeamRecordStatConverter implements ConverterInterface
     {
         $espnSeasonTypeTeamRecordStatEntity = $this->espnSeasonTypeTeamRecordStatRepository->findByDtoOrCreateEntity($espnSeasonTypeTeamRecord, $espnSeasonTypeTeamRecordStatDto);
 
-        $espnSeasonTypeTeamRecordStatEntity->setEspnId($espnSeasonTypeTeamRecordStatDto->getId());
         $espnSeasonTypeTeamRecordStatEntity->setName($espnSeasonTypeTeamRecordStatDto->getName());
+        $espnSeasonTypeTeamRecordStatEntity->setDisplayName($espnSeasonTypeTeamRecordStatDto->getDisplayName());
+        $espnSeasonTypeTeamRecordStatEntity->setShortDisplayName($espnSeasonTypeTeamRecordStatDto->getShortDisplayName());
+        $espnSeasonTypeTeamRecordStatEntity->setDescription($espnSeasonTypeTeamRecordStatDto->getDescription());
         $espnSeasonTypeTeamRecordStatEntity->setAbbreviation($espnSeasonTypeTeamRecordStatDto->getAbbreviation());
         $espnSeasonTypeTeamRecordStatEntity->setType($espnSeasonTypeTeamRecordStatDto->getType());
-        $espnSeasonTypeTeamRecordStatEntity->setSummary($espnSeasonTypeTeamRecordStatDto->getSummary());
-        $espnSeasonTypeTeamRecordStatEntity->setDisplayValue($espnSeasonTypeTeamRecordStatDto->getDisplayValue());
         $espnSeasonTypeTeamRecordStatEntity->setValue($espnSeasonTypeTeamRecordStatDto->getValue());
-
-        $espnSeasonTypeTeamRecordStatEntity->removeAllStats();
-        foreach ($espnSeasonTypeTeamRecordStatDto->getStats() as $stat) {
-            $statEntity = $this->statConverter->toEntity($stat);
-            $espnSeasonTypeTeamRecordStatEntity->addStat($statEntity);
-        }
+        $espnSeasonTypeTeamRecordStatEntity->setDisplayValue($espnSeasonTypeTeamRecordStatDto->getDisplayValue());
 
         return $espnSeasonTypeTeamRecordStatEntity;
     }
