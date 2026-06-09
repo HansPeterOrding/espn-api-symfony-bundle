@@ -1,31 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonType;
 use HansPeterOrding\EspnApiClient\Dto\EspnSeasonType as EspnSeasonTypeDto;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonType as EspnSeasonTypeEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnSeasonTypeEntity>
+ * @extends ServiceEntityRepository<EspnSeasonType>
  */
 class EspnSeasonTypeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnSeasonTypeEntity::class);
+        parent::__construct($registry, EspnSeasonType::class);
     }
 
-    public function findByDtoOrCreateEntity(EspnSeasonTypeDto $espnSeasonTypeDto): EspnSeasonTypeEntity
+    public function findByDtoOrCreateEntity(EspnSeasonTypeDto $dto, EspnSeason $season): EspnSeasonType
     {
-        $espnSeasonType = new EspnSeasonTypeEntity();
-        if (null !== ($existingEntity = $this->findOneBy(
-                $espnSeasonType->buildFindByCriteriaFromDto($espnSeasonTypeDto)
-            ))) {
-            $espnSeasonType = $existingEntity;
+        $entity = new EspnSeasonType();
+        if (null !== ($existing = $this->findOneBy($entity->buildFindByCriteriaFromDto($dto, $season)))) {
+            $entity = $existing;
         }
 
-        return $espnSeasonType;
+        return $entity;
+    }
+
+    public function resetCurrentForSeason(EspnSeason $season): void
+    {
+        $this->createQueryBuilder('st')
+            ->update()
+            ->set('st.isCurrent', ':false')
+            ->where('st.season = :season')
+            ->andWhere('st.isCurrent = :true')
+            ->setParameter('false', false)
+            ->setParameter('true', true)
+            ->setParameter('season', $season)
+            ->getQuery()
+            ->execute();
     }
 }

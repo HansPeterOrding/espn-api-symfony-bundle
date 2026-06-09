@@ -4,31 +4,44 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason as EspnSeasonEntity;
+use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
+
+use DateTimeImmutable;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository;
+use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
 
 class EspnSeasonConverter implements ConverterInterface
 {
     public function __construct(
         private readonly EspnSeasonRepository $espnSeasonRepository,
-    )
-    {
+    ) {
     }
 
-    public function toEntity(EspnSeasonDto $espnSeasonDto): EspnSeasonEntity
+    public function toEntity(EspnSeasonDto $espnSeasonDto): EspnSeason
     {
-        $espnSeasonEntity = $this->espnSeasonRepository->findByDtoOrCreateEntity($espnSeasonDto);
+        $espnSeason = $this->espnSeasonRepository->findByDtoOrCreateEntity($espnSeasonDto);
 
-        $espnSeasonEntity->setYear($espnSeasonDto->getYear());
-        $espnSeasonEntity->setStartDate($espnSeasonDto->getStartDate());
-        $espnSeasonEntity->setEndDate($espnSeasonDto->getEndDate());
-        $espnSeasonEntity->setDisplayName($espnSeasonDto->getDisplayName());
-        $espnSeasonEntity->setTypeReference($espnSeasonDto->getTypeReference());
-        $espnSeasonEntity->setTypesReference($espnSeasonDto->getTypesReference());
-        $espnSeasonEntity->setRankingsReference($espnSeasonDto->getRankingsReference());
-        $espnSeasonEntity->setFuturesReference($espnSeasonDto->getFuturesReference());
+        $espnSeason->setEspnYear($espnSeasonDto->getYear());
+        $espnSeason->setDisplayName($espnSeasonDto->getDisplayName());
 
-        return $espnSeasonEntity;
+        if (null !== $espnSeasonDto->getStartDate()) {
+            $espnSeason->setStartDate(new DateTimeImmutable($espnSeasonDto->getStartDate()));
+        }
+
+        if (null !== $espnSeasonDto->getEndDate()) {
+            $espnSeason->setEndDate(new DateTimeImmutable($espnSeasonDto->getEndDate()));
+        }
+
+        $espnSeason->setTypeReference($espnSeasonDto->getTypeReference());
+        $espnSeason->setTypesReference($espnSeasonDto->getTypesReference());
+        $espnSeason->setRankingsReference($espnSeasonDto->getRankingsReference());
+        $espnSeason->setCoachesReference($espnSeasonDto->getCoachesReference());
+        $espnSeason->setAthletesReference($espnSeasonDto->getAthletesReference());
+        $espnSeason->setAwardsReference($espnSeasonDto->getAwardsReference());
+        $espnSeason->setFuturesReference($espnSeasonDto->getFuturesReference());
+        $espnSeason->setLeadersReference($espnSeasonDto->getLeadersReference());
+
+        return $espnSeason;
     }
 }

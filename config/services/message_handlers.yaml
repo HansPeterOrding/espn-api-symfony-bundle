@@ -1,0 +1,71 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Message Handlers
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnSeasonMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnSeasonMessageHandler'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnSeasonTypeMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnSeasonTypeMessageHandler'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnSeasonGroupMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_season_group: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnSeasonGroupMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnWeekMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_week: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnWeekMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnTeamMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnTeamMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnRecordMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_record: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnRecordMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnStandingMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_standing: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnStandingMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnVenueMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnVenueMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnFranchiseMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnFranchiseMessageHandler'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnPositionsMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_positions: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnPositionsMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnPositionMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_position: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnPositionMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnAthleteMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_athlete: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnAthleteMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnContractMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_contract: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnContractMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnInjuryMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_injury: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnInjuryMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCoachMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_coach: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCoachMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnTeamInjuriesMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_team_injuries: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnTeamInjuriesMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCompetitionStatusMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_competition_status: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCompetitionStatusMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnEventMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_event: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnEventMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCompetitionMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_competition: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCompetitionMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCompetitorMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnCompetitorMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnOfficialMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_official: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnOfficialMessageHandler'
+
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnScoreMessageHandler: ~
+    hpo_espn_api_symfony_bundle.message_handler.import_espn_score: '@HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportEspnScoreMessageHandler'

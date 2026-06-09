@@ -4,26 +4,43 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
+use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
+
+use DateTimeImmutable;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnAthlete;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenue;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\ImageParentTypeEnum;
+use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnImage as EspnImageDto;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage as EspnImageEntity;
 
 class EspnImageConverter implements ConverterInterface
 {
-    public function toEntity(EspnImageDto $espnImageDto, $espnImageEntity = null): EspnImageEntity
+    public function __construct(
+        private readonly EspnImageRepository $espnImageRepository,
+    ) {
+    }
+
+    public function toEntity(EspnImageDto $espnImageDto, EspnTeam|EspnVenue $parent): EspnImage
     {
-        if (!$espnImageEntity) {
-            $espnImageEntity = new EspnImageEntity();
+        $espnImage = $this->espnImageRepository->findByDtoOrCreateEntity($espnImageDto, $parent);
+
+        $espnImage->setHref($espnImageDto->getHref());
+        $espnImage->setWidth($espnImageDto->getWidth());
+        $espnImage->setHeight($espnImageDto->getHeight());
+        $espnImage->setAlt($espnImageDto->getAlt());
+        $espnImage->setRel($espnImageDto->getRel());
+
+        if (null !== $espnImageDto->getLastUpdated()) {
+            $espnImage->setLastUpdated(new DateTimeImmutable($espnImageDto->getLastUpdated()));
         }
 
-        $espnImageEntity->setHref($espnImageDto->getHref());
-        $espnImageEntity->setWidth($espnImageDto->getWidth());
-        $espnImageEntity->setHeight($espnImageDto->getHeight());
-        $espnImageEntity->setAlt($espnImageDto->getAlt());
+        $espnImage->setParentType(match (true) {
+            $parent instanceof EspnTeam => ImageParentTypeEnum::Team,
+            $parent instanceof EspnVenue => ImageParentTypeEnum::Venue,
+        });
 
-        $espnImageEntity->setRel($espnImageDto->getRel());
-
-        $espnImageEntity->setLastUpdated($espnImageDto->getLastUpdated());
-
-        return $espnImageEntity;
+        return $espnImage;
     }
 }

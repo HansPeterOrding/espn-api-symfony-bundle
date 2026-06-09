@@ -1,31 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenue;
 use HansPeterOrding\EspnApiClient\Dto\EspnImage as EspnImageDto;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage as EspnImageEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnImageEntity>
+ * @extends ServiceEntityRepository<EspnImage>
  */
 class EspnImageRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnImageEntity::class);
+        parent::__construct($registry, EspnImage::class);
     }
 
-    public function findByDtoOrCreateEntity(EspnImageDto $espnImageDto): EspnImageEntity
+    public function findByDtoOrCreateEntity(EspnImageDto $dto, EspnTeam|EspnVenue $parent): EspnImage
     {
-        $espnImage = new EspnImageEntity();
-        if (null !== ($existingEntity = $this->findOneBy(
-                $espnImage->buildFindByCriteriaFromDto($espnImageDto)
-            ))) {
-            $espnImage = $existingEntity;
+        $entity = new EspnImage();
+        if (null !== ($existing = $this->findOneBy($entity->buildFindByCriteriaFromDto($dto, $parent)))) {
+            $entity = $existing;
         }
 
-        return $espnImage;
+        return $entity;
     }
 }

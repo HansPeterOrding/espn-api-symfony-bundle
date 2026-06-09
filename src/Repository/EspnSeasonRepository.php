@@ -1,31 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HansPeterOrding\EspnApiSymfonyBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason as EspnSeasonEntity;
 
 /**
- * @extends ServiceEntityRepository<EspnSeasonEntity>
+ * @extends ServiceEntityRepository<EspnSeason>
  */
 class EspnSeasonRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EspnSeasonEntity::class);
+        parent::__construct($registry, EspnSeason::class);
     }
 
-    public function findByDtoOrCreateEntity(EspnSeasonDto $espnSeasonDto): EspnSeasonEntity
+    public function findByDtoOrCreateEntity(EspnSeasonDto $dto): EspnSeason
     {
-        $espnSeason = new EspnSeasonEntity();
-        if (null !== ($existingEntity = $this->findOneBy(
-                $espnSeason->buildFindByCriteriaFromDto($espnSeasonDto)
-            ))) {
-            $espnSeason = $existingEntity;
+        $entity = new EspnSeason();
+        if (null !== ($existing = $this->findOneBy($entity->buildFindByCriteriaFromDto($dto)))) {
+            $entity = $existing;
         }
 
-        return $espnSeason;
+        return $entity;
     }
 }

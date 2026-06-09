@@ -1,48 +1,86 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenue;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\ImageParentTypeEnum;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Trait\SyncTimestampsTrait;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository;
+use HansPeterOrding\EspnApiClient\Dto\EspnImage as EspnImageDto;
 
 #[ORM\Entity(repositoryClass: EspnImageRepository::class)]
 #[ORM\Table(name: 'easb_espn_image')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Index(columns: ['parent_type'], name: 'idx_espn_image_parent_type')]
 class EspnImage
 {
+    use SyncTimestampsTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(nullable: true, enumType: ImageParentTypeEnum::class)]
+    private ?ImageParentTypeEnum $parentType = null;
+
+    #[ORM\Column(nullable: true)]
     private ?string $href = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $width = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $height = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?string $alt = null;
 
-    #[ORM\Column(type: Types::JSON)]
-    private array $rel = [];
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $rel = null;
 
-    #[ORM\Column(type: 'datetimetz', nullable: true)]
-    private ?\DateTime $lastUpdated = null;
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $lastUpdated = null;
 
-    #[ORM\ManyToOne(inversedBy: 'logos')]
-    private ?EspnSeasonTeam $team = null;
+    #[ORM\ManyToOne(targetEntity: EspnTeam::class, inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?EspnTeam $team = null;
 
-    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\ManyToOne(targetEntity: EspnVenue::class, inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?EspnVenue $venue = null;
+
+    public static function buildFindByCriteriaFromDto(EspnImageDto $dto, EspnTeam|EspnVenue $parent): array
+    {
+        $criteria = [
+            'href' => $dto->getHref(),
+        ];
+
+        match (true) {
+            $parent instanceof EspnTeam => $criteria['team'] = $parent,
+            $parent instanceof EspnVenue => $criteria['venue'] = $parent,
+        };
+
+        return $criteria;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getParentType(): ?ImageParentTypeEnum
+    {
+        return $this->parentType;
+    }
+
+    public function setParentType(?ImageParentTypeEnum $parentType): static
+    {
+        $this->parentType = $parentType;
+        return $this;
     }
 
     public function getHref(): ?string
@@ -50,10 +88,9 @@ class EspnImage
         return $this->href;
     }
 
-    public function setHref(string $href): static
+    public function setHref(?string $href): static
     {
         $this->href = $href;
-
         return $this;
     }
 
@@ -62,10 +99,9 @@ class EspnImage
         return $this->width;
     }
 
-    public function setWidth(int $width): static
+    public function setWidth(?int $width): static
     {
         $this->width = $width;
-
         return $this;
     }
 
@@ -74,10 +110,9 @@ class EspnImage
         return $this->height;
     }
 
-    public function setHeight(int $height): static
+    public function setHeight(?int $height): static
     {
         $this->height = $height;
-
         return $this;
     }
 
@@ -89,43 +124,39 @@ class EspnImage
     public function setAlt(?string $alt): static
     {
         $this->alt = $alt;
-
         return $this;
     }
 
-    public function getRel(): array
+    public function getRel(): ?array
     {
         return $this->rel;
     }
 
-    public function setRel(array $rel): static
+    public function setRel(?array $rel): static
     {
         $this->rel = $rel;
-
         return $this;
     }
 
-    public function getLastUpdated(): ?\DateTime
+    public function getLastUpdated(): ?DateTimeImmutable
     {
         return $this->lastUpdated;
     }
 
-    public function setLastUpdated(?\DateTime $lastUpdated): static
+    public function setLastUpdated(?DateTimeImmutable $lastUpdated): static
     {
         $this->lastUpdated = $lastUpdated;
-
         return $this;
     }
 
-    public function getTeam(): ?EspnSeasonTeam
+    public function getTeam(): ?EspnTeam
     {
         return $this->team;
     }
 
-    public function setTeam(?EspnSeasonTeam $team): static
+    public function setTeam(?EspnTeam $team): static
     {
         $this->team = $team;
-
         return $this;
     }
 
@@ -137,7 +168,6 @@ class EspnImage
     public function setVenue(?EspnVenue $venue): static
     {
         $this->venue = $venue;
-
         return $this;
     }
 }

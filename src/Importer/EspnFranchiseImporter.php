@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Importer;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface;
+use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnFranchiseConverter;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnFranchise;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonTeam;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
+use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
+use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
+use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository;
 use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 
 /**
@@ -17,29 +19,68 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
  */
 class EspnFranchiseImporter extends AbstractImporter
 {
-    public function import(EspnSeasonTeam $espnSeasonTeam): EspnFranchise
-    {
-        return $this->buildEntityFromReference($espnSeasonTeam->getFranchiseReference());
+    public function __construct(
+        EspnApiClientInterface $espnApiClient,
+        ConverterInterface $converter,
+        private readonly EspnTeamRepository $espnTeamRepository,
+        private readonly EspnVenueRepository $espnVenueRepository,
+    ) {
+        parent::__construct($espnApiClient, $converter);
     }
 
-    private function buildEntityFromReference(string $franchiseReference): EspnFranchise
+    public function buildEntityFromReference(string $reference): EspnFranchise
     {
         $urlParams = EspnUrlPatternResolver::resolveAll(
-            $franchiseReference,
+            $reference,
             EspnUrlPatternResolver::URL_PATTERN_FRANCHISE
         );
 
-        $espnFranchise = $this->espnApiClient->franchise()->get(
-            $urlParams->franchiseId
-        );
+        if (null === $urlParams->franchiseId) {
+            throw new UnrecoverableImportException(sprintf(
+                'Could not resolve franchiseId from franchise reference: %s',
+                $reference
+            ));
+                    }
 
-        if (!$espnFranchise) {
+        $espnFranchiseDto = $this->espnApiClient->franchises()->get($urlParams->franchiseId);
+
+        if (!$espnFranchiseDto) {
             throw new ImportException(sprintf(
-                'Franchise %s not found',
+                'Franchise %d not found',
                 $urlParams->franchiseId
             ));
         }
 
-        return $this->converter->toEntity($espnFranchise);
+        $espnFranchise = $this->converter->toEntity($espnFranchiseDto);
+
+        $this->connectVenue($espnFranchise);
+        $this->connectTeam($espnFranchise, $reference);
+
+        return $espnFranchise;
+    }
+
+    private function connectVenue(EspnFranchise $espnFranchise): void
+    {
+        if (null === $espnFranchise->getVenueReference()) {
+            return;
+        }
+
+        $urlParams = EspnUrlPatternResolver::resolveAll(
+            $espnFranchise->getVenueReference(),
+            EspnUrlPatternResolver::URL_PATTERN_VENUE
+        );
+
+        if (null === $urlParams->venueId) {
+            return;
+        }
+
+        $espnVenue = $this->espnVenueRepository->findOneBy(['espnId' => (string) $urlParams->venueId]);
+        $espnFranchise->setVenue($espnVenue); // null if not yet imported — will connect on venue import
+    }
+
+    private function connectTeam(EspnFranchise $espnFranchise, string $reference): void
+    {
+        $team = $this->espnTeamRepository->findOneBy(['franchiseReference' => $reference]);
+        $espnFranchise->setTeam($team); // also sets $team->setFranchise($this) via owning side
     }
 }

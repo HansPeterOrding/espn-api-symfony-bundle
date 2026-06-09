@@ -1,0 +1,246 @@
+framework:
+    messenger:
+        transports:
+            sync.espn-season:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-season'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-season-type:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-season-type'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-season-group:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-season-group'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-week:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-week'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-team:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-team'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-venue:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-venue'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-franchise:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-franchise'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-record:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-record'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-standing:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-standing'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-event:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-event'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-competition:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-competition'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-competition-status:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-competition-status'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-competitor:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-competitor'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-score:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-score'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-official:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-official'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-athlete:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-athlete'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-coach:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-coach'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-position:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-position'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-positions:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-positions'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-injury:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-injury'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-team-injuries:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-team-injuries'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+            sync.espn-contract:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'sync.espn-contract'
+                retry_strategy:
+                    max_retries: 1000
+                    delay: 1000
+                    max_delay: 0
+                    jitter: 0.1
+
+        routing:
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnSeasonMessage': sync.espn-season
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnSeasonTypeMessage': sync.espn-season-type
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnSeasonGroupMessage': sync.espn-season-group
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnWeekMessage': sync.espn-week
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnTeamMessage': sync.espn-team
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnVenueMessage': sync.espn-venue
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnFranchiseMessage': sync.espn-franchise
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnRecordMessage': sync.espn-record
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnStandingMessage': sync.espn-standing
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnEventMessage': sync.espn-event
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnCompetitionMessage': sync.espn-competition
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnCompetitionStatusMessage': sync.espn-competition-status
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnCompetitorMessage': sync.espn-competitor
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnScoreMessage': sync.espn-score
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnOfficialMessage': sync.espn-official
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnAthleteMessage': sync.espn-athlete
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnCoachMessage': sync.espn-coach
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnPositionMessage': sync.espn-position
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnPositionsMessage': sync.espn-positions
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnInjuryMessage': sync.espn-injury
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnTeamInjuriesMessage': sync.espn-team-injuries
+            'HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnContractMessage': sync.espn-contract

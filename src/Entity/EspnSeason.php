@@ -1,73 +1,86 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\EspnSeasonTypeEnum;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Trait\SyncTimestampsTrait;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository;
+use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
 
 #[ORM\Entity(repositoryClass: EspnSeasonRepository::class)]
 #[ORM\Table(name: 'easb_espn_season')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Index(columns: ['espn_year'], name: 'idx_espn_season_year')]
 class EspnSeason
 {
+    use SyncTimestampsTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $year = null;
+    #[ORM\Column(unique: true, nullable: true)]
+    private ?int $espnYear = null;
 
-    #[ORM\Column]
-    private ?\DateTime $startDate = null;
-
-    #[ORM\Column]
-    private ?\DateTime $endDate = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(nullable: true)]
     private ?string $displayName = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $startDate = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $endDate = null;
+
+    #[ORM\Column(nullable: true)]
     private ?string $typeReference = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $typesReference = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $rankingsReference = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
+    private ?string $coachesReference = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $athletesReference = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $awardsReference = null;
+
+    #[ORM\Column(nullable: true)]
     private ?string $futuresReference = null;
 
-    #[ORM\ManyToOne(targetEntity: EspnSeasonType::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: "internal_type_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
-    private ?EspnSeasonType $type = null;
+    #[ORM\Column(nullable: true)]
+    private ?string $leadersReference = null;
 
     /**
      * @var Collection<int, EspnSeasonType>
      */
-    #[ORM\OneToMany(mappedBy: 'season', targetEntity: EspnSeasonType::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private Collection $types;
-
-    /**
-     * @var Collection<int, EspnSeasonTeam>
-     */
-    #[ORM\OneToMany(mappedBy: 'season', targetEntity: EspnSeasonTeam::class)]
-    private Collection $teams;
+    #[ORM\OneToMany(
+        mappedBy: 'season',
+        targetEntity: EspnSeasonType::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $seasonTypes;
 
     public function __construct()
     {
-        $this->types = new ArrayCollection();
-        $this->teams = new ArrayCollection();
+        $this->seasonTypes = new ArrayCollection();
     }
 
-    public function buildFindByCriteriaFromDto(EspnSeasonDto $espnSeasonDto): array
+    public static function buildFindByCriteriaFromDto(EspnSeasonDto $dto): array
     {
         return [
-            'year' => $espnSeasonDto->getYear(),
+            'espnYear' => $dto->getYear(),
         ];
     }
 
@@ -76,36 +89,14 @@ class EspnSeason
         return $this->id;
     }
 
-    public function getYear(): ?int
+    public function getEspnYear(): ?int
     {
-        return $this->year;
+        return $this->espnYear;
     }
 
-    public function setYear(?int $year): static
+    public function setEspnYear(?int $espnYear): static
     {
-        $this->year = $year;
-        return $this;
-    }
-
-    public function getStartDate(): ?\DateTime
-    {
-        return $this->startDate;
-    }
-
-    public function setStartDate(?\DateTime $startDate): static
-    {
-        $this->startDate = $startDate;
-        return $this;
-    }
-
-    public function getEndDate(): ?\DateTime
-    {
-        return $this->endDate;
-    }
-
-    public function setEndDate(?\DateTime $endDate): static
-    {
-        $this->endDate = $endDate;
+        $this->espnYear = $espnYear;
         return $this;
     }
 
@@ -117,6 +108,28 @@ class EspnSeason
     public function setDisplayName(?string $displayName): static
     {
         $this->displayName = $displayName;
+        return $this;
+    }
+
+    public function getStartDate(): ?DateTimeImmutable
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(?DateTimeImmutable $startDate): static
+    {
+        $this->startDate = $startDate;
+        return $this;
+    }
+
+    public function getEndDate(): ?DateTimeImmutable
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?DateTimeImmutable $endDate): static
+    {
+        $this->endDate = $endDate;
         return $this;
     }
 
@@ -153,6 +166,39 @@ class EspnSeason
         return $this;
     }
 
+    public function getCoachesReference(): ?string
+    {
+        return $this->coachesReference;
+    }
+
+    public function setCoachesReference(?string $coachesReference): static
+    {
+        $this->coachesReference = $coachesReference;
+        return $this;
+    }
+
+    public function getAthletesReference(): ?string
+    {
+        return $this->athletesReference;
+    }
+
+    public function setAthletesReference(?string $athletesReference): static
+    {
+        $this->athletesReference = $athletesReference;
+        return $this;
+    }
+
+    public function getAwardsReference(): ?string
+    {
+        return $this->awardsReference;
+    }
+
+    public function setAwardsReference(?string $awardsReference): static
+    {
+        $this->awardsReference = $awardsReference;
+        return $this;
+    }
+
     public function getFuturesReference(): ?string
     {
         return $this->futuresReference;
@@ -164,89 +210,61 @@ class EspnSeason
         return $this;
     }
 
-    public function getType(): ?EspnSeasonType
+    public function getLeadersReference(): ?string
     {
-        return $this->type;
+        return $this->leadersReference;
     }
 
-    public function setType(?EspnSeasonType $type): EspnSeason
+    public function setLeadersReference(?string $leadersReference): static
     {
-        $this->type = $type;
+        $this->leadersReference = $leadersReference;
         return $this;
     }
 
-    /**
-     * @return Collection<int, EspnSeasonType>
-     */
-    public function getTypes(): Collection
+    public function getSeasonTypes(): Collection
     {
-        return $this->types;
+        return $this->seasonTypes;
     }
 
-    public function addType(EspnSeasonType $type): static
+    public function addSeasonType(EspnSeasonType $seasonType): static
     {
-        if (!$this->types->contains($type)) {
-            $this->types->add($type);
-            $type->setSeason($this);
+        if (!$this->seasonTypes->contains($seasonType)) {
+            $this->seasonTypes->add($seasonType);
+            $seasonType->setSeason($this);
         }
-
         return $this;
     }
 
-    public function removeType(EspnSeasonType $type): static
+    public function removeSeasonType(EspnSeasonType $seasonType): static
     {
-        if ($this->types->removeElement($type)) {
-            // set the owning side to null (unless already changed)
-            if ($type->getSeason() === $this) {
-                $type->setSeason(null);
+        if ($this->seasonTypes->removeElement($seasonType)) {
+            if ($seasonType->getSeason() === $this) {
+                $seasonType->setSeason(null);
             }
         }
-
         return $this;
     }
 
-    public function addOrReplaceType(EspnSeasonType $newType): static
+    public function removeAllSeasonTypes(): static
     {
-        foreach ($this->types as $key => $existingType) {
-            if ($existingType->getId() !== null && $existingType->getId() === $newType->getId()) {
-                if ($existingType !== $newType) {
-                    $this->types->set($key, $newType);
-                    $newType->setSeason($this);
+        foreach ($this->seasonTypes as $seasonType) {
+            $this->removeSeasonType($seasonType);
+        }
+        return $this;
+    }
+
+    public function addOrReplaceSeasonType(EspnSeasonType $newSeasonType): static
+    {
+        foreach ($this->seasonTypes as $key => $existing) {
+            if ($existing->getId() !== null && $existing->getId() === $newSeasonType->getId()) {
+                if ($existing !== $newSeasonType) {
+                    $this->seasonTypes->set($key, $newSeasonType);
+                    $newSeasonType->setSeason($this);
                 }
                 return $this;
             }
         }
-
-        return $this->addType($newType);
+        return $this->addSeasonType($newSeasonType);
     }
 
-    /**
-     * @return Collection<int, EspnSeasonTeam>
-     */
-    public function getTeams(): Collection
-    {
-        return $this->teams;
-    }
-
-    public function addTeam(EspnSeasonTeam $team): static
-    {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
-            $team->setSeason($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(EspnSeasonTeam $team): static
-    {
-        if ($this->teams->removeElement($team)) {
-            // set the owning side to null (unless already changed)
-            if ($team->getSeason() === $this) {
-                $team->setSeason(null);
-            }
-        }
-
-        return $this;
-    }
 }

@@ -1,52 +1,66 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HansPeterOrding\EspnApiSymfonyBundle\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use HansPeterOrding\EspnApiClient\Dto\EspnSeasonType as EspnSeasonTypeDto;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\SeasonTypeEnum;
+use HansPeterOrding\EspnApiSymfonyBundle\Entity\Trait\SyncTimestampsTrait;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeRepository;
+use HansPeterOrding\EspnApiClient\Dto\EspnSeasonType as EspnSeasonTypeDto;
 
 #[ORM\Entity(repositoryClass: EspnSeasonTypeRepository::class)]
 #[ORM\Table(name: 'easb_espn_season_type')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\UniqueConstraint(name: 'uniq_espn_season_type', columns: ['espn_id', 'season_id'])]
 class EspnSeasonType
 {
+    use SyncTimestampsTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $espnId = null;
 
-    #[ORM\Column]
-    private ?int $type = null;
+    #[ORM\Column(nullable: true, enumType: SeasonTypeEnum::class)]
+    private ?SeasonTypeEnum $type = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $abbreviation = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $year = null;
 
-    #[ORM\Column]
-    private ?DateTime $startDate = null;
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $startDate = null;
 
-    #[ORM\Column]
-    private ?DateTime $endDate = null;
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $endDate = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $hasGroups = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $hasStandings = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $hasLegs = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $slug = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isCurrent = null;
 
     #[ORM\Column(nullable: true)]
     private ?string $groupsReference = null;
@@ -57,44 +71,34 @@ class EspnSeasonType
     #[ORM\Column(nullable: true)]
     private ?string $correctionsReference = null;
 
-    #[ORM\Column]
-    private ?string $slug = null;
+    #[ORM\Column(nullable: true)]
+    private ?string $leadersReference = null;
 
-    #[ORM\ManyToOne(inversedBy: 'types')]
+    #[ORM\ManyToOne(targetEntity: EspnSeason::class, inversedBy: 'seasonTypes')]
     #[ORM\JoinColumn(nullable: true)]
     private ?EspnSeason $season = null;
 
     /**
-     * @var Collection<int, EspnSeasonTypeGroup>
+     * @var Collection<int, EspnWeek>
      */
-    #[ORM\ManyToMany(targetEntity: EspnSeasonTypeGroup::class, inversedBy: 'types', cascade: ['persist', 'remove'])]
-    #[ORM\JoinTable(name: 'easb_espn_season_type_to_groups')]
-    private Collection $groups;
-
-    /**
-     * @var Collection<int, EspnSeasonTypeWeek>
-     */
-    #[ORM\OneToMany(mappedBy: 'type', targetEntity: EspnSeasonTypeWeek::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(
+        mappedBy: 'seasonType',
+        targetEntity: EspnWeek::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
     private Collection $weeks;
-
-    /**
-     * @var Collection<int, EspnSeasonTypeTeamRecord>
-     */
-    #[ORM\OneToMany(mappedBy: 'seasonType', targetEntity: EspnSeasonTypeTeamRecord::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private Collection $records;
 
     public function __construct()
     {
-        $this->groups = new ArrayCollection();
         $this->weeks = new ArrayCollection();
-        $this->records = new ArrayCollection();
     }
 
-    public function buildFindByCriteriaFromDto(EspnSeasonTypeDto $espnSeasonTypeDto): array
+    public static function buildFindByCriteriaFromDto(EspnSeasonTypeDto $dto, EspnSeason $season): array
     {
         return [
-            'year' => $espnSeasonTypeDto->getYear(),
-            'type' => $espnSeasonTypeDto->getType(),
+            'espnId' => $dto->getId(),
+            'season' => $season,
         ];
     }
 
@@ -114,12 +118,12 @@ class EspnSeasonType
         return $this;
     }
 
-    public function getType(): ?int
+    public function getType(): ?SeasonTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(?int $type): static
+    public function setType(?SeasonTypeEnum $type): static
     {
         $this->type = $type;
         return $this;
@@ -158,23 +162,23 @@ class EspnSeasonType
         return $this;
     }
 
-    public function getStartDate(): ?DateTime
+    public function getStartDate(): ?DateTimeImmutable
     {
         return $this->startDate;
     }
 
-    public function setStartDate(?DateTime $startDate): static
+    public function setStartDate(?DateTimeImmutable $startDate): static
     {
         $this->startDate = $startDate;
         return $this;
     }
 
-    public function getEndDate(): ?DateTime
+    public function getEndDate(): ?DateTimeImmutable
     {
         return $this->endDate;
     }
 
-    public function setEndDate(?DateTime $endDate): static
+    public function setEndDate(?DateTimeImmutable $endDate): static
     {
         $this->endDate = $endDate;
         return $this;
@@ -213,39 +217,6 @@ class EspnSeasonType
         return $this;
     }
 
-    public function getGroupsReference(): ?string
-    {
-        return $this->groupsReference;
-    }
-
-    public function setGroupsReference(?string $groupsReference): static
-    {
-        $this->groupsReference = $groupsReference;
-        return $this;
-    }
-
-    public function getWeeksReference(): ?string
-    {
-        return $this->weeksReference;
-    }
-
-    public function setWeeksReference(?string $weeksReference): static
-    {
-        $this->weeksReference = $weeksReference;
-        return $this;
-    }
-
-    public function getCorrectionsReference(): ?string
-    {
-        return $this->correctionsReference;
-    }
-
-    public function setCorrectionsReference(?string $correctionsReference): static
-    {
-        $this->correctionsReference = $correctionsReference;
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -257,6 +228,61 @@ class EspnSeasonType
         return $this;
     }
 
+    public function getIsCurrent(): ?bool
+    {
+        return $this->isCurrent;
+    }
+
+    public function setIsCurrent(?bool $isCurrent): static
+    {
+        $this->isCurrent = $isCurrent;
+        return $this;
+    }
+
+    public function getGroupsReference(): ?string
+    {
+        return $this->groupsReference;
+    }
+
+    public function setGroupsReference(?string $v): static
+    {
+        $this->groupsReference = $v;
+        return $this;
+    }
+
+    public function getWeeksReference(): ?string
+    {
+        return $this->weeksReference;
+    }
+
+    public function setWeeksReference(?string $v): static
+    {
+        $this->weeksReference = $v;
+        return $this;
+    }
+
+    public function getCorrectionsReference(): ?string
+    {
+        return $this->correctionsReference;
+    }
+
+    public function setCorrectionsReference(?string $v): static
+    {
+        $this->correctionsReference = $v;
+        return $this;
+    }
+
+    public function getLeadersReference(): ?string
+    {
+        return $this->leadersReference;
+    }
+
+    public function setLeadersReference(?string $v): static
+    {
+        $this->leadersReference = $v;
+        return $this;
+    }
+
     public function getSeason(): ?EspnSeason
     {
         return $this->season;
@@ -265,134 +291,52 @@ class EspnSeasonType
     public function setSeason(?EspnSeason $season): static
     {
         $this->season = $season;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, EspnSeasonTypeGroup>
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(EspnSeasonTypeGroup $group): static
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups->add($group);
-        }
-        return $this;
-    }
-
-    public function removeGroup(EspnSeasonTypeGroup $group): static
-    {
-        $this->groups->removeElement($group);
-        return $this;
-    }
-
-    public function addOrReplaceGroup(EspnSeasonTypeGroup $newGroup): static
-    {
-        foreach ($this->groups as $key => $existingGroup) {
-            if ($existingGroup->getId() !== null && $existingGroup->getId() === $newGroup->getId()) {
-                if ($existingGroup !== $newGroup) {
-                    $this->groups->set($key, $newGroup);
-                    $newGroup->setSeasonType($this);
-                }
-                return $this;
-            }
-        }
-
-        return $this->addGroup($newGroup);
-    }
-
-    /**
-     * @return Collection<int, EspnSeasonTypeWeek>
-     */
     public function getWeeks(): Collection
     {
         return $this->weeks;
     }
 
-    public function addWeek(EspnSeasonTypeWeek $week): static
+    public function addWeek(EspnWeek $week): static
     {
         if (!$this->weeks->contains($week)) {
             $this->weeks->add($week);
-            $week->setType($this);
+            $week->setSeasonType($this);
         }
-
         return $this;
     }
 
-    public function removeWeek(EspnSeasonTypeWeek $week): static
+    public function removeWeek(EspnWeek $week): static
     {
         if ($this->weeks->removeElement($week)) {
-            // set the owning side to null (unless already changed)
-            if ($week->getType() === $this) {
-                $week->setType(null);
+            if ($week->getSeasonType() === $this) {
+                $week->setSeasonType(null);
             }
         }
-
         return $this;
     }
 
-    public function addOrReplaceWeek(EspnSeasonTypeWeek $newWeek): static
+    public function removeAllWeeks(): static
     {
-        foreach ($this->weeks as $key => $existingWeek) {
-            if ($existingWeek->getId() !== null && $existingWeek->getId() === $newWeek->getId()) {
-                if ($existingWeek !== $newWeek) {
+        foreach ($this->weeks as $week) {
+            $this->removeWeek($week);
+        }
+        return $this;
+    }
+
+    public function addOrReplaceWeek(EspnWeek $newWeek): static
+    {
+        foreach ($this->weeks as $key => $existing) {
+            if ($existing->getId() !== null && $existing->getId() === $newWeek->getId()) {
+                if ($existing !== $newWeek) {
                     $this->weeks->set($key, $newWeek);
                     $newWeek->setSeasonType($this);
                 }
                 return $this;
             }
         }
-
         return $this->addWeek($newWeek);
-    }
-
-    /**
-     * @return Collection<int, EspnSeasonTypeTeamRecord>
-     */
-    public function getRecords(): Collection
-    {
-        return $this->records;
-    }
-
-    public function addRecord(EspnSeasonTypeTeamRecord $record): static
-    {
-        if (!$this->records->contains($record)) {
-            $this->records->add($record);
-            $record->setSeasonType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRecord(EspnSeasonTypeTeamRecord $record): static
-    {
-        if ($this->records->removeElement($record)) {
-            // set the owning side to null (unless already changed)
-            if ($record->getSeasonType() === $this) {
-                $record->setSeasonType(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function addOrReplaceRecord(EspnSeasonTypeTeamRecord $newRecord): static
-    {
-        foreach ($this->records as $key => $existingRecord) {
-            if ($existingRecord->getId() !== null && $existingRecord->getId() === $newRecord->getId()) {
-                if ($existingRecord !== $newRecord) {
-                    $this->records->set($key, $newRecord);
-                    $newRecord->setSeasonType($this);
-                }
-                return $this;
-            }
-        }
-
-        return $this->addRecord($newRecord);
     }
 }

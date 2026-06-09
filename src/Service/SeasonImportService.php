@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace HansPeterOrding\EspnApiSymfonyBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use HansPeterOrding\EspnApiClient\ApiClient\Endpoints\Season;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportNotImplementedException;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeGroupImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeWeekImporter;
+use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnSeasonMessage;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 class SeasonImportService
@@ -21,12 +24,16 @@ class SeasonImportService
     public const IMPORT_ENTITY_TYPE_GROUPS = 'import_entity_type_groups';
     public const IMPORT_ENTITY_TYPE_WEEKS = 'import_entity_type_weeks';
 
+    public const IMPORT_MODE_DIRECT = 'direct';
+    public const IMPORT_MODE_QUEUED = 'queued';
+
     public function __construct(
         private readonly EntityManagerInterface      $entityManager,
         private readonly EspnSeasonImporter          $espnSeasonImporter,
         private readonly EspnSeasonTypeImporter      $espnSeasonTypeImporter,
         private readonly EspnSeasonTypeGroupImporter $espnSeasonTypeGroupImporter,
         private readonly EspnSeasonTypeWeekImporter  $espnSeasonTypeWeekImporter,
+        private readonly MessageBusInterface $messageBus,
     )
     {
     }
@@ -43,10 +50,38 @@ class SeasonImportService
         ];
     }
 
-    public function importEspnLeague(int $year, ?array $importEntities = null): array
+    public static function getFullQueuedImportEntities(): array
+    {
+        return [
+            self::IMPORT_ENTITY_TYPE => true,
+            self::IMPORT_ENTITY_TYPES => true,
+            self::IMPORT_ENTITY_TYPE_GROUPS => true,
+            self::IMPORT_ENTITY_TYPE_WEEKS => true,
+            self::IMPORT_ENTITY_RANKINGS => false,
+            self::IMPORT_ENTITY_FUTURES => false,
+            SeasonTeamImportService::IMPORT_ENTITY_TEAM => [
+                'seasonTypes' => [
+                    2 // Regular season only
+                ]
+            ],
+            SeasonTeamImportService::IMPORT_ENTITY_FRANCHISE => true,
+            SeasonTeamImportService::IMPORT_ENTITY_VENUE => true,
+            SeasonTeamImportService::IMPORT_ENTITY_RECORDS => true,
+            SeasonTypeWeekEventImportService::IMPORT_ENTITY_SEASON_TYPE_WEEK => true,
+            SeasonTypeWeekEventImportService::IMPORT_ENTITY_SEASON_TYPE_WEEK_EVENTS => true,
+            SeasonTypeWeekEventImportService::IMPORT_ENTITY_EVENT_COMPETITION => true,
+            SeasonTypeWeekEventImportService::IMPORT_ENTITY_EVENT_COMPETITION_COMPETITORS => true,
+            SeasonTypeWeekEventImportService::IMPORT_ENTITY_EVENT_COMPETITION_COMPETITOR_SCORE => true,
+        ];
+    }
+
+    public function importEspnLeague(int $year, string $mode = self::IMPORT_MODE_DIRECT, ?array $importEntities = null): array
     {
         if (!$importEntities) {
-            $importEntities = $this->getDefaultImportEntities();
+            $importEntities = match ($mode) {
+                self::IMPORT_MODE_DIRECT => self::getDefaultImportEntities(),
+                self::IMPORT_MODE_QUEUED => self::getFullQueuedImportEntities(),
+            };
         }
 
         if (array_key_exists(self::IMPORT_ENTITY_RANKINGS, $importEntities) && $importEntities[self::IMPORT_ENTITY_RANKINGS] !== false) {
@@ -56,12 +91,25 @@ class SeasonImportService
             throw new ImportNotImplementedException(self::IMPORT_ENTITY_FUTURES);
         }
 
+        if($mode === self::IMPORT_MODE_QUEUED) {
+            $message = new ImportEspnSeasonMessage($year, $importEntities);
+            $this->messageBus->dispatch($message);
+
+            return [];
+        }
+
+        return $this->importDirect();
+    }
+
+    private function importDirect(): array
+    {
         $this->entityManager->beginTransaction();
 
         $stopwatch = new Stopwatch();
         $stopwatch->start('import_espn_season');
 
         $stopwatch->openSection();
+
         $espnSeason = $this->espnSeasonImporter->import($year);
 
         $this->entityManager->persist($espnSeason);

@@ -1,0 +1,102 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Importers
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonImporter:
+        arguments:
+            $espnApiClient: '@HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface'
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season'
+    hpo_espn_api_symfony_bundle.importer.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season_type'
+    hpo_espn_api_symfony_bundle.importer.espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonTypeImporter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonGroupImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_season_group'
+    hpo_espn_api_symfony_bundle.importer.espn_season_group: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnSeasonGroupImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnWeekImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_week'
+    hpo_espn_api_symfony_bundle.importer.espn_week: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnWeekImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnTeamImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_team'
+            # $espnVenueRepository, $espnFranchiseRepository, $espnSeasonGroupRepository autowired by type
+    hpo_espn_api_symfony_bundle.importer.espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnTeamImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnRecordImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_record'
+    hpo_espn_api_symfony_bundle.importer.espn_record: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnRecordImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnVenueImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_venue'
+    hpo_espn_api_symfony_bundle.importer.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnVenueImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnFranchiseImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_franchise'
+    hpo_espn_api_symfony_bundle.importer.espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnFranchiseImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnPositionImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_position'
+    hpo_espn_api_symfony_bundle.importer.espn_position: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnPositionImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnAthleteImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_athlete'
+    hpo_espn_api_symfony_bundle.importer.espn_athlete: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnAthleteImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnContractImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_contract'
+    hpo_espn_api_symfony_bundle.importer.espn_contract: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnContractImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnInjuryImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_injury'
+    hpo_espn_api_symfony_bundle.importer.espn_injury: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnInjuryImporter'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCoachImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_coach'
+    hpo_espn_api_symfony_bundle.importer.espn_coach: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCoachImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCompetitionStatusImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_status'
+    hpo_espn_api_symfony_bundle.importer.espn_competition_status: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCompetitionStatusImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnEventImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_event'
+    hpo_espn_api_symfony_bundle.importer.espn_event: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnEventImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCompetitionImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_competition'
+    hpo_espn_api_symfony_bundle.importer.espn_competition: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCompetitionImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCompetitorImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_competitor'
+    hpo_espn_api_symfony_bundle.importer.espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCompetitorImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnOfficialImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_official'
+    hpo_espn_api_symfony_bundle.importer.espn_official: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnOfficialImporter'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnScoreImporter:
+        arguments:
+            $converter: '@hpo_espn_api_symfony_bundle.converter.espn_score'
+    hpo_espn_api_symfony_bundle.importer.espn_score: '@HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnScoreImporter'

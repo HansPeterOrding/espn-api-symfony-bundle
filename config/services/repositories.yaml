@@ -1,0 +1,67 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonGroupRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_season_group: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonGroupRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnWeekRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_week: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnWeekRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_image: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnNoteRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_note: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnNoteRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnPositionRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_position: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnPositionRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnAthleteRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_athlete: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnAthleteRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnInjuryRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_injury: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnInjuryRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCoachRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_coach: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCoachRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnRecordRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_record: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnRecordRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnEventRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_event: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnEventRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_competition: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScoreRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_score: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnScoreRepository'
+    
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnOfficialRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_official: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnOfficialRepository'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnContractRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_contract: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnContractRepository'
+
+    HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionStatusRepository: ~
+    hpo_espn_api_symfony_bundle.repository.espn_competition_status: '@HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionStatusRepository'

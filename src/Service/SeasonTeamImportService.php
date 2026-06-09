@@ -25,6 +25,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class SeasonTeamImportService
 {
+    public const IMPORT_ENTITY_TEAM = 'import_entity_team';
     public const IMPORT_ENTITY_RECORDS = 'import_entity_records';
     public const IMPORT_ENTITY_FRANCHISE = 'import_entity_franchise';
     public const IMPORT_ENTITY_VENUE = 'import_entity_venue';
