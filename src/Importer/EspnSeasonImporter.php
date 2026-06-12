@@ -11,14 +11,11 @@ use HansPeterOrding\EspnApiSymfonyBundle\Exception\ImportException;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 
-class EspnSeasonImporter
+/**
+ * @property EspnSeasonConverter $converter
+ */
+class EspnSeasonImporter extends AbstractImporter
 {
-    public function __construct(
-        private readonly EspnApiClientInterface $espnApiClient,
-        private readonly EspnSeasonConverter $espnSeasonConverter,
-    ) {
-    }
-
     public function buildEntityFromReference(string $reference): EspnSeason
     {
         $urlParams = EspnUrlPatternResolver::resolveAll(
@@ -31,7 +28,7 @@ class EspnSeasonImporter
                 'Could not resolve year from season reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnSeasonDto = $this->espnApiClient->seasons()->get($urlParams->year);
 
