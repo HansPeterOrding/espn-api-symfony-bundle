@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnContractMessageHandler
@@ -18,10 +19,11 @@ class ImportEspnContractMessageHandler
     use ImportEntitiesHelperTrait;
 
     public function __construct(
-        private readonly EspnContractImporter $espnContractImporter,
+        private readonly EspnContractImporter   $espnContractImporter,
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly LoggerInterface        $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnContractMessage $message): void
@@ -45,7 +47,7 @@ class ImportEspnContractMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnContractMessageHandler error',
                 [

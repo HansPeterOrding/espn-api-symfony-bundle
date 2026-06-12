@@ -22,13 +22,14 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnAthleteImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
-        private readonly EspnSeasonRepository $espnSeasonRepository,
-        private readonly EspnTeamRepository $espnTeamRepository,
+        EspnApiClientInterface                  $espnApiClient,
+        ConverterInterface                      $converter,
+        private readonly EspnSeasonRepository   $espnSeasonRepository,
+        private readonly EspnTeamRepository     $espnTeamRepository,
         private readonly EspnPositionRepository $espnPositionRepository,
-        private readonly EspnNoteConverter $espnNoteConverter,
-    ) {
+        private readonly EspnNoteConverter      $espnNoteConverter,
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -44,7 +45,7 @@ class EspnAthleteImporter extends AbstractImporter
                 'Could not resolve year or athleteId from athlete reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnSeason = $this->espnSeasonRepository->findOneBy(['espnYear' => $urlParams->year]);
         if (null === $espnSeason) {
@@ -93,7 +94,7 @@ class EspnAthleteImporter extends AbstractImporter
             return;
         }
 
-        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string) $urlParams->teamId]);
+        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string)$urlParams->teamId]);
         $espnAthlete->setTeam($espnTeam); // null if not yet imported
     }
 
@@ -114,7 +115,7 @@ class EspnAthleteImporter extends AbstractImporter
         }
 
         $espnPosition = $this->espnPositionRepository->findOneBy(
-            ['espnId' => (string) $urlParams->positionId]
+            ['espnId' => (string)$urlParams->positionId]
         );
 
         $espnAthlete->setPosition($espnPosition); // null if positions not yet imported

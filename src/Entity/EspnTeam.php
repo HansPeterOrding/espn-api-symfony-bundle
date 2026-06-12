@@ -138,8 +138,8 @@ class EspnTeam
      * @var Collection<int, EspnImage>
      */
     #[ORM\OneToMany(
-        mappedBy: 'team',
         targetEntity: EspnImage::class,
+        mappedBy: 'team',
         cascade: ['persist', 'remove'],
         orphanRemoval: true
     )]
@@ -149,8 +149,8 @@ class EspnTeam
      * @var Collection<int, EspnNote>
      */
     #[ORM\OneToMany(
-        mappedBy: 'team',
         targetEntity: EspnNote::class,
+        mappedBy: 'team',
         cascade: ['persist', 'remove'],
         orphanRemoval: true
     )]

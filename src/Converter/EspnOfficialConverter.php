@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetition;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnOfficial;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnOfficialRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnOfficial as EspnOfficialDto;
 
-class EspnOfficialConverter implements ConverterInterface
+readonly class EspnOfficialConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnOfficialRepository        $espnOfficialRepository,
-        private readonly EspnOfficialPositionConverter $espnOfficialPositionConverter,
+        private EspnOfficialRepository        $espnOfficialRepository,
+        private EspnOfficialPositionConverter $espnOfficialPositionConverter,
     )
     {
     }

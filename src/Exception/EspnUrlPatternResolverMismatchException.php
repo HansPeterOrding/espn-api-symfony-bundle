@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Exception;
 
-class EspnUrlPatternResolverMismatchException extends \RuntimeException
-{
-    const EXCEPTION_TYPE_PATTERN = 'pattern';
-    const EXCEPTION_TYPE_ATTRIBUTE = 'attribute';
+use RuntimeException;
 
-    const EXCEPTION_MESSAGE = '%s is not a valid %s for ESPN URL pattern matching.';
+class EspnUrlPatternResolverMismatchException extends RuntimeException
+{
+    public const string EXCEPTION_TYPE_PATTERN = 'pattern';
+    public const string EXCEPTION_TYPE_ATTRIBUTE = 'attribute';
+    private const string EXCEPTION_MESSAGE = '%s is not a valid %s for ESPN URL pattern matching.';
 
     public function __construct(string $type, string $value)
     {
@@ -19,6 +20,6 @@ class EspnUrlPatternResolverMismatchException extends \RuntimeException
             $type
         );
 
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message);
     }
 }

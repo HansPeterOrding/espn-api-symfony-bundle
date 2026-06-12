@@ -27,7 +27,7 @@ class EspnSeasonGroupImporter extends AbstractImporter
                 'Could not resolve year, typeId or groupId from season group reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnSeasonGroupDto = $this->espnApiClient->seasons()->seasonTypes()->seasonGroups()->get(
             $urlParams->year,

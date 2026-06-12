@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnScoreMessageHandler
@@ -18,10 +19,11 @@ class ImportEspnScoreMessageHandler
     use ImportEntitiesHelperTrait;
 
     public function __construct(
-        private readonly EspnScoreImporter $espnScoreImporter,
+        private readonly EspnScoreImporter      $espnScoreImporter,
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly LoggerInterface        $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnScoreMessage $message): void
@@ -45,7 +47,7 @@ class ImportEspnScoreMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnScoreMessageHandler error',
                 [

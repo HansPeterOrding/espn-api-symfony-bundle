@@ -6,8 +6,9 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Exception;
 
 use RuntimeException;
 
-class ImportNotImplementedException extends RuntimeException {
-    private const MESSAGE = "%s import is not implemented yet.";
+class ImportNotImplementedException extends RuntimeException
+{
+    private const string MESSAGE = "%s import is not implemented yet.";
 
     public function __construct(string $importType)
     {

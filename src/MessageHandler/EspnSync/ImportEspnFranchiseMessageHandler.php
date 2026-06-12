@@ -7,11 +7,11 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync;
 use Doctrine\ORM\EntityManagerInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnFranchiseImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnFranchiseMessage;
-use HansPeterOrding\EspnApiSymfonyBundle\Service\EspnImportService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnFranchiseMessageHandler
@@ -19,10 +19,11 @@ class ImportEspnFranchiseMessageHandler
     use ImportEntitiesHelperTrait;
 
     public function __construct(
-        private readonly EspnFranchiseImporter $espnFranchiseImporter,
+        private readonly EspnFranchiseImporter  $espnFranchiseImporter,
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly LoggerInterface        $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnFranchiseMessage $message): void
@@ -42,7 +43,7 @@ class ImportEspnFranchiseMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnFranchiseMessageHandler error',
                 [

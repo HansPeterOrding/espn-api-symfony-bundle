@@ -6,7 +6,6 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\Importer;
 
 use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonConverter;
 
 abstract class AbstractImporter
 {

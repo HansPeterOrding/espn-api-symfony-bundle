@@ -28,7 +28,7 @@ class EspnWeekImporter extends AbstractImporter
                 'Could not resolve year, typeId or weekNumber from week reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnWeekDto = $this->espnApiClient->seasons()->seasonTypes()->weeks()->get(
             $urlParams->year,

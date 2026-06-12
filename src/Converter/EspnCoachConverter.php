@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCoach;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCoachRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnCoach as EspnCoachDto;
 
-class EspnCoachConverter implements ConverterInterface
+readonly class EspnCoachConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnCoachRepository  $espnCoachRepository,
-        private readonly EspnAddressConverter $espnAddressConverter,
+        private EspnCoachRepository  $espnCoachRepository,
+        private EspnAddressConverter $espnAddressConverter,
     )
     {
     }

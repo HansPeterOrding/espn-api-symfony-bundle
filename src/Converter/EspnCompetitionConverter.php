@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use DateTimeImmutable;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetition;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnCompetition as EspnCompetitionDto;
 
-class EspnCompetitionConverter implements ConverterInterface
+readonly class EspnCompetitionConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnCompetitionRepository      $espnCompetitionRepository,
-        private readonly EspnCompetitionTypeConverter   $espnCompetitionTypeConverter,
-        private readonly EspnCompetitionFormatConverter $espnCompetitionFormatConverter,
-        private readonly EspnCompetitionStatusConverter $espnCompetitionStatusConverter,
-        private readonly EspnSourceConverter            $espnSourceConverter,
+        private EspnCompetitionRepository      $espnCompetitionRepository,
+        private EspnCompetitionTypeConverter   $espnCompetitionTypeConverter,
+        private EspnCompetitionFormatConverter $espnCompetitionFormatConverter,
+        private EspnSourceConverter            $espnSourceConverter,
     )
     {
     }

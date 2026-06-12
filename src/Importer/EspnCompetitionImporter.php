@@ -20,11 +20,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnCompetitionImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface               $espnApiClient,
+        ConverterInterface                   $converter,
         private readonly EspnEventRepository $espnEventRepository,
         private readonly EspnVenueRepository $espnVenueRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -40,7 +41,7 @@ class EspnCompetitionImporter extends AbstractImporter
                 'Could not resolve eventId or competitionId from competition reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnCompetitionDto = $this->espnApiClient->events()->competitions()->get(
             $urlParams->eventId,
@@ -80,7 +81,7 @@ class EspnCompetitionImporter extends AbstractImporter
             return;
         }
 
-        $espnVenue = $this->espnVenueRepository->findOneBy(['espnId' => (string) $urlParams->venueId]);
+        $espnVenue = $this->espnVenueRepository->findOneBy(['espnId' => (string)$urlParams->venueId]);
         $espnCompetition->setVenue($espnVenue);
     }
 }

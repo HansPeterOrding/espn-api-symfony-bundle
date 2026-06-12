@@ -15,6 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnStandingMessageHandler
@@ -22,12 +23,12 @@ class ImportEspnStandingMessageHandler
     use ImportEntitiesHelperTrait;
 
     // ESPN standing type indices
-    private const STANDING_TYPE_OVERALL = 0;
-    private const STANDING_TYPE_PLAYOFF = 1;
-    private const STANDING_TYPE_EXPANDED = 2;
-    private const STANDING_TYPE_DIVISION = 3;
+    private const int STANDING_TYPE_OVERALL = 0;
+    private const int STANDING_TYPE_PLAYOFF = 1;
+    private const int STANDING_TYPE_EXPANDED = 2;
+    private const int STANDING_TYPE_DIVISION = 3;
 
-    private const STANDING_TYPE_MAP = [
+    private const array STANDING_TYPE_MAP = [
         EspnImportService::IMPORT_STANDINGS_TYPE_OVERALL => self::STANDING_TYPE_OVERALL,
         EspnImportService::IMPORT_STANDINGS_TYPE_PLAYOFF => self::STANDING_TYPE_PLAYOFF,
         EspnImportService::IMPORT_STANDINGS_TYPE_EXPANDED => self::STANDING_TYPE_EXPANDED,
@@ -35,11 +36,12 @@ class ImportEspnStandingMessageHandler
     ];
 
     public function __construct(
-        private readonly EspnApiClientInterface $espnApiClient,
+        private readonly EspnApiClientInterface    $espnApiClient,
         private readonly EspnSeasonGroupRepository $espnSeasonGroupRepository,
-        private readonly MessageBusInterface $messageBus,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly MessageBusInterface       $messageBus,
+        private readonly LoggerInterface           $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnStandingMessage $message): void
@@ -116,7 +118,7 @@ class ImportEspnStandingMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnStandingMessageHandler error',
                 [

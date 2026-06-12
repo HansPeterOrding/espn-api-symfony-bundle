@@ -15,7 +15,7 @@ use HansPeterOrding\EspnApiClient\Dto\EspnEvent as EspnEventDto;
 #[ORM\Entity(repositoryClass: EspnEventRepository::class)]
 #[ORM\Table(name: 'easb_espn_event')]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Index(columns: ['espn_id'], name: 'idx_espn_event_espn_id')]
+#[ORM\Index(name: 'idx_espn_event_espn_id', columns: ['espn_id'])]
 class EspnEvent
 {
     use SyncTimestampsTrait;
@@ -62,8 +62,8 @@ class EspnEvent
      * @var Collection<int, EspnCompetition>
      */
     #[ORM\OneToMany(
-        mappedBy: 'event',
         targetEntity: EspnCompetition::class,
+        mappedBy: 'event',
         cascade: ['persist', 'remove'],
         orphanRemoval: true
     )]

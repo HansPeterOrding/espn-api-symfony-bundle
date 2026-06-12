@@ -9,10 +9,10 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnContract;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnContractRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnContract as EspnContractDto;
 
-class EspnContractConverter implements ConverterInterface
+readonly class EspnContractConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnContractRepository $espnContractRepository,
+        private EspnContractRepository $espnContractRepository,
     )
     {
     }

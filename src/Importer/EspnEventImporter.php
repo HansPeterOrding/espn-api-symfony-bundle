@@ -21,21 +21,23 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnEventImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
-        private readonly EspnSeasonRepository $espnSeasonRepository,
+        EspnApiClientInterface                    $espnApiClient,
+        ConverterInterface                        $converter,
+        private readonly EspnSeasonRepository     $espnSeasonRepository,
         private readonly EspnSeasonTypeRepository $espnSeasonTypeRepository,
-        private readonly EspnWeekRepository $espnWeekRepository,
-    ) {
+        private readonly EspnWeekRepository       $espnWeekRepository,
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
     public function buildEntityFromReference(
         string $reference,
-        int $seasonId,
-        int $seasonTypeId,
-        int $weekId,
-    ): EspnEvent {
+        int    $seasonId,
+        int    $seasonTypeId,
+        int    $weekId,
+    ): EspnEvent
+    {
         $urlParams = EspnUrlPatternResolver::resolveAll(
             $reference,
             EspnUrlPatternResolver::URL_PATTERN_EVENT
@@ -46,7 +48,7 @@ class EspnEventImporter extends AbstractImporter
                 'Could not resolve eventId from event reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnEventDto = $this->espnApiClient->events()->get($urlParams->eventId);
 

@@ -13,7 +13,7 @@ use HansPeterOrding\EspnApiClient\Dto\EspnNote as EspnNoteDto;
 #[ORM\Entity(repositoryClass: EspnNoteRepository::class)]
 #[ORM\Table(name: 'easb_espn_note')]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Index(columns: ['parent_type'], name: 'idx_espn_note_parent_type')]
+#[ORM\Index(name: 'idx_espn_note_parent_type', columns: ['parent_type'])]
 class EspnNote
 {
     use SyncTimestampsTrait;

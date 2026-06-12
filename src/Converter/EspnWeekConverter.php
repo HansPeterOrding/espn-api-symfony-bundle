@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use DateTimeImmutable;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonType;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnWeek;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnWeekRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnWeek as EspnWeekDto;
 
-class EspnWeekConverter implements ConverterInterface
+readonly class EspnWeekConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnWeekRepository $espnWeekRepository,
-    ) {
+        private EspnWeekRepository $espnWeekRepository,
+    )
+    {
     }
 
     public function toEntity(EspnWeekDto $espnWeekDto, EspnSeasonType $espnSeasonType): EspnWeek

@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use DateTimeImmutable;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnEvent;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnEventRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnEvent as EspnEventDto;
 
-class EspnEventConverter implements ConverterInterface
+readonly class EspnEventConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnEventRepository $espnEventRepository,
-    ) {
+        private EspnEventRepository $espnEventRepository,
+    )
+    {
     }
 
     public function toEntity(EspnEventDto $espnEventDto): EspnEvent

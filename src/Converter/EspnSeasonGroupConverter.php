@@ -8,11 +8,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonGroup;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonGroupRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnSeasonGroup as EspnSeasonGroupDto;
 
-class EspnSeasonGroupConverter implements ConverterInterface
+readonly class EspnSeasonGroupConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnSeasonGroupRepository $espnSeasonGroupRepository,
-    ) {
+        private EspnSeasonGroupRepository $espnSeasonGroupRepository,
+    )
+    {
     }
 
     public function toEntity(EspnSeasonGroupDto $espnSeasonGroupDto): EspnSeasonGroup

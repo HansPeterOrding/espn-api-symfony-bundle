@@ -6,7 +6,8 @@ namespace HansPeterOrding\EspnApiSymfonyBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class HpoEspnApiSymfonyBundle extends Bundle {
+class HpoEspnApiSymfonyBundle extends Bundle
+{
     public function getPath(): string
     {
         return dirname(__DIR__);

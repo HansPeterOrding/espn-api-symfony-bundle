@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnFranchise;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnFranchiseRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnFranchise as EspnFranchiseDto;
 
-class EspnFranchiseConverter implements ConverterInterface
+readonly class EspnFranchiseConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnFranchiseRepository $espnFranchiseRepository,
+        private EspnFranchiseRepository $espnFranchiseRepository,
     )
     {
     }

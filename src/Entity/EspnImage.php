@@ -14,7 +14,7 @@ use HansPeterOrding\EspnApiClient\Dto\EspnImage as EspnImageDto;
 #[ORM\Entity(repositoryClass: EspnImageRepository::class)]
 #[ORM\Table(name: 'easb_espn_image')]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Index(columns: ['parent_type'], name: 'idx_espn_image_parent_type')]
+#[ORM\Index(name: 'idx_espn_image_parent_type', columns: ['parent_type'])]
 class EspnImage
 {
     use SyncTimestampsTrait;

@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnInjuryMessageHandler
@@ -43,7 +44,7 @@ class ImportEspnInjuryMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnInjuryMessageHandler error',
                 [

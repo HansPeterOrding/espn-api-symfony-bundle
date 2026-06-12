@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnPosition;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnPositionRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnPosition as EspnPositionDto;
 
-class EspnPositionConverter implements ConverterInterface
+readonly class EspnPositionConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnPositionRepository $espnPositionRepository,
-    ) {
+        private EspnPositionRepository $espnPositionRepository,
+    )
+    {
     }
 
     public function toEntity(EspnPositionDto $espnPositionDto): EspnPosition

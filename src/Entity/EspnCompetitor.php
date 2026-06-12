@@ -69,8 +69,8 @@ class EspnCompetitor
     private ?EspnTeam $team = null;
 
     #[ORM\OneToOne(
-        mappedBy: 'competitor',
         targetEntity: EspnScore::class,
+        mappedBy: 'competitor',
         cascade: ['persist', 'remove'],
         orphanRemoval: true
     )]

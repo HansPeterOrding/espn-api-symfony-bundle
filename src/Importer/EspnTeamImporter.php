@@ -22,13 +22,14 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnTeamImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
-        private readonly EspnVenueRepository $espnVenueRepository,
-        private readonly EspnFranchiseRepository $espnFranchiseRepository,
+        EspnApiClientInterface                     $espnApiClient,
+        ConverterInterface                         $converter,
+        private readonly EspnVenueRepository       $espnVenueRepository,
+        private readonly EspnFranchiseRepository   $espnFranchiseRepository,
         private readonly EspnSeasonGroupRepository $espnSeasonGroupRepository,
-        private readonly EspnNoteConverter $espnNoteConverter,
-    ) {
+        private readonly EspnNoteConverter         $espnNoteConverter,
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -44,7 +45,7 @@ class EspnTeamImporter extends AbstractImporter
                 'Could not resolve year or teamId from team reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnTeamDto = $this->espnApiClient->seasons()->teams()->get(
             $urlParams->year,
@@ -84,7 +85,7 @@ class EspnTeamImporter extends AbstractImporter
             return;
         }
 
-        $espnVenue = $this->espnVenueRepository->findOneBy(['espnId' => (string) $urlParams->venueId]);
+        $espnVenue = $this->espnVenueRepository->findOneBy(['espnId' => (string)$urlParams->venueId]);
         $espnTeam->setVenue($espnVenue); // null if not yet imported — will be connected on venue import
     }
 
@@ -103,7 +104,7 @@ class EspnTeamImporter extends AbstractImporter
             return;
         }
 
-        $espnFranchise = $this->espnFranchiseRepository->findOneBy(['espnId' => (string) $urlParams->franchiseId]);
+        $espnFranchise = $this->espnFranchiseRepository->findOneBy(['espnId' => (string)$urlParams->franchiseId]);
         $espnTeam->setFranchise($espnFranchise); // null if not yet imported — will be connected on franchise import
     }
 
@@ -127,7 +128,7 @@ class EspnTeamImporter extends AbstractImporter
 
         // Connect the direct group and walk up the parent hierarchy
         $group = $this->espnSeasonGroupRepository->findOneBy(
-            ['espnId' => (string) $urlParams->groupId]
+            ['espnId' => (string)$urlParams->groupId]
         );
 
         while (null !== $group) {
@@ -143,7 +144,7 @@ class EspnTeamImporter extends AbstractImporter
         }
 
         $noteDtos = $this->espnApiClient->seasons()->teams()->notes()->listForTeam(
-            (int) $espnTeam->getEspnId()
+            (int)$espnTeam->getEspnId()
         );
 
         foreach ($noteDtos as $noteDto) {

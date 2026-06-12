@@ -766,7 +766,7 @@ class EspnAthlete
             if ($existing->getId() !== null && $existing->getId() === $newInjury->getId()) {
                 if ($existing !== $newInjury) {
                     $this->injuries->set($key, $newInjury);
-                    $newInjury->setAthlete($this);
+                    $newInjury->addAthlete($this);
                 }
                 return $this;
             }

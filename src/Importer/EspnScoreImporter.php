@@ -19,10 +19,11 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnScoreImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface                    $espnApiClient,
+        ConverterInterface                        $converter,
         private readonly EspnCompetitorRepository $espnCompetitorRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -38,7 +39,7 @@ class EspnScoreImporter extends AbstractImporter
                 'Could not resolve required params from score reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnCompetitor = $this->espnCompetitorRepository->find($competitorId);
         if (null === $espnCompetitor) {

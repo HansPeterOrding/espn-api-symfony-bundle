@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnOfficialPosition;
 use HansPeterOrding\EspnApiClient\Dto\EspnOfficialPosition as EspnOfficialPositionDto;
 

@@ -45,8 +45,8 @@ class EspnVenue
      * @var Collection<int, EspnImage>
      */
     #[ORM\OneToMany(
-        mappedBy: 'venue',
         targetEntity: EspnImage::class,
+        mappedBy: 'venue',
         cascade: ['persist', 'remove'],
         orphanRemoval: true
     )]
@@ -56,8 +56,8 @@ class EspnVenue
      * @var Collection<int, EspnTeam>
      */
     #[ORM\OneToMany(
-        mappedBy: 'venue',
         targetEntity: EspnTeam::class,
+        mappedBy: 'venue',
         cascade: ['persist'],
         orphanRemoval: false
     )]
@@ -67,8 +67,8 @@ class EspnVenue
      * @var Collection<int, EspnFranchise>
      */
     #[ORM\OneToMany(
-        mappedBy: 'venue',
         targetEntity: EspnFranchise::class,
+        mappedBy: 'venue',
         cascade: ['persist'],
         orphanRemoval: false
     )]

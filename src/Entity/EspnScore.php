@@ -33,7 +33,7 @@ class EspnScore
     #[ORM\Embedded(class: EspnSource::class, columnPrefix: 'source_')]
     private EspnSource $source;
 
-    #[ORM\OneToOne(inversedBy: 'score', targetEntity: EspnCompetitor::class)]
+    #[ORM\OneToOne(targetEntity: EspnCompetitor::class, inversedBy: 'score')]
     #[ORM\JoinColumn(nullable: true)]
     private ?EspnCompetitor $competitor = null;
 

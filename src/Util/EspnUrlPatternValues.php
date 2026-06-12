@@ -25,6 +25,7 @@ class EspnUrlPatternValues
         public ?int $positionId = null,
         public ?int $injuryId = null,
         public ?int $contractYear = null,
-    ) {
+    )
+    {
     }
 }

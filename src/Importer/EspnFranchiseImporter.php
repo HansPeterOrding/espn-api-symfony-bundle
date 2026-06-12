@@ -20,11 +20,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnFranchiseImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
-        private readonly EspnTeamRepository $espnTeamRepository,
+        EspnApiClientInterface               $espnApiClient,
+        ConverterInterface                   $converter,
+        private readonly EspnTeamRepository  $espnTeamRepository,
         private readonly EspnVenueRepository $espnVenueRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -40,7 +41,7 @@ class EspnFranchiseImporter extends AbstractImporter
                 'Could not resolve franchiseId from franchise reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnFranchiseDto = $this->espnApiClient->franchises()->get($urlParams->franchiseId);
 
@@ -74,7 +75,7 @@ class EspnFranchiseImporter extends AbstractImporter
             return;
         }
 
-        $espnVenue = $this->espnVenueRepository->findOneBy(['espnId' => (string) $urlParams->venueId]);
+        $espnVenue = $this->espnVenueRepository->findOneBy(['espnId' => (string)$urlParams->venueId]);
         $espnFranchise->setVenue($espnVenue); // null if not yet imported — will connect on venue import
     }
 

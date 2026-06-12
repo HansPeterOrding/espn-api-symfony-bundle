@@ -7,7 +7,8 @@ namespace HansPeterOrding\EspnApiSymfonyBundle\DoctrineExtensions;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-class TablePrefixEventListener {
+class TablePrefixEventListener
+{
     protected array $config;
 
     public function __construct(
@@ -16,7 +17,7 @@ class TablePrefixEventListener {
     {
     }
 
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $classMetadata = $eventArgs->getClassMetadata();
 

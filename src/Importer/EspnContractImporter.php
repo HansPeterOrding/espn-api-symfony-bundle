@@ -21,12 +21,13 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnContractImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface                 $espnApiClient,
+        ConverterInterface                     $converter,
         private readonly EspnAthleteRepository $espnAthleteRepository,
-        private readonly EspnTeamRepository $espnTeamRepository,
-        private readonly EspnSeasonRepository $espnSeasonRepository,
-    ) {
+        private readonly EspnTeamRepository    $espnTeamRepository,
+        private readonly EspnSeasonRepository  $espnSeasonRepository,
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -42,7 +43,7 @@ class EspnContractImporter extends AbstractImporter
                 'Could not resolve athleteId or contractYear from contract reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnAthlete = $this->espnAthleteRepository->find($athleteEntityId);
         if (null === $espnAthlete) {
@@ -88,7 +89,7 @@ class EspnContractImporter extends AbstractImporter
             return;
         }
 
-        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string) $urlParams->teamId]);
+        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string)$urlParams->teamId]);
         $espnContract->setTeam($espnTeam);
     }
 

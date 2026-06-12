@@ -46,8 +46,8 @@ class EspnPosition
      * @var Collection<int, EspnPosition>
      */
     #[ORM\OneToMany(
-        mappedBy: 'parent',
         targetEntity: EspnPosition::class,
+        mappedBy: 'parent',
         cascade: ['persist'],
         orphanRemoval: false
     )]

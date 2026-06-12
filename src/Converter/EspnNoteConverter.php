@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnAthlete;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnNote;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
@@ -13,10 +11,10 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\NoteParentTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnNoteRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnNote as EspnNoteDto;
 
-class EspnNoteConverter implements ConverterInterface
+readonly class EspnNoteConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnNoteRepository $espnNoteRepository,
+        private EspnNoteRepository $espnNoteRepository,
     )
     {
     }

@@ -21,12 +21,13 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnRecordImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
-        private readonly EspnTeamRepository $espnTeamRepository,
-        private readonly EspnSeasonRepository $espnSeasonRepository,
+        EspnApiClientInterface                    $espnApiClient,
+        ConverterInterface                        $converter,
+        private readonly EspnTeamRepository       $espnTeamRepository,
+        private readonly EspnSeasonRepository     $espnSeasonRepository,
         private readonly EspnSeasonTypeRepository $espnSeasonTypeRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -52,7 +53,7 @@ class EspnRecordImporter extends AbstractImporter
                 'Could not resolve required params from record reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnRecordDto = null !== $urlParams->groupId
             ? $this->espnApiClient->seasons()->teams()->records()->getForGroup(
@@ -79,7 +80,7 @@ class EspnRecordImporter extends AbstractImporter
             ));
         }
 
-        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string) $urlParams->teamId]);
+        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string)$urlParams->teamId]);
         if (null === $espnTeam) {
             throw new UnrecoverableImportException(sprintf('Team with ESPN id %d not found. Import the team first.',
                 $urlParams->teamId
@@ -95,7 +96,7 @@ class EspnRecordImporter extends AbstractImporter
         }
 
         $espnSeasonType = $this->espnSeasonTypeRepository->findOneBy([
-            'espnId' => (string) $urlParams->typeId,
+            'espnId' => (string)$urlParams->typeId,
             'season' => $espnSeason,
         ]);
         if (null === $espnSeasonType) {

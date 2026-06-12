@@ -15,6 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnTeamInjuriesMessageHandler
@@ -23,11 +24,12 @@ class ImportEspnTeamInjuriesMessageHandler
 
     public function __construct(
         private readonly EspnApiClientInterface $espnApiClient,
-        private readonly EspnTeamRepository $espnTeamRepository,
-        private readonly EspnInjuryRepository $espnInjuryRepository,
-        private readonly MessageBusInterface $messageBus,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly EspnTeamRepository     $espnTeamRepository,
+        private readonly EspnInjuryRepository   $espnInjuryRepository,
+        private readonly MessageBusInterface    $messageBus,
+        private readonly LoggerInterface        $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnTeamInjuriesMessage $message): void
@@ -47,7 +49,7 @@ class ImportEspnTeamInjuriesMessageHandler
             $this->espnInjuryRepository->deleteByTeam($espnTeam);
 
             $injuryReferences = $this->espnApiClient->seasons()->teams()->injuries()->listRefsForTeam(
-                (int) $espnTeam->getEspnId()
+                (int)$espnTeam->getEspnId()
             );
 
             foreach ($injuryReferences as $injuryReference) {
@@ -66,7 +68,7 @@ class ImportEspnTeamInjuriesMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnTeamInjuriesMessageHandler error',
                 [

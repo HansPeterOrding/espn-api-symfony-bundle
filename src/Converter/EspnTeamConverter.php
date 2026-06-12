@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnTeamRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnTeam as EspnTeamDto;
 
-class EspnTeamConverter implements ConverterInterface
+readonly class EspnTeamConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnTeamRepository $espnTeamRepository,
-        private readonly EspnImageConverter $espnImageConverter,
-    ) {
+        private EspnTeamRepository $espnTeamRepository,
+        private EspnImageConverter $espnImageConverter,
+    )
+    {
     }
 
     public function toEntity(EspnTeamDto $espnTeamDto): EspnTeam

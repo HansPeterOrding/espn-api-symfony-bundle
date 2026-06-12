@@ -23,6 +23,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnTeamMessageHandler
@@ -31,12 +32,13 @@ class ImportEspnTeamMessageHandler
 
     public function __construct(
         private readonly EspnApiClientInterface $espnApiClient,
-        private readonly EspnTeamImporter $espnTeamImporter,
-        private readonly EspnSeasonRepository $espnSeasonRepository,
-        private readonly MessageBusInterface $messageBus,
+        private readonly EspnTeamImporter       $espnTeamImporter,
+        private readonly EspnSeasonRepository   $espnSeasonRepository,
+        private readonly MessageBusInterface    $messageBus,
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly LoggerInterface        $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnTeamMessage $message): void
@@ -69,7 +71,7 @@ class ImportEspnTeamMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnTeamMessageHandler error',
                 [

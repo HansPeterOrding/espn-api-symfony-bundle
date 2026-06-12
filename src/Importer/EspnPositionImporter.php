@@ -19,10 +19,11 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnPositionImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface                  $espnApiClient,
+        ConverterInterface                      $converter,
         private readonly EspnPositionRepository $espnPositionRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -38,7 +39,7 @@ class EspnPositionImporter extends AbstractImporter
                 'Could not resolve positionId from position reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnPositionDto = $this->espnApiClient->positions()->get($urlParams->positionId);
 
@@ -73,7 +74,7 @@ class EspnPositionImporter extends AbstractImporter
         }
 
         // Look up existing parent first
-        $parent = $this->espnPositionRepository->findOneBy(['espnId' => (string) $urlParams->positionId]);
+        $parent = $this->espnPositionRepository->findOneBy(['espnId' => (string)$urlParams->positionId]);
 
         if (null === $parent) {
             // Parent not yet imported — fetch and convert inline

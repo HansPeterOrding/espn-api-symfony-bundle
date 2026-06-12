@@ -15,7 +15,7 @@ use HansPeterOrding\EspnApiClient\Dto\EspnSeason as EspnSeasonDto;
 #[ORM\Entity(repositoryClass: EspnSeasonRepository::class)]
 #[ORM\Table(name: 'easb_espn_season')]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Index(columns: ['espn_year'], name: 'idx_espn_season_year')]
+#[ORM\Index(name: 'idx_espn_season_year', columns: ['espn_year'])]
 class EspnSeason
 {
     use SyncTimestampsTrait;
@@ -65,8 +65,8 @@ class EspnSeason
      * @var Collection<int, EspnSeasonType>
      */
     #[ORM\OneToMany(
-        mappedBy: 'season',
         targetEntity: EspnSeasonType::class,
+        mappedBy: 'season',
         cascade: ['persist', 'remove'],
         orphanRemoval: true
     )]

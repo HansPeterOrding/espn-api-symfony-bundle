@@ -4,17 +4,24 @@
   "description": "Symfony bundle to import data from ESPN api to symfony",
   "license": "MIT",
   "require": {
-    "php": ">=8.1.0",
+    "php": ">=8.4",
     "hans-peter-ording/espn-api-client": "^1.0",
-    "symfony/config": "^5.1|^6.0|^7.0",
-    "symfony/console": "^5.1|^6.0|^7.0",
-    "symfony/dependency-injection": "^5.1|^6.0|^7.0",
-    "symfony/http-kernel": "^5.1|^6.0|^7.0",
-    "symfony/orm-pack": "^2.0|^6.0|^7.0"
+    "symfony/config": "^7.0|^8.0",
+    "symfony/console": "^7.0|^8.0",
+    "symfony/dependency-injection": "^7.0|^8.0",
+    "symfony/http-kernel": "^7.0|^8.0",
+    "symfony/messenger": "^7.0|^8.0",
+    "symfony/orm-pack": "^2.0"
+  },
+  "suggest": {
+    "php-http/discovery": "Enables zero-config auto-discovery of PSR-18 clients and PSR-17 factories",
+    "symfony/http-client": "PSR-18 client and PSR-17 factories in one package, usable via Psr18Client",
+    "guzzlehttp/guzzle": "Popular PSR-18 HTTP client implementation",
+    "nyholm/psr7": "Lightweight PSR-17 request/URI factory implementation, commonly paired with Guzzle"
   },
   "require-dev": {
     "symfony/maker-bundle": "^1.0@dev",
-    "symfony/phpunit-bridge": "^5.1|^6.0|^7.0"
+    "symfony/phpunit-bridge": "^7.0|^8.0"
   },
   "autoload": {
     "psr-4": {

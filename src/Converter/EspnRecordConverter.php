@@ -11,10 +11,10 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnRecordRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnRecord as EspnRecordDto;
 
-class EspnRecordConverter implements ConverterInterface
+readonly class EspnRecordConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnRecordRepository $espnRecordRepository,
+        private EspnRecordRepository $espnRecordRepository,
     )
     {
     }

@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnAthlete;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnAthleteRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnAthlete as EspnAthleteDto;
 
-class EspnAthleteConverter implements ConverterInterface
+readonly class EspnAthleteConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnAthleteRepository      $espnAthleteRepository,
-        private readonly EspnAddressConverter       $espnAddressConverter,
-        private readonly EspnAthleteStatusConverter $espnAthleteStatusConverter,
+        private EspnAthleteRepository      $espnAthleteRepository,
+        private EspnAddressConverter       $espnAddressConverter,
+        private EspnAthleteStatusConverter $espnAthleteStatusConverter,
     )
     {
     }

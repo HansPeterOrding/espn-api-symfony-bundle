@@ -1,151 +1,151 @@
+# yaml-language-server: $schema=../../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
-    # Converters - Independent (embeddables, no constructor injection)
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAddressConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_address: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAddressConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSourceConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_source: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSourceConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteStatusConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_athlete_status: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteStatusConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryTypeConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_injury_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryTypeConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialPositionConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_official_position: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialPositionConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusTypeConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_competition_status_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusTypeConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatPeriodConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_competition_format_period: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatPeriodConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionTypeConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_competition_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionTypeConverter'
-    
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnContractConverter: ~
-    hpo_espn_api_symfony_bundle.converter.espn_contract: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnContractConverter'
-    
-    # Converters - Dependent (require constructor injection)
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusConverter:
-        arguments:
-            $espnCompetitionStatusTypeConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_status_type'
-    hpo_espn_api_symfony_bundle.converter.espn_competition_status: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatConverter:
-        arguments:
-            $espnCompetitionFormatPeriodConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_format_period'
-    hpo_espn_api_symfony_bundle.converter.espn_competition_format: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonConverter:
-        arguments:
-            $espnSeasonRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season'
-    hpo_espn_api_symfony_bundle.converter.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter:
-        arguments:
-            $espnVenueRepository: '@hpo_espn_api_symfony_bundle.repository.espn_venue'
-            $espnAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_address'
-    hpo_espn_api_symfony_bundle.converter.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnPositionConverter:
-        arguments:
-            $espnPositionRepository: '@hpo_espn_api_symfony_bundle.repository.espn_position'
-    hpo_espn_api_symfony_bundle.converter.espn_position: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnPositionConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnFranchiseConverter:
-        arguments:
-            $espnFranchiseRepository: '@hpo_espn_api_symfony_bundle.repository.espn_franchise'
-    hpo_espn_api_symfony_bundle.converter.espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnFranchiseConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter:
-        arguments:
-            $espnImageRepository: '@hpo_espn_api_symfony_bundle.repository.espn_image'
-    hpo_espn_api_symfony_bundle.converter.espn_image: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter:
-        arguments:
-            $espnNoteRepository: '@hpo_espn_api_symfony_bundle.repository.espn_note'
-    hpo_espn_api_symfony_bundle.converter.espn_note: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeConverter:
-        arguments:
-            $espnSeasonTypeRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_type'
-    hpo_espn_api_symfony_bundle.converter.espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonGroupConverter:
-        arguments:
-            $espnSeasonGroupRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_group'
-    hpo_espn_api_symfony_bundle.converter.espn_season_group: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonGroupConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnWeekConverter:
-        arguments:
-            $espnWeekRepository: '@hpo_espn_api_symfony_bundle.repository.espn_week'
-    hpo_espn_api_symfony_bundle.converter.espn_week: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnWeekConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamConverter:
-        arguments:
-            $espnTeamRepository: '@hpo_espn_api_symfony_bundle.repository.espn_team'
-            $espnImageConverter: '@hpo_espn_api_symfony_bundle.converter.espn_image'
-    hpo_espn_api_symfony_bundle.converter.espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteConverter:
-        arguments:
-            $espnAthleteRepository: '@hpo_espn_api_symfony_bundle.repository.espn_athlete'
-            $espnAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_address'
-            $espnAthleteStatusConverter: '@hpo_espn_api_symfony_bundle.converter.espn_athlete_status'
-    hpo_espn_api_symfony_bundle.converter.espn_athlete: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryConverter:
-        arguments:
-            $espnInjuryRepository: '@hpo_espn_api_symfony_bundle.repository.espn_injury'
-            $espnSourceConverter: '@hpo_espn_api_symfony_bundle.converter.espn_source'
-            $espnInjuryTypeConverter: '@hpo_espn_api_symfony_bundle.converter.espn_injury_type'
-    hpo_espn_api_symfony_bundle.converter.espn_injury: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCoachConverter:
-        arguments:
-            $espnCoachRepository: '@hpo_espn_api_symfony_bundle.repository.espn_coach'
-            $espnAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_address'
-    hpo_espn_api_symfony_bundle.converter.espn_coach: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCoachConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnRecordConverter:
-        arguments:
-            $espnRecordRepository: '@hpo_espn_api_symfony_bundle.repository.espn_record'
-    hpo_espn_api_symfony_bundle.converter.espn_record: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnRecordConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnEventConverter:
-        arguments:
-            $espnEventRepository: '@hpo_espn_api_symfony_bundle.repository.espn_event'
-    hpo_espn_api_symfony_bundle.converter.espn_event: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnEventConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionConverter:
-        arguments:
-            $espnCompetitionRepository: '@hpo_espn_api_symfony_bundle.repository.espn_competition'
-            $espnCompetitionTypeConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_type'
-            $espnCompetitionFormatConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_format'
-            $espnCompetitionStatusConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_status'
-            $espnSourceConverter: '@hpo_espn_api_symfony_bundle.converter.espn_source'
-    hpo_espn_api_symfony_bundle.converter.espn_competition: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter:
-        arguments:
-            $espnCompetitorRepository: '@hpo_espn_api_symfony_bundle.repository.espn_competitor'
-    hpo_espn_api_symfony_bundle.converter.espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScoreConverter:
-        arguments:
-            $espnScoreRepository: '@hpo_espn_api_symfony_bundle.repository.espn_score'
-            $espnSourceConverter: '@hpo_espn_api_symfony_bundle.converter.espn_source'
-    hpo_espn_api_symfony_bundle.converter.espn_score: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScoreConverter'
-
-    HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialConverter:
-        arguments:
-            $espnOfficialRepository: '@hpo_espn_api_symfony_bundle.repository.espn_official'
-            $espnOfficialPositionConverter: '@hpo_espn_api_symfony_bundle.converter.espn_official_position'
-    hpo_espn_api_symfony_bundle.converter.espn_official: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialConverter'
+  _defaults:
+    autowire: true
+    autoconfigure: true
+  
+  # Converters - Independent (embeddables, no constructor injection)
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAddressConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_address: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAddressConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSourceConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_source: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSourceConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteStatusConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_athlete_status: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteStatusConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryTypeConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_injury_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryTypeConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialPositionConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_official_position: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialPositionConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusTypeConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_competition_status_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusTypeConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatPeriodConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_competition_format_period: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatPeriodConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionTypeConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_competition_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionTypeConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnContractConverter: ~
+  hpo_espn_api_symfony_bundle.converter.espn_contract: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnContractConverter'
+  
+  # Converters - Dependent (require constructor injection)
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusConverter:
+    arguments:
+      $espnCompetitionStatusTypeConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_status_type'
+  hpo_espn_api_symfony_bundle.converter.espn_competition_status: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionStatusConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatConverter:
+    arguments:
+      $espnCompetitionFormatPeriodConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_format_period'
+  hpo_espn_api_symfony_bundle.converter.espn_competition_format: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionFormatConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonConverter:
+    arguments:
+      $espnSeasonRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season'
+  hpo_espn_api_symfony_bundle.converter.espn_season: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter:
+    arguments:
+      $espnVenueRepository: '@hpo_espn_api_symfony_bundle.repository.espn_venue'
+      $espnAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_address'
+  hpo_espn_api_symfony_bundle.converter.espn_venue: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnVenueConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnPositionConverter:
+    arguments:
+      $espnPositionRepository: '@hpo_espn_api_symfony_bundle.repository.espn_position'
+  hpo_espn_api_symfony_bundle.converter.espn_position: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnPositionConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnFranchiseConverter:
+    arguments:
+      $espnFranchiseRepository: '@hpo_espn_api_symfony_bundle.repository.espn_franchise'
+  hpo_espn_api_symfony_bundle.converter.espn_franchise: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnFranchiseConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter:
+    arguments:
+      $espnImageRepository: '@hpo_espn_api_symfony_bundle.repository.espn_image'
+  hpo_espn_api_symfony_bundle.converter.espn_image: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnImageConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter:
+    arguments:
+      $espnNoteRepository: '@hpo_espn_api_symfony_bundle.repository.espn_note'
+  hpo_espn_api_symfony_bundle.converter.espn_note: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnNoteConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeConverter:
+    arguments:
+      $espnSeasonTypeRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_type'
+  hpo_espn_api_symfony_bundle.converter.espn_season_type: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonGroupConverter:
+    arguments:
+      $espnSeasonGroupRepository: '@hpo_espn_api_symfony_bundle.repository.espn_season_group'
+  hpo_espn_api_symfony_bundle.converter.espn_season_group: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonGroupConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnWeekConverter:
+    arguments:
+      $espnWeekRepository: '@hpo_espn_api_symfony_bundle.repository.espn_week'
+  hpo_espn_api_symfony_bundle.converter.espn_week: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnWeekConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamConverter:
+    arguments:
+      $espnTeamRepository: '@hpo_espn_api_symfony_bundle.repository.espn_team'
+      $espnImageConverter: '@hpo_espn_api_symfony_bundle.converter.espn_image'
+  hpo_espn_api_symfony_bundle.converter.espn_team: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnTeamConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteConverter:
+    arguments:
+      $espnAthleteRepository: '@hpo_espn_api_symfony_bundle.repository.espn_athlete'
+      $espnAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_address'
+      $espnAthleteStatusConverter: '@hpo_espn_api_symfony_bundle.converter.espn_athlete_status'
+  hpo_espn_api_symfony_bundle.converter.espn_athlete: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnAthleteConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryConverter:
+    arguments:
+      $espnInjuryRepository: '@hpo_espn_api_symfony_bundle.repository.espn_injury'
+      $espnSourceConverter: '@hpo_espn_api_symfony_bundle.converter.espn_source'
+      $espnInjuryTypeConverter: '@hpo_espn_api_symfony_bundle.converter.espn_injury_type'
+  hpo_espn_api_symfony_bundle.converter.espn_injury: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnInjuryConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCoachConverter:
+    arguments:
+      $espnCoachRepository: '@hpo_espn_api_symfony_bundle.repository.espn_coach'
+      $espnAddressConverter: '@hpo_espn_api_symfony_bundle.converter.espn_address'
+  hpo_espn_api_symfony_bundle.converter.espn_coach: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCoachConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnRecordConverter:
+    arguments:
+      $espnRecordRepository: '@hpo_espn_api_symfony_bundle.repository.espn_record'
+  hpo_espn_api_symfony_bundle.converter.espn_record: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnRecordConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnEventConverter:
+    arguments:
+      $espnEventRepository: '@hpo_espn_api_symfony_bundle.repository.espn_event'
+  hpo_espn_api_symfony_bundle.converter.espn_event: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnEventConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionConverter:
+    arguments:
+      $espnCompetitionRepository: '@hpo_espn_api_symfony_bundle.repository.espn_competition'
+      $espnCompetitionTypeConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_type'
+      $espnCompetitionFormatConverter: '@hpo_espn_api_symfony_bundle.converter.espn_competition_format'
+      $espnSourceConverter: '@hpo_espn_api_symfony_bundle.converter.espn_source'
+  hpo_espn_api_symfony_bundle.converter.espn_competition: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitionConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter:
+    arguments:
+      $espnCompetitorRepository: '@hpo_espn_api_symfony_bundle.repository.espn_competitor'
+  hpo_espn_api_symfony_bundle.converter.espn_competitor: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnCompetitorConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScoreConverter:
+    arguments:
+      $espnScoreRepository: '@hpo_espn_api_symfony_bundle.repository.espn_score'
+      $espnSourceConverter: '@hpo_espn_api_symfony_bundle.converter.espn_source'
+  hpo_espn_api_symfony_bundle.converter.espn_score: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnScoreConverter'
+  
+  HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialConverter:
+    arguments:
+      $espnOfficialRepository: '@hpo_espn_api_symfony_bundle.repository.espn_official'
+      $espnOfficialPositionConverter: '@hpo_espn_api_symfony_bundle.converter.espn_official_position'
+  hpo_espn_api_symfony_bundle.converter.espn_official: '@HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnOfficialConverter'

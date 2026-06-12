@@ -9,12 +9,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Importer\EspnCompetitorImporter;
 use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnCompetitorMessage;
 use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnScoreMessage;
 use HansPeterOrding\EspnApiSymfonyBundle\Service\EspnImportService;
-use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnCompetitorMessageHandler
@@ -24,9 +24,10 @@ class ImportEspnCompetitorMessageHandler
     public function __construct(
         private readonly EspnCompetitorImporter $espnCompetitorImporter,
         private readonly EntityManagerInterface $entityManager,
-        private readonly MessageBusInterface $messageBus,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly MessageBusInterface    $messageBus,
+        private readonly LoggerInterface        $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnCompetitorMessage $message): void
@@ -62,7 +63,7 @@ class ImportEspnCompetitorMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnCompetitorMessageHandler error',
                 [

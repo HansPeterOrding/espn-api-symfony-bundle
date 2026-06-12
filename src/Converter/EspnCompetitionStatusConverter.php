@@ -9,11 +9,11 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetitionStatus;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitionStatusRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnCompetitionStatus as EspnCompetitionStatusDto;
 
-class EspnCompetitionStatusConverter implements ConverterInterface
+readonly class EspnCompetitionStatusConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnCompetitionStatusRepository    $espnCompetitionStatusRepository,
-        private readonly EspnCompetitionStatusTypeConverter $espnCompetitionStatusTypeConverter,
+        private EspnCompetitionStatusRepository    $espnCompetitionStatusRepository,
+        private EspnCompetitionStatusTypeConverter $espnCompetitionStatusTypeConverter,
     )
     {
     }

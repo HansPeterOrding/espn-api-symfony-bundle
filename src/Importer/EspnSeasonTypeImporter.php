@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Importer;
 
+use HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface;
+use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
 use HansPeterOrding\EspnApiSymfonyBundle\Converter\EspnSeasonTypeConverter;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonType;
@@ -18,10 +20,11 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnSeasonTypeImporter extends AbstractImporter
 {
     public function __construct(
-        \HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface $espnApiClient,
-        \HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface $converter,
+        EspnApiClientInterface                    $espnApiClient,
+        ConverterInterface                        $converter,
         private readonly EspnSeasonTypeRepository $espnSeasonTypeRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -37,7 +40,7 @@ class EspnSeasonTypeImporter extends AbstractImporter
                 'Could not resolve year or typeId from season type reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnSeasonTypeDto = $this->espnApiClient->seasons()->seasonTypes()->get(
             $urlParams->year,

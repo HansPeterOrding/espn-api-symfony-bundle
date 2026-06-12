@@ -10,9 +10,9 @@ use HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync\ImportEspnPositionsMes
 use HansPeterOrding\EspnApiSymfonyBundle\Service\EspnImportService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnPositionsMessageHandler
@@ -21,9 +21,10 @@ class ImportEspnPositionsMessageHandler
 
     public function __construct(
         private readonly EspnApiClientInterface $espnApiClient,
-        private readonly MessageBusInterface $messageBus,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly MessageBusInterface    $messageBus,
+        private readonly LoggerInterface        $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnPositionsMessage $message): void
@@ -43,7 +44,7 @@ class ImportEspnPositionsMessageHandler
                     importEntities: $importEntities,
                 ));
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->critical(
                 'ImportEspnPositionsMessageHandler error',
                 [

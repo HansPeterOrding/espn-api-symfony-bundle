@@ -20,11 +20,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnVenueImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
-        private readonly EspnTeamRepository $espnTeamRepository,
+        EspnApiClientInterface                   $espnApiClient,
+        ConverterInterface                       $converter,
+        private readonly EspnTeamRepository      $espnTeamRepository,
         private readonly EspnFranchiseRepository $espnFranchiseRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -40,7 +41,7 @@ class EspnVenueImporter extends AbstractImporter
                 'Could not resolve venueId from venue reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnVenueDto = $this->espnApiClient->venues()->get($urlParams->venueId);
 

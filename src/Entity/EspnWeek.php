@@ -57,8 +57,8 @@ class EspnWeek
      * @var Collection<int, EspnEvent>
      */
     #[ORM\OneToMany(
-        mappedBy: 'week',
         targetEntity: EspnEvent::class,
+        mappedBy: 'week',
         cascade: ['persist'],
         orphanRemoval: false
     )]

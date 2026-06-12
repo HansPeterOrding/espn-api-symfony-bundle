@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetitionFormat;
 use HansPeterOrding\EspnApiClient\Dto\EspnCompetitionFormat as EspnCompetitionFormatDto;
 
-class EspnCompetitionFormatConverter implements ConverterInterface
+readonly class EspnCompetitionFormatConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnCompetitionFormatPeriodConverter $espnCompetitionFormatPeriodConverter,
-    ) {
+        private EspnCompetitionFormatPeriodConverter $espnCompetitionFormatPeriodConverter,
+    )
+    {
     }
 
     public function toEntity(EspnCompetitionFormatDto $espnCompetitionFormatDto): EspnCompetitionFormat

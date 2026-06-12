@@ -1,37 +1,34 @@
 imports:
-    - { resource: services/converters.yaml }
-    - { resource: services/importers.yaml }
-    - { resource: services/message_handlers.yaml }
-    - { resource: services/repositories.yaml }
-    
-services:
-    _defaults:
-        # this means you cannot fetch services directly from the container via $container->get()
-        # if you need to do this, you can override this setting on individual services
-        autowire: true
-        autoconfigure: true
-        public: true
-        
-    _instanceof:
-        HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportMessageHandlerInterface:
-            calls:
-                -   setImportLogger: [ '@hpo_espn_api_symfony_bundle.logger' ]
-        
-    # Utils
-    hpo_espn_api_symfony_bundle.logger:
-        alias: 'logger'
-        public: true
-        
-    # Client    
-    HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientFactory: ~
+  - { resource: services/converters.yaml }
+  - { resource: services/importers.yaml }
+  - { resource: services/message_handlers.yaml }
+  - { resource: services/repositories.yaml }
 
-    HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface:
-        factory: [ '@HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientFactory', 'getEspnApiClient' ]
-        arguments:
-            $logger: '@logger'
-    
-    # Services 
-    HansPeterOrding\EspnApiSymfonyBundle\Service\EspnImportService: ~
-#    HansPeterOrding\EspnApiSymfonyBundle\Service\SeasonImportService: ~
-#    HansPeterOrding\EspnApiSymfonyBundle\Service\SeasonTeamImportService: ~
-#    HansPeterOrding\EspnApiSymfonyBundle\Service\SeasonTypeWeekEventImportService: ~
+services:
+  _defaults:
+    # this means you cannot fetch services directly from the container via $container->get()
+    # if you need to do this, you can override this setting on individual services
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  _instanceof:
+    HansPeterOrding\EspnApiSymfonyBundle\MessageHandler\EspnSync\ImportMessageHandlerInterface:
+      calls:
+        - setImportLogger: [ '@hpo_espn_api_symfony_bundle.logger' ]
+
+  # Utils
+  hpo_espn_api_symfony_bundle.logger:
+    alias: 'logger'
+    public: true
+
+  # Client
+  HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientFactory: ~
+
+  HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientInterface:
+    factory: [ '@HansPeterOrding\EspnApiClient\ApiClient\EspnApiClientFactory', 'getEspnApiClient' ]
+    arguments:
+      $logger: '@logger'
+
+  # Services
+  HansPeterOrding\EspnApiSymfonyBundle\Service\EspnImportService: ~

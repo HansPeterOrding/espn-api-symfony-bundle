@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync;
 
-class ImportEspnVenueMessage
+readonly class ImportEspnVenueMessage
 {
     public function __construct(
-        public readonly string $reference,
-        public readonly ?array $importEntities = null,
-    ) {
+        public string $reference,
+        public ?array $importEntities = null,
+    )
+    {
     }
 }

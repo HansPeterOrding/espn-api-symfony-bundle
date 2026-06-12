@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync;
 
-class ImportEspnCompetitionMessage
+readonly class ImportEspnCompetitionMessage
 {
     public function __construct(
-        public readonly string $reference,
-        public readonly int $eventId,
-        public readonly ?array $importEntities = null,
-    ) {
+        public string $reference,
+        public int    $eventId,
+        public ?array $importEntities = null,
+    )
+    {
     }
 }

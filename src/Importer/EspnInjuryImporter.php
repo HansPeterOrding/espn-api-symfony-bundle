@@ -20,11 +20,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnInjuryImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface                 $espnApiClient,
+        ConverterInterface                     $converter,
         private readonly EspnAthleteRepository $espnAthleteRepository,
-        private readonly EspnTeamRepository $espnTeamRepository,
-    ) {
+        private readonly EspnTeamRepository    $espnTeamRepository,
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -40,7 +41,7 @@ class EspnInjuryImporter extends AbstractImporter
                 'Could not resolve required params from injury reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnInjuryDto = $this->espnApiClient->seasons()->athletes()->injuries()->get(
             $urlParams->year,
@@ -60,7 +61,7 @@ class EspnInjuryImporter extends AbstractImporter
         $espnInjury = $this->converter->toEntity($espnInjuryDto);
 
         // Connect all athlete entities with matching ESPN id across all seasons
-        $espnAthletes = $this->espnAthleteRepository->findBy(['espnId' => (string) $urlParams->athleteId]);
+        $espnAthletes = $this->espnAthleteRepository->findBy(['espnId' => (string)$urlParams->athleteId]);
         foreach ($espnAthletes as $espnAthlete) {
             $espnInjury->addAthlete($espnAthlete);
         }
@@ -72,7 +73,7 @@ class EspnInjuryImporter extends AbstractImporter
                 EspnUrlPatternResolver::URL_PATTERN_SEASON_TEAM
             );
             if (null !== $teamUrlParams->teamId) {
-                $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string) $teamUrlParams->teamId]);
+                $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string)$teamUrlParams->teamId]);
                 $espnInjury->setTeam($espnTeam);
             }
         }

@@ -19,10 +19,11 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnCompetitionStatusImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface                     $espnApiClient,
+        ConverterInterface                         $converter,
         private readonly EspnCompetitionRepository $espnCompetitionRepository,
-    ) {
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -38,10 +39,10 @@ class EspnCompetitionStatusImporter extends AbstractImporter
                 'Could not resolve eventId or competitionId from competition status reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnCompetition = $this->espnCompetitionRepository->findOneBy(
-            ['espnId' => (string) $urlParams->competitionId]
+            ['espnId' => (string)$urlParams->competitionId]
         );
 
         if (null === $espnCompetition) {

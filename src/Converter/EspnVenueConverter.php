@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenue;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnVenueRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnVenue as EspnVenueDto;
 
-class EspnVenueConverter implements ConverterInterface
+readonly class EspnVenueConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnVenueRepository $espnVenueRepository,
-        private readonly EspnAddressConverter $espnAddressConverter,
-    ) {
+        private EspnVenueRepository  $espnVenueRepository,
+        private EspnAddressConverter $espnAddressConverter,
+    )
+    {
     }
 
     public function toEntity(EspnVenueDto $espnVenueDto): EspnVenue

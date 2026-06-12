@@ -15,7 +15,7 @@ use HansPeterOrding\EspnApiClient\Dto\EspnCompetition as EspnCompetitionDto;
 #[ORM\Entity(repositoryClass: EspnCompetitionRepository::class)]
 #[ORM\Table(name: 'easb_espn_competition')]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Index(columns: ['espn_id'], name: 'idx_espn_competition_espn_id')]
+#[ORM\Index(name: 'idx_espn_competition_espn_id', columns: ['espn_id'])]
 class EspnCompetition
 {
     use SyncTimestampsTrait;

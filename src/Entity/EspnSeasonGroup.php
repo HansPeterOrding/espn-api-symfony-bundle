@@ -59,8 +59,8 @@ class EspnSeasonGroup
      * @var Collection<int, EspnSeasonGroup>
      */
     #[ORM\OneToMany(
-        mappedBy: 'parent',
         targetEntity: EspnSeasonGroup::class,
+        mappedBy: 'parent',
         cascade: ['persist'],
         orphanRemoval: false
     )]

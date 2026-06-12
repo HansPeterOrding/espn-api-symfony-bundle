@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use DateTimeImmutable;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeason;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnSeasonType;
@@ -13,11 +11,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\SeasonTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnSeasonTypeRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnSeasonType as EspnSeasonTypeDto;
 
-class EspnSeasonTypeConverter implements ConverterInterface
+readonly class EspnSeasonTypeConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnSeasonTypeRepository $espnSeasonTypeRepository,
-    ) {
+        private EspnSeasonTypeRepository $espnSeasonTypeRepository,
+    )
+    {
     }
 
     public function toEntity(EspnSeasonTypeDto $espnSeasonTypeDto, EspnSeason $espnSeason): EspnSeasonType

@@ -20,11 +20,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnCompetitorImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface                     $espnApiClient,
+        ConverterInterface                         $converter,
         private readonly EspnCompetitionRepository $espnCompetitionRepository,
-        private readonly EspnTeamRepository $espnTeamRepository,
-    ) {
+        private readonly EspnTeamRepository        $espnTeamRepository,
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -40,7 +41,7 @@ class EspnCompetitorImporter extends AbstractImporter
                 'Could not resolve required params from competitor reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnCompetition = $this->espnCompetitionRepository->find($competitionId);
         if (null === $espnCompetition) {
@@ -84,7 +85,7 @@ class EspnCompetitorImporter extends AbstractImporter
             return;
         }
 
-        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string) $urlParams->teamId]);
+        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string)$urlParams->teamId]);
         $espnCompetitor->setTeam($espnTeam);
     }
 }

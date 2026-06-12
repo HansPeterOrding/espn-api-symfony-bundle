@@ -19,6 +19,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use HansPeterOrding\EspnApiSymfonyBundle\Exception\UnrecoverableImportException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 class ImportEspnSeasonGroupMessageHandler
@@ -26,13 +27,14 @@ class ImportEspnSeasonGroupMessageHandler
     use ImportEntitiesHelperTrait;
 
     public function __construct(
-        private readonly EspnApiClientInterface $espnApiClient,
-        private readonly EspnSeasonGroupImporter $espnSeasonGroupImporter,
+        private readonly EspnApiClientInterface    $espnApiClient,
+        private readonly EspnSeasonGroupImporter   $espnSeasonGroupImporter,
         private readonly EspnSeasonGroupRepository $espnSeasonGroupRepository,
-        private readonly MessageBusInterface $messageBus,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $importLogger,
-    ) {
+        private readonly MessageBusInterface       $messageBus,
+        private readonly EntityManagerInterface    $entityManager,
+        private readonly LoggerInterface           $importLogger,
+    )
+    {
     }
 
     public function __invoke(ImportEspnSeasonGroupMessage $message): void
@@ -72,7 +74,7 @@ class ImportEspnSeasonGroupMessageHandler
                 ]
             );
             throw new UnrecoverableMessageHandlingException($e->getMessage(), previous: $e);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->importLogger->warning(
                 'ImportEspnSeasonGroupMessageHandler error',
                 [
@@ -89,9 +91,10 @@ class ImportEspnSeasonGroupMessageHandler
 
     private function dispatchSubsequentMessages(
         EspnSeasonGroup $espnSeasonGroup,
-        int $seasonId,
-        array $importEntities
-    ): void {
+        int             $seasonId,
+        array           $importEntities
+    ): void
+    {
         // Dispatch child group messages — recursion terminates naturally at leaf groups
         if ($this->shouldImport($importEntities, EspnImportService::IMPORT_ENTITY_SEASON_GROUPS)
             && null !== $espnSeasonGroup->getChildrenReference()
@@ -144,8 +147,8 @@ class ImportEspnSeasonGroupMessageHandler
         if ($this->shouldImportTeamsForGroup($importEntities, $espnSeasonGroup->getIsConference() ?? false)) {
             $urlParams = EspnUrlPatternResolver::resolveAll(
                 $espnSeasonGroup->getTeamsReference()
-                    ?? $espnSeasonGroup->getStandingsReference()
-                    ?? '',
+                ?? $espnSeasonGroup->getStandingsReference()
+                ?? '',
                 EspnUrlPatternResolver::URL_PATTERN_SEASON_TYPE_GROUP
             );
 

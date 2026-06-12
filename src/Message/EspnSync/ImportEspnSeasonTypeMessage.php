@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Message\EspnSync;
 
-class ImportEspnSeasonTypeMessage
+readonly class ImportEspnSeasonTypeMessage
 {
     public function __construct(
-        public readonly string $reference,
-        public readonly int $seasonId,
-        public readonly bool $isCurrent = false,
-        public readonly ?array $importEntities = null,
-    ) {
+        public string $reference,
+        public int    $seasonId,
+        public bool   $isCurrent = false,
+        public ?array $importEntities = null,
+    )
+    {
     }
 }

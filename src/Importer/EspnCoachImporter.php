@@ -20,11 +20,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Util\EspnUrlPatternResolver;
 class EspnCoachImporter extends AbstractImporter
 {
     public function __construct(
-        EspnApiClientInterface $espnApiClient,
-        ConverterInterface $converter,
+        EspnApiClientInterface                $espnApiClient,
+        ConverterInterface                    $converter,
         private readonly EspnSeasonRepository $espnSeasonRepository,
-        private readonly EspnTeamRepository $espnTeamRepository,
-    ) {
+        private readonly EspnTeamRepository   $espnTeamRepository,
+    )
+    {
         parent::__construct($espnApiClient, $converter);
     }
 
@@ -40,7 +41,7 @@ class EspnCoachImporter extends AbstractImporter
                 'Could not resolve year or coachId from coach reference: %s',
                 $reference
             ));
-                    }
+        }
 
         $espnSeason = $this->espnSeasonRepository->find($seasonId);
         if (null === $espnSeason) {
@@ -83,7 +84,7 @@ class EspnCoachImporter extends AbstractImporter
             return;
         }
 
-        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string) $urlParams->teamId]);
+        $espnTeam = $this->espnTeamRepository->findOneBy(['espnId' => (string)$urlParams->teamId]);
         $espnCoach->setTeam($espnTeam);
     }
 }

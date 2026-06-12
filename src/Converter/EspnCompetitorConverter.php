@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetition;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnCompetitor;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\CompetitorHomeAwayEnum;
@@ -13,10 +11,10 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\CompetitorTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnCompetitorRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnCompetitor as EspnCompetitorDto;
 
-class EspnCompetitorConverter implements ConverterInterface
+readonly class EspnCompetitorConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnCompetitorRepository $espnCompetitorRepository,
+        private EspnCompetitorRepository $espnCompetitorRepository,
     )
     {
     }

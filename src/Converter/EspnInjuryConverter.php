@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use DateTimeImmutable;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnInjury;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\InjuryStatusEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnInjuryRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnInjury as EspnInjuryDto;
 
-class EspnInjuryConverter implements ConverterInterface
+readonly class EspnInjuryConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnInjuryRepository $espnInjuryRepository,
-        private readonly EspnSourceConverter $espnSourceConverter,
-        private readonly EspnInjuryTypeConverter $espnInjuryTypeConverter,
-    ) {
+        private EspnInjuryRepository    $espnInjuryRepository,
+        private EspnSourceConverter     $espnSourceConverter,
+        private EspnInjuryTypeConverter $espnInjuryTypeConverter,
+    )
+    {
     }
 
     public function toEntity(EspnInjuryDto $espnInjuryDto): EspnInjury

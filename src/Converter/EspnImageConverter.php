@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace HansPeterOrding\EspnApiSymfonyBundle\Converter;
 
-use HansPeterOrding\EspnApiSymfonyBundle\Converter\ConverterInterface;
-
 use DateTimeImmutable;
-use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnAthlete;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnImage;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnTeam;
 use HansPeterOrding\EspnApiSymfonyBundle\Entity\EspnVenue;
@@ -15,11 +12,12 @@ use HansPeterOrding\EspnApiSymfonyBundle\Entity\Enum\ImageParentTypeEnum;
 use HansPeterOrding\EspnApiSymfonyBundle\Repository\EspnImageRepository;
 use HansPeterOrding\EspnApiClient\Dto\EspnImage as EspnImageDto;
 
-class EspnImageConverter implements ConverterInterface
+readonly class EspnImageConverter implements ConverterInterface
 {
     public function __construct(
-        private readonly EspnImageRepository $espnImageRepository,
-    ) {
+        private EspnImageRepository $espnImageRepository,
+    )
+    {
     }
 
     public function toEntity(EspnImageDto $espnImageDto, EspnTeam|EspnVenue $parent): EspnImage
